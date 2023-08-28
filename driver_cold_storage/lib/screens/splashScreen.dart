@@ -10,7 +10,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    _loadMainScreen();
+    //_loadMainScreen();
   }
 
   Future<void> _loadMainScreen() async {
@@ -33,15 +33,21 @@ class _SplashScreenState extends State<SplashScreen> {
           children: [
             Padding(
               padding: EdgeInsets.only(top: 159, bottom: 98),
-              child: Text(
-                'C',
-                style: TextStyle(
-                    fontSize: 200,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Sora',
-                    color: Color(0xFF6AD6F9)),
-              ),
+              child: Image.asset('assets/c.png'),
             ),
+            // Padding(
+            //   padding: EdgeInsets.only(top: 159, bottom: 98),
+            //   child: Text(
+            //     'C',
+            //     style: TextStyle(
+            //       fontSize: 200,
+            //       fontWeight: FontWeight.bold,
+            //       fontFamily: 'Montserrat',
+            //       color: Color(0xFF6AD6F9),
+            //       fontStyle: FontStyle.normal,
+            //     ),
+            //   ),
+            // ),
             RichText(
               text: TextSpan(
                 children: [
