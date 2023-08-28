@@ -7,6 +7,13 @@ class Login extends StatefulWidget {
 }
 
 class _loginState extends State<Login> {
+  bool _obscurePassword = true;
+  void _togglePasswordVisibility() {
+    setState(() {
+      _obscurePassword = !_obscurePassword;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,6 +36,7 @@ class _loginState extends State<Login> {
               Padding(
                 padding: EdgeInsets.only(left: 32, right: 32, top: 24),
                 child: TextFormField(
+                  style: TextStyle(fontSize: 20),
                   decoration: InputDecoration(
                       hintText: "Username",
                       hintStyle: TextStyle(
@@ -40,13 +48,23 @@ class _loginState extends State<Login> {
               Padding(
                 padding: EdgeInsets.only(left: 32, right: 32, top: 24),
                 child: TextFormField(
-                  decoration: InputDecoration(
-                      hintText: "Password",
-                      hintStyle: TextStyle(
-                          fontSize: 20,
-                          color: Colors.grey,
-                          fontFamily: "Sora")),
-                ),
+                    style: TextStyle(fontSize: 20),
+                    decoration: InputDecoration(
+                        hintText: "Password",
+                        suffixIcon: GestureDetector(
+                          onTap: _togglePasswordVisibility,
+                          child: Icon(
+                            _obscurePassword
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                            color: Colors.black,
+                          ),
+                        ),
+                        hintStyle: TextStyle(
+                            fontSize: 20,
+                            color: Colors.grey,
+                            fontFamily: "Sora")),
+                    obscureText: _obscurePassword),
               ),
               Padding(
                 padding: EdgeInsets.only(left: 40, right: 32, top: 16),
