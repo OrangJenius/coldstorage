@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'home.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -54,7 +55,14 @@ class _loginState extends State<Login> {
                     textAlign: TextAlign.center,
                   ),
                 ),
-                ElevatedButton(onPressed: () {}, child: Text('Login'))
+                ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => homeScreen()),
+                      );
+                    },
+                    child: Text('Login'))
               ]),
             )
           ],
