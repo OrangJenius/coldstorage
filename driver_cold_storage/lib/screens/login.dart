@@ -15,7 +15,7 @@ class _loginState extends State<Login> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: EdgeInsets.only(left: 32.0, top: 200),
+                padding: EdgeInsets.only(left: 32.0, top: 180),
                 child: Text(
                   "Sign In",
                   style: TextStyle(
