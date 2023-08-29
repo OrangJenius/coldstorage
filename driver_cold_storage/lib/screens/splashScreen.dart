@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'login.dart';
+import 'detail_penjemputan.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -19,7 +20,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
     // Navigate to the main screen
     Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (context) => Login()),
+      MaterialPageRoute(builder: (context) => detail_Penjemputan()),
     );
   }
 
@@ -33,21 +34,8 @@ class _SplashScreenState extends State<SplashScreen> {
           children: [
             Padding(
               padding: EdgeInsets.only(top: 159, bottom: 98),
-              child: Image.asset('assets/c.png'),
+              child: Image.asset('assets/Ellipse 154.png'),
             ),
-            // Padding(
-            //   padding: EdgeInsets.only(top: 159, bottom: 98),
-            //   child: Text(
-            //     'C',
-            //     style: TextStyle(
-            //       fontSize: 200,
-            //       fontWeight: FontWeight.bold,
-            //       fontFamily: 'Montserrat',
-            //       color: Color(0xFF6AD6F9),
-            //       fontStyle: FontStyle.normal,
-            //     ),
-            //   ),
-            // ),
             RichText(
               text: TextSpan(
                 children: [

@@ -22,11 +22,5 @@ flutter:
     - family: Sora
       fonts:
         - asset: fonts/Sora-VariableFont_wght.ttf
-    - family: Montserrat
-      fonts:
-        - asset: fonts/Montserrat-VariableFont_wght.ttf
-        - asset: fonts/Montserrat-Italic-VariableFont_wght.ttf
-        - style: italic
-      
 
   uses-material-design: true
