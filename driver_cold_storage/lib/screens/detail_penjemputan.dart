@@ -30,6 +30,9 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                 height: 1,
                 color: Colors.grey,
               ),
+              SizedBox(
+                height: 16,
+              ),
               Row(
                 children: [
                   Expanded(
@@ -39,7 +42,7 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                         Padding(
                           padding: EdgeInsets.only(left: 16),
                           child: Text(
-                            "Percobaan detail",
+                            "Ayam Goyeng",
                             style: TextStyle(
                               fontFamily: 'Sora',
                               fontWeight: FontWeight.w600,
@@ -106,7 +109,7 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                 ],
               ),
               SizedBox(
-                height: 8,
+                height: 24,
               ),
               Row(
                 children: [
@@ -121,9 +124,174 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                         color: Color(0xFF505050),
                       ),
                     ),
-                  )
+                  ),
+                  Expanded(child: Container()),
+                  Padding(
+                    padding: EdgeInsets.only(right: 16),
+                    child: Text(
+                      "Budianto",
+                      style: TextStyle(
+                        fontFamily: 'Sora',
+                        fontSize: 20,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xFF505050),
+                      ),
+                    ),
+                  ),
                 ],
-              )
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(left: 16),
+                    child: Text(
+                      "Service",
+                      style: TextStyle(
+                        fontFamily: 'Sora',
+                        fontSize: 20,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xFF505050),
+                      ),
+                    ),
+                  ),
+                  Expanded(child: Container()),
+                  Padding(
+                    padding: EdgeInsets.only(right: 16),
+                    child: Text(
+                      "Door to port",
+                      style: TextStyle(
+                        fontFamily: 'Sora',
+                        fontSize: 20,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xFF505050),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(left: 16),
+                    child: Text(
+                      "Items",
+                      style: TextStyle(
+                        fontFamily: 'Sora',
+                        fontSize: 20,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xFF505050),
+                      ),
+                    ),
+                  ),
+                  Expanded(child: Container()),
+                  Padding(
+                    padding: EdgeInsets.only(right: 16),
+                    child: Text(
+                      "20",
+                      style: TextStyle(
+                        fontFamily: 'Sora',
+                        fontSize: 20,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xFF505050),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(left: 16),
+                    child: Text(
+                      "Weights",
+                      style: TextStyle(
+                        fontFamily: 'Sora',
+                        fontSize: 20,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xFF505050),
+                      ),
+                    ),
+                  ),
+                  Expanded(child: Container()),
+                  Padding(
+                    padding: EdgeInsets.only(right: 16),
+                    child: Text(
+                      "10 Kg",
+                      style: TextStyle(
+                        fontFamily: 'Sora',
+                        fontSize: 20,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xFF505050),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(left: 16),
+                    child: Text(
+                      "Stops",
+                      style: TextStyle(
+                        fontFamily: 'Sora',
+                        fontSize: 20,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xFF505050),
+                      ),
+                    ),
+                  ),
+                  Expanded(child: Container()),
+                  Padding(
+                    padding: EdgeInsets.only(right: 16),
+                    child: Text(
+                      "2",
+                      style: TextStyle(
+                        fontFamily: 'Sora',
+                        fontSize: 20,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xFF505050),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 16,
+              ),
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  Image.asset('assets/Rectangle 310.png'),
+                  Column(
+                    children: [
+                      Image.asset('assets/Folder_copy_duotone_line.png'),
+                      Text(
+                        'Upload Photo',
+                        style: TextStyle(
+                          fontFamily: 'Sora',
+                          fontSize: 12,
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xB2ABABAB),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ],
           ),
         ),
