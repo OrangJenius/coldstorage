@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'home.dart';
+import 'forgot_pass.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -70,7 +71,9 @@ class _loginState extends State<Login> {
                 padding: EdgeInsets.only(left: 40, right: 32, top: 16),
                 child: InkWell(
                   onTap: () {
-                    print('Tombol teks ditekan!');
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (context) => forgot_Pass()),
+                    );
                   },
                   child: Text(
                     'Forgot Password',
