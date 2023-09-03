@@ -12,12 +12,12 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding:
-                    EdgeInsets.only(left: 16, top: 24, bottom: 16, right: 263),
+                padding: EdgeInsets.only(left: 16, top: 24, bottom: 16),
                 child: Text(
-                  "Detail",
+                  "Detail Order",
                   style: TextStyle(
                     color: Color(0xFF6AD6F9),
                     fontFamily: 'Sora',
@@ -41,18 +41,34 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                       children: [
                         Padding(
                           padding: EdgeInsets.only(left: 16),
-                          child: Text(
-                            "Ayam Goyeng",
-                            style: TextStyle(
-                              fontFamily: 'Sora',
-                              fontWeight: FontWeight.w600,
-                              fontSize: 24,
-                              color: Color(0xFF505050),
+                          child: RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: 'ID: ',
+                                  style: TextStyle(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.w400,
+                                    fontFamily: 'Sora',
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: 'BJE290012KLOP',
+                                  style: TextStyle(
+                                    fontSize: 24,
+                                    fontFamily: 'Sora',
+                                    color: Color(0xFF6AD6F9),
+                                    fontWeight: FontWeight.w400,
+                                    decoration: TextDecoration.underline,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 16),
+                          padding: const EdgeInsets.only(left: 16, top: 8),
                           child: Text(
                             "7 Juli 2023 | 20.00",
                             style: TextStyle(
@@ -76,34 +92,6 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                           ),
                         ),
                       ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 16),
-                    child: RichText(
-                      text: TextSpan(
-                        children: [
-                          TextSpan(
-                            text: 'ID: ',
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                              fontFamily: 'Sora',
-                              color: Colors.black,
-                            ),
-                          ),
-                          TextSpan(
-                            text: 'BJE290012KLOP',
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: 'Sora',
-                              color: Color(0xFF6AD6F9),
-                              fontWeight: FontWeight.w400,
-                              decoration: TextDecoration.underline,
-                            ),
-                          ),
-                        ],
-                      ),
                     ),
                   ),
                 ],
@@ -132,7 +120,7 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                       "Budianto",
                       style: TextStyle(
                         fontFamily: 'Sora',
-                        fontSize: 20,
+                        fontSize: 18,
                         fontWeight: FontWeight.w400,
                         color: Color(0xFF505050),
                       ),
@@ -141,7 +129,7 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                 ],
               ),
               SizedBox(
-                height: 8,
+                height: 16,
               ),
               Row(
                 children: [
@@ -164,7 +152,7 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                       "Door to port",
                       style: TextStyle(
                         fontFamily: 'Sora',
-                        fontSize: 20,
+                        fontSize: 18,
                         fontWeight: FontWeight.w400,
                         color: Color(0xFF505050),
                       ),
@@ -173,7 +161,39 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                 ],
               ),
               SizedBox(
-                height: 8,
+                height: 16,
+              ),
+              Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(left: 16),
+                    child: Text(
+                      "Jenis",
+                      style: TextStyle(
+                        fontFamily: 'Sora',
+                        fontSize: 20,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xFF505050),
+                      ),
+                    ),
+                  ),
+                  Expanded(child: Container()),
+                  Padding(
+                    padding: EdgeInsets.only(right: 16),
+                    child: Text(
+                      "Daging Ayam",
+                      style: TextStyle(
+                        fontFamily: 'Sora',
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF505050),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 16,
               ),
               Row(
                 children: [
@@ -196,7 +216,7 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                       "20",
                       style: TextStyle(
                         fontFamily: 'Sora',
-                        fontSize: 20,
+                        fontSize: 18,
                         fontWeight: FontWeight.w400,
                         color: Color(0xFF505050),
                       ),
@@ -205,7 +225,7 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                 ],
               ),
               SizedBox(
-                height: 8,
+                height: 16,
               ),
               Row(
                 children: [
@@ -228,7 +248,7 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                       "10 Kg",
                       style: TextStyle(
                         fontFamily: 'Sora',
-                        fontSize: 20,
+                        fontSize: 18,
                         fontWeight: FontWeight.w400,
                         color: Color(0xFF505050),
                       ),
@@ -237,7 +257,7 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                 ],
               ),
               SizedBox(
-                height: 8,
+                height: 16,
               ),
               Row(
                 children: [
@@ -260,7 +280,7 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                       "2",
                       style: TextStyle(
                         fontFamily: 'Sora',
-                        fontSize: 20,
+                        fontSize: 18,
                         fontWeight: FontWeight.w400,
                         color: Color(0xFF505050),
                       ),
@@ -270,27 +290,6 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
               ),
               SizedBox(
                 height: 16,
-              ),
-              Stack(
-                alignment: Alignment.center,
-                children: [
-                  Image.asset('assets/Rectangle 310.png'),
-                  Column(
-                    children: [
-                      Image.asset('assets/Folder_copy_duotone_line.png'),
-                      Text(
-                        'Upload Photo',
-                        style: TextStyle(
-                          fontFamily: 'Sora',
-                          fontSize: 12,
-                          fontStyle: FontStyle.normal,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xB2ABABAB),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
               ),
             ],
           ),

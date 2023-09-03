@@ -552,9 +552,9 @@ class _homeScreenState extends State<homeScreen> {
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.only(left: 8, top: 8),
+                                padding: const EdgeInsets.only(left: 8, top: 4),
                                 child: Text(
-                                  "Distribute",
+                                  "Daging ayam",
                                   style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 16,
@@ -565,15 +565,73 @@ class _homeScreenState extends State<homeScreen> {
                               Padding(
                                 padding: const EdgeInsets.only(left: 8, top: 8),
                                 child: Text(
-                                  "Cold Storage -> Toko ABCD -> Toko EFGH -> Toko IJKLM -> Toko AFJSAJF",
+                                  "Distribute",
                                   style: TextStyle(
-                                    color: Colors.red,
+                                    color: Colors.black,
                                     fontSize: 16,
                                     fontFamily: "Sora",
                                   ),
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 2,
                                 ),
+                              ),
+                              Row(
+                                children: [
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.only(left: 8, top: 8),
+                                    child: Text(
+                                      "Cold Storage",
+                                      style: TextStyle(
+                                        color: Colors.red,
+                                        fontSize: 15,
+                                        fontFamily: "Sora",
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                      width:
+                                          8), // Add a SizedBox for spacing between the two Text widgets
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment
+                                        .start, // Align content to start
+                                    crossAxisAlignment: CrossAxisAlignment
+                                        .start, // Align content to start
+                                    children: [
+                                      Text(
+                                        "10pcs",
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                          fontSize: 12,
+                                          fontFamily: "Sora",
+                                        ),
+                                      ),
+                                      Text(
+                                        "-----",
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                          fontSize: 15,
+                                          fontFamily: "Sora",
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 8, top: 8),
+                                      child: Text(
+                                        "Toko ABCDEasdadadas",
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                          fontSize: 15,
+                                          fontFamily: "Sora",
+                                        ),
+                                        maxLines: 1, // Set maximum lines to 2
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(width: 8),
+                                ],
                               ),
                             ],
                           ),
@@ -683,7 +741,7 @@ class _homeScreenState extends State<homeScreen> {
                               Padding(
                                 padding: const EdgeInsets.only(left: 8, top: 8),
                                 child: Text(
-                                  "Cold Storage -> Toko ABCD -> Toko EFGH -> Toko IJKLM -> Toko AFJSAJF",
+                                  "Cold Storage --- Toko ABCD --- Toko EFGH --- Toko IJKLM --- Toko AFJSAJF",
                                   style: TextStyle(
                                     color: Colors.red,
                                     fontSize: 16,
