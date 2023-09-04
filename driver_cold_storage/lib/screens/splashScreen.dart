@@ -23,7 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
     // Navigate to the main screen
     Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (context) => Login()),
+      MaterialPageRoute(builder: (context) => detail_Penjemputan()),
     );
   }
 

@@ -9,12 +9,14 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  slide_action: ^0.0.2
+  mailer: 
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
-  mailer: 
+
 
 flutter:
   assets:

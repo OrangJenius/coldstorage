@@ -1,4 +1,3 @@
-import 'package:driver_cold_storage/screens/forgot_pass.dart';
 import 'package:flutter/material.dart';
 import 'otp_input.dart';
 import 'login.dart';

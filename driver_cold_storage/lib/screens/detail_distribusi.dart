@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'linePainter.dart';
 import 'sliderButton.dart';
 
-class detail_Penjemputan extends StatefulWidget {
+class detail_Distribusi extends StatefulWidget {
   @override
-  _detailPenjemputanState createState() => _detailPenjemputanState();
+  _detailDistribusiState createState() => _detailDistribusiState();
 }
 
-class _detailPenjemputanState extends State<detail_Penjemputan> {
+class _detailDistribusiState extends State<detail_Distribusi> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
