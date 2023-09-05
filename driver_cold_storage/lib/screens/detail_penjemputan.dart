@@ -8,6 +8,15 @@ class detail_Penjemputan extends StatefulWidget {
 }
 
 class _detailPenjemputanState extends State<detail_Penjemputan> {
+  final ScrollController _listViewController = ScrollController();
+
+  @override
+  void dispose() {
+    // Dispose of the ScrollController when the widget is disposed
+    _listViewController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -295,67 +304,74 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
               ),
               Container(
                 height: 250,
-                child: ListView.builder(
-                  itemCount: 3,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      padding: EdgeInsets.only(
-                        left: 16,
-                        right: 16,
-                        bottom: 4,
-                      ),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Column(
-                            children: [
-                              Icon(
-                                Icons.circle,
-                                color: Color(0xFF6AD6F9),
-                              ),
-                              SizedBox(
-                                height: 4,
-                              ),
-                              if (index < 2)
-                                CustomPaint(
-                                  size: Size(2, 65),
-                                  painter: DottedLinePainter(
+                child: Scrollbar(
+                  isAlwaysShown: true,
+                  controller: _listViewController,
+                  child: ListView.builder(
+                    controller: _listViewController,
+                    shrinkWrap: true,
+                    itemCount: 3,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        padding: EdgeInsets.only(
+                          left: 16,
+                          right: 16,
+                          bottom: 4,
+                        ),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Column(
+                              children: [
+                                Icon(
+                                  Icons.circle,
+                                  color: Color(0xFF6AD6F9),
+                                ),
+                                SizedBox(
+                                  height: 4,
+                                ),
+                                if (index < 2)
+                                  CustomPaint(
+                                    size: Size(2, 65),
+                                    painter: DottedLinePainter(
+                                      color: Color(0xFF6AD6F9),
+                                    ),
+                                  ),
+                              ],
+                            ),
+                            SizedBox(
+                              width:
+                                  12, // Adjust the spacing between the icon and content
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "10.00 AM",
+                                  style: TextStyle(
+                                    fontFamily: 'Sora',
                                     color: Color(0xFF6AD6F9),
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                            ],
-                          ),
-                          SizedBox(
-                            width:
-                                12, // Adjust the spacing between the icon and content
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "10.00 AM",
-                                style: TextStyle(
-                                  fontFamily: 'Sora',
-                                  color: Color(0xFF6AD6F9),
-                                  fontWeight: FontWeight.bold,
+                                Text(
+                                  "Toko A",
+                                  style: TextStyle(
+                                    fontFamily: 'Sora',
+                                    color: Color(0xFF808080),
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                "Toko A",
-                                style: TextStyle(
-                                  fontFamily: 'Sora',
-                                  color: Color(0xFF808080),
-                                ),
-                              ),
-                              Text("Client: Budi"),
-                              Text("Address: Jl. akjsdakdn No 100"),
-                              Text("Qts: 10 Pcs")
-                            ],
-                          ),
-                        ],
-                      ),
-                    );
-                  },
+                                Text("Client: Budi"),
+                                Text("Address: Jl. akjsdakdn No 100"),
+                                Text("Qts: 10 Pcs")
+                              ],
+                            ),
+                            // Expanded(child: Container()),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
               Container(
