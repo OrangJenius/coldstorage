@@ -144,9 +144,12 @@ class CustomStep extends StatelessWidget {
                       ],
                     ),
                   ),
-                Divider(
-                  height: 1,
-                  color: Colors.grey,
+                Padding(
+                  padding: const EdgeInsets.only(top: 16),
+                  child: Divider(
+                    height: 1,
+                    color: Colors.grey,
+                  ),
                 ),
               ],
             );

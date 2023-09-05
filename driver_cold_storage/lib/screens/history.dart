@@ -69,18 +69,15 @@ class _historyScreenState extends State<historyScreen> {
   void initState() {
     super.initState();
 
-    // Create a list of Step widgets using your data
-    for (int i = 0; i < time.length; i++) {
-      steps.add(
-        CustomStep(
-          id: id,
-          time: time,
-          store: store,
-          receiver: reciver,
-          address: address,
-        ),
-      );
-    }
+    steps.add(
+      CustomStep(
+        id: id,
+        time: time,
+        store: store,
+        receiver: reciver,
+        address: address,
+      ),
+    );
   }
 
   Future<void> _selectDate(BuildContext context) async {
