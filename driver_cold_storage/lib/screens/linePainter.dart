@@ -28,3 +28,23 @@ class DottedLinePainter extends CustomPainter {
     return false;
   }
 }
+
+class LinePainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final Paint paint = Paint()
+      ..color = Color(0xFF6AD6F9) // Adjust the color of the line
+      ..strokeCap = StrokeCap.round
+      ..strokeWidth = 4.0;
+
+    final Offset startPoint = Offset(size.width / 2, 0);
+    final Offset endPoint = Offset(size.width / 2, size.height);
+
+    canvas.drawLine(startPoint, endPoint, paint);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) {
+    return false;
+  }
+}

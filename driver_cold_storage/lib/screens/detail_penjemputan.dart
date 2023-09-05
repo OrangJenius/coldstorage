@@ -39,7 +39,7 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
               ),
               Divider(
                 height: 1,
-                color: Colors.grey,
+                color: Color(0xffd9d9d9),
               ),
               SizedBox(
                 height: 16,
@@ -305,7 +305,7 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
               Container(
                 height: 250,
                 child: Scrollbar(
-                  isAlwaysShown: true,
+                  thumbVisibility: true,
                   controller: _listViewController,
                   child: ListView.builder(
                     controller: _listViewController,
@@ -345,6 +345,7 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                             ),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Text(
                                   "10.00 AM",

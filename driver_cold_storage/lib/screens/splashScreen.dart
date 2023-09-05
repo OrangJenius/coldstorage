@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'detail_penjemputan.dart';
 import 'forgot_pass.dart';
 import 'forgot_pass2.dart';
+import 'history.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -23,8 +24,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
     // Navigate to the main screen
     Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (context) => detail_Penjemputan()),
-    );
+        MaterialPageRoute(builder: (context) => historyScreen()));
   }
 
   @override
