@@ -1,3 +1,4 @@
+import 'package:driver_cold_storage/screens/detail_history.dart';
 import 'package:driver_cold_storage/screens/home.dart';
 import 'package:driver_cold_storage/screens/login.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +25,12 @@ class _SplashScreenState extends State<SplashScreen> {
 
     // Navigate to the main screen
     Navigator.of(context).pushReplacement(
+<<<<<<< Updated upstream
         MaterialPageRoute(builder: (context) => historyScreen()));
+=======
+      MaterialPageRoute(builder: (context) => homeScreen()),
+    );
+>>>>>>> Stashed changes
   }
 
   @override
