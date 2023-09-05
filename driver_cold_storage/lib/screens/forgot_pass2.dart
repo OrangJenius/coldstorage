@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'otp_input.dart';
 import 'login.dart';
 
+// ignore: must_be_immutable
 class forgot_Pass2 extends StatefulWidget {
   String? generatedOtp;
   forgot_Pass2({required this.generatedOtp});
