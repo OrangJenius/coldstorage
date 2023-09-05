@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'linePainter.dart';
+import 'customStepper.dart';
+import 'customStep.dart';
 
 class historyScreen extends StatefulWidget {
   @override
@@ -10,7 +11,78 @@ class historyScreen extends StatefulWidget {
 class _historyScreenState extends State<historyScreen> {
   DateTime? pickedDate = DateTime.now();
 
-  // Function to update the pickedDate and trigger a rebuild of the widget
+  List<String> id = [
+    'BJE290012KLOP',
+    'BJE290012KLOP',
+    'BJE290012KLOP',
+  ];
+  List<String> store = [
+    'Store A',
+    'Store B',
+    'Store C',
+    'Store A',
+    'Store B',
+    'Store C',
+    'Store A',
+    'Store B',
+    'Store C',
+  ];
+  List<String> reciver = [
+    'Receiver: Budianto',
+    'Receiver: Budianto',
+    'Receiver: Budianto',
+    'Receiver: Budianto',
+    'Receiver: Budianto',
+    'Receiver: Budianto',
+    'Receiver: Budianto',
+    'Receiver: Budianto',
+    'Receiver: Budianto',
+  ];
+  List<String> address = [
+    'Address: Jl. aksjdnaiyd',
+    'Address: Jl. aksjdnaiyd',
+    'Address: Jl. aksjdnaiyd',
+    'Address: Jl. aksjdnaiyd',
+    'Address: Jl. aksjdnaiyd',
+    'Address: Jl. aksjdnaiyd',
+    'Address: Jl. aksjdnaiyd',
+    'Address: Jl. aksjdnaiyd',
+    'Address: Jl. aksjdnaiyd',
+  ];
+  List<String> time = [
+    '10.00 AM',
+    '11.00 AM',
+    '02.00 AM',
+    '10.00 AM',
+    '11.00 AM',
+    '02.00 AM',
+    '10.00 AM',
+    '11.00 AM',
+    '02.00 AM',
+  ];
+
+  List<Widget> steps = [];
+
+  String? _selectedValue = "All";
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Create a list of Step widgets using your data
+    for (int i = 0; i < time.length; i++) {
+      steps.add(
+        CustomStep(
+          id: id,
+          time: time,
+          store: store,
+          receiver: reciver,
+          address: address,
+        ),
+      );
+    }
+  }
+
   Future<void> _selectDate(BuildContext context) async {
     final newDate = await showDatePicker(
       context: context,
@@ -138,9 +210,81 @@ class _historyScreenState extends State<historyScreen> {
                       ),
                     ),
                     Expanded(child: Row()),
-                    Icon(
-                      Icons.filter_alt,
-                      color: Color(0xFF6AD6F9),
+                    PopupMenuButton<String>(
+                      // Use PopupMenuButton
+                      onSelected: (value) {
+                        setState(() {
+                          _selectedValue = value;
+                        });
+                      },
+                      itemBuilder: (BuildContext context) {
+                        return <PopupMenuEntry<String>>[
+                          PopupMenuItem<String>(
+                            value: 'All',
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.circle,
+                                  color: Color(0xFF6AD6F9),
+                                ),
+                                Text(
+                                  'All',
+                                  style: TextStyle(
+                                    fontFamily: 'Sora',
+                                    color: Color(0xFF6AD6F9),
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          PopupMenuItem<String>(
+                            value: 'Distribute',
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.circle,
+                                  color: Color(0xFF6AD6F9),
+                                ),
+                                Text(
+                                  'Distribute',
+                                  style: TextStyle(
+                                    fontFamily: 'Sora',
+                                    color: Color(0xFF6AD6F9),
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          PopupMenuItem<String>(
+                            value: 'Pickup',
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.circle,
+                                  color: Color(0xFF6AD6F9),
+                                ),
+                                Text(
+                                  'Pickup',
+                                  style: TextStyle(
+                                    fontFamily: 'Sora',
+                                    color: Color(0xFF6AD6F9),
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ];
+                      },
+                      child: Icon(
+                        Icons.filter_alt,
+                        color: Color(0xFF6AD6F9),
+                      ),
                     ),
                   ],
                 ),
@@ -155,144 +299,7 @@ class _historyScreenState extends State<historyScreen> {
               SizedBox(
                 height: 8,
               ),
-              ListView.builder(
-                shrinkWrap: true,
-                itemCount: 3,
-                itemBuilder: (context, index) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.all(8),
-                        child: RichText(
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text: 'ID: ',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w400,
-                                  fontFamily: 'Sora',
-                                  color: Colors.black,
-                                  fontStyle: FontStyle.normal,
-                                ),
-                              ),
-                              TextSpan(
-                                text: 'BJE290012KLOP',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontFamily: 'Sora',
-                                  color: Color(0xFF6AD6F9),
-                                  fontStyle: FontStyle.normal,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      ListView.builder(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemCount: 3,
-                        itemBuilder: (context, index) {
-                          return Container(
-                            padding: EdgeInsets.all(8),
-                            child: Row(
-                              children: [
-                                Column(
-                                  children: [
-                                    Icon(
-                                      Icons.circle,
-                                      color: Color(0xFF6AD6F9),
-                                    ),
-                                    SizedBox(
-                                      height: 4,
-                                    ),
-                                    if (index < 2)
-                                      CustomPaint(
-                                        size: Size(2, 65),
-                                        painter: LinePainter(),
-                                      ),
-                                  ],
-                                ),
-                                SizedBox(width: 8),
-                                Text(
-                                  "10:00 AM",
-                                  style: TextStyle(
-                                    fontFamily: 'Sora',
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 15,
-                                    color: Color(0xFF6AD6F9),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        width: 1,
-                                        color: Colors.black,
-                                        style: BorderStyle.solid,
-                                      ),
-                                    ),
-                                    padding: EdgeInsets.all(8),
-                                    child: Row(
-                                      children: [
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(right: 8),
-                                          child: Icon(Icons.directions_bus),
-                                        ),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              "Store A",
-                                              style: TextStyle(
-                                                fontFamily: 'Sora',
-                                                color: Color(0xFF6AD6F9),
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.w700,
-                                              ),
-                                            ),
-                                            Text(
-                                              "Receiver: Budianto",
-                                              style: TextStyle(
-                                                fontFamily: 'Sora',
-                                                color: Color(0xFF989898),
-                                                fontSize: 10,
-                                                fontWeight: FontWeight.w700,
-                                              ),
-                                            ),
-                                            Text(
-                                              "Address: Jl. aksjdnaiyd",
-                                              style: TextStyle(
-                                                fontFamily: 'Sora',
-                                                color: Color(0xFF989898),
-                                                fontSize: 10,
-                                                fontWeight: FontWeight.w700,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-                      Divider(
-                        height: 1,
-                        color: Colors.grey,
-                      )
-                    ],
-                  );
-                },
-              ),
+              CustomVerticalStepper(steps: steps)
             ],
           ),
         ),

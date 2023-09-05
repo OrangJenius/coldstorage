@@ -25,12 +25,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
     // Navigate to the main screen
     Navigator.of(context).pushReplacement(
-<<<<<<< Updated upstream
         MaterialPageRoute(builder: (context) => historyScreen()));
-=======
-      MaterialPageRoute(builder: (context) => homeScreen()),
-    );
->>>>>>> Stashed changes
   }
 
   @override

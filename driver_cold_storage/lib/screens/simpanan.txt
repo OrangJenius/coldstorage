@@ -1,0 +1,142 @@
+              // ListView.builder(
+              //   shrinkWrap: true,
+              //   itemCount: 3,
+              //   itemBuilder: (context, index) {
+              //     return Column(
+              //       crossAxisAlignment: CrossAxisAlignment.start,
+              //       children: [
+              //         Container(
+              //           padding: EdgeInsets.all(8),
+              //           child: RichText(
+              //             text: TextSpan(
+              //               children: [
+              //                 TextSpan(
+              //                   text: 'ID: ',
+              //                   style: TextStyle(
+              //                     fontSize: 18,
+              //                     fontWeight: FontWeight.w400,
+              //                     fontFamily: 'Sora',
+              //                     color: Colors.black,
+              //                     fontStyle: FontStyle.normal,
+              //                   ),
+              //                 ),
+              //                 TextSpan(
+              //                   text: 'BJE290012KLOP',
+              //                   style: TextStyle(
+              //                     fontSize: 18,
+              //                     fontFamily: 'Sora',
+              //                     color: Color(0xFF6AD6F9),
+              //                     fontStyle: FontStyle.normal,
+              //                     fontWeight: FontWeight.w400,
+              //                   ),
+              //                 ),
+              //               ],
+              //             ),
+              //           ),
+              //         ),
+              //         ListView.builder(
+              //           shrinkWrap: true,
+              //           physics: NeverScrollableScrollPhysics(),
+              //           itemCount: 3,
+              //           itemBuilder: (context, index) {
+              //             return Container(
+              //               padding: EdgeInsets.all(8),
+              //               child: Row(
+              //                 children: [
+              //                   Column(
+              //                     mainAxisAlignment: MainAxisAlignment.center,
+              //                     children: [
+              //                       Icon(
+              //                         Icons.circle,
+              //                         color: Color(0xFF6AD6F9),
+              //                       ),
+              //                       SizedBox(
+              //                         height: 4,
+              //                       ),
+              //                       if (index < 2)
+              //                         CustomPaint(
+              //                           size: Size(2, 65),
+              //                           painter: LinePainter(),
+              //                         ),
+              //                     ],
+              //                   ),
+              //                   SizedBox(width: 8),
+              //                   Padding(
+              //                     padding: const EdgeInsets.only(right: 8.0),
+              //                     child: Text(
+              //                       "10:00 AM",
+              //                       style: TextStyle(
+              //                         fontFamily: 'Sora',
+              //                         fontWeight: FontWeight.w700,
+              //                         fontSize: 15,
+              //                         color: Color(0xFF6AD6F9),
+              //                       ),
+              //                     ),
+              //                   ),
+              //                   Expanded(
+              //                     child: Container(
+              //                       decoration: BoxDecoration(
+              //                         border: Border.all(
+              //                           width: 1,
+              //                           color: Colors.black,
+              //                           style: BorderStyle.solid,
+              //                         ),
+              //                       ),
+              //                       padding: EdgeInsets.all(8),
+              //                       child: Row(
+              //                         children: [
+              //                           Padding(
+              //                             padding:
+              //                                 const EdgeInsets.only(right: 8),
+              //                             child: Icon(Icons.directions_bus),
+              //                           ),
+              //                           Column(
+              //                             crossAxisAlignment:
+              //                                 CrossAxisAlignment.start,
+              //                             children: [
+              //                               Text(
+              //                                 "Store A",
+              //                                 style: TextStyle(
+              //                                   fontFamily: 'Sora',
+              //                                   color: Color(0xFF6AD6F9),
+              //                                   fontSize: 15,
+              //                                   fontWeight: FontWeight.w700,
+              //                                 ),
+              //                               ),
+              //                               Text(
+              //                                 "Receiver: Budianto",
+              //                                 style: TextStyle(
+              //                                   fontFamily: 'Sora',
+              //                                   color: Color(0xFF989898),
+              //                                   fontSize: 10,
+              //                                   fontWeight: FontWeight.w700,
+              //                                 ),
+              //                               ),
+              //                               Text(
+              //                                 "Address: Jl. aksjdnaiyd",
+              //                                 style: TextStyle(
+              //                                   fontFamily: 'Sora',
+              //                                   color: Color(0xFF989898),
+              //                                   fontSize: 10,
+              //                                   fontWeight: FontWeight.w700,
+              //                                 ),
+              //                               ),
+              //                             ],
+              //                           ),
+              //                         ],
+              //                       ),
+              //                     ),
+              //                   ),
+              //                 ],
+              //               ),
+              //             );
+              //           },
+              //         ),
+              //         Divider(
+              //           height: 1,
+              //           color: Colors.grey,
+              //         )
+              //       ],
+              //     );
+              //   },
+              // ),
