@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'profile.dart';
 
 class homeScreen extends StatefulWidget {
   @override
@@ -44,8 +45,16 @@ class _homeScreenState extends State<homeScreen> {
                         child: Transform.scale(
                           scale: 1.2, // Ubah faktor skala sesuai keinginan Anda
                           child: CircleAvatar(
-                            child: Icon(
-                                Icons.image), // Ganti dengan thumbnail Anda
+                            child: InkWell(
+                              onTap: () => {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => profileScree()),
+                                )
+                              },
+                              child: Icon(Icons.image),
+                            ), // Ganti dengan thumbnail Anda
                           ),
                         )),
                   ],
