@@ -10,7 +10,7 @@ class forgot_Pass extends StatefulWidget {
 }
 
 class _forgot_PassState extends State<forgot_Pass> {
-  var index = -1;
+  final TextEditingController _EmailInputController = TextEditingController();
 
   String generateOtp() {
     // Generate a random 6-digit OTP
@@ -20,9 +20,11 @@ class _forgot_PassState extends State<forgot_Pass> {
 
   String? generatedOtp;
 
+  bool _isSendingEmail = false;
+
   Future<void> sendOtp() async {
-    String recipientEmail = "wendyco1234567@gmail.com";
-    generatedOtp = generateOtp(); // Store the generated OTP in a variable
+    String recipientEmail = _EmailInputController.text;
+    generatedOtp = generateOtp();
 
     final smtpServer = gmail('wendyco1234567@gmail.com', 'nazaaelwxchouywv');
 
@@ -33,11 +35,50 @@ class _forgot_PassState extends State<forgot_Pass> {
       ..text = 'Your OTP is: $generatedOtp';
 
     try {
+      setState(() {
+        _isSendingEmail = true;
+      });
+
       final sendReport = await send(message, smtpServer);
       print('Message sent: ${sendReport.toString()}');
     } catch (e) {
       print('Error sending OTP email: $e');
+      // Handle the email sending error and provide feedback to the user.
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Error'),
+            content: Text('Failed to send OTP. Please try again later.'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+
+      // Return early to prevent navigation when email sending fails.
+      return;
+    } finally {
+      setState(() {
+        _isSendingEmail = false;
+      });
     }
+
+    // Navigate to the next screen only if email sending is successful.
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => forgot_Pass2(
+          generatedOtp: generatedOtp,
+        ),
+      ),
+    );
   }
 
   @override
@@ -79,142 +120,76 @@ class _forgot_PassState extends State<forgot_Pass> {
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 32, right: 32),
-                child: InkWell(
-                  onTap: () => {
-                    index = 0,
-                  },
-                  child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      color: Color(0xFFEDEDED),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Icon(
-                          Icons.phone_android_rounded,
-                          size: 62,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "via sms:",
-                              style: TextStyle(
-                                  fontFamily: 'Sora',
-                                  color: Color(0xFFAAAAAA),
-                                  fontWeight: FontWeight.w400,
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: 16),
-                            ),
-                            Text(
-                              "**** **** 123",
-                              style: TextStyle(
-                                  fontFamily: 'Sora',
-                                  color: Color(0xFF000000),
-                                  fontWeight: FontWeight.w400,
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: 16),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 16,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 32, right: 32),
-                child: InkWell(
-                  onTap: () => {
-                    index = 1,
-                  },
-                  child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      color: Color(0xFFEDEDED),
-                    ),
-                    child: Row(children: [
+                child: Column(
+                  children: [
+                    Row(children: [
                       Icon(
                         Icons.email,
-                        size: 62,
+                        color: Color(0xff6AD6F9),
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "via email:",
-                            style: TextStyle(
-                                fontFamily: 'Sora',
-                                color: Color(0xFFAAAAAA),
-                                fontWeight: FontWeight.w400,
-                                fontStyle: FontStyle.normal,
-                                fontSize: 16),
-                          ),
-                          Text(
-                            "****g@gmail.com",
-                            style: TextStyle(
-                                fontFamily: 'Sora',
-                                color: Color(0xFF000000),
-                                fontWeight: FontWeight.w400,
-                                fontStyle: FontStyle.normal,
-                                fontSize: 16),
-                          ),
-                        ],
+                      Text(
+                        "Email",
+                        style: TextStyle(
+                          color: Color(0xff6AD6F9),
+                          fontFamily: 'Sora',
+                          fontWeight: FontWeight.w700,
+                          fontSize: 16,
+                        ),
                       ),
                     ]),
-                  ),
+                    TextFormField(
+                      controller: _EmailInputController,
+                      decoration: InputDecoration(
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color(0xff6AD6F9),
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(4.0),
+                          borderSide: BorderSide(
+                            color: Color(0xff6AD6F9),
+                          ),
+                        ),
+                        hintText: "Email@gmail.com",
+                        hintStyle: TextStyle(
+                          color: Color(0xffaaaaaa),
+                          fontFamily: 'Sora',
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               Padding(
-                padding: EdgeInsets.symmetric(
-                    horizontal: 32,
-                    vertical: 50), // Padding horizontal 32 dan vertikal 24
+                padding: EdgeInsets.symmetric(horizontal: 32, vertical: 50),
                 child: Container(
-                  width: double
-                      .infinity, // Ini akan membuat Container mengambil lebar maksimal yang tersedia.
-                  height:
-                      50, // Anda bisa mengatur tinggi tombol sesuai kebutuhan Anda.
+                  width: double.infinity,
+                  height: 50,
                   child: ElevatedButton(
                     style: ButtonStyle(
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(
-                              30), // border radius sebesar 30
+                          borderRadius: BorderRadius.circular(30),
                         ),
                       ),
                       elevation: MaterialStateProperty.all(5),
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(Color(0xFF6AD6F9)),
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          _isSendingEmail ? Colors.grey : Color(0xFF6AD6F9)),
                     ),
-                    onPressed: () {
-                      if (index == 0) {
-                        print("dikirim ke sms");
-                      } else if (index == 1) {
-                        sendOtp();
-                      } else {
-                        print("pilih salah satu metode yang tersedia");
-                      }
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => forgot_Pass2(
-                            generatedOtp: generatedOtp,
-                          ),
-                        ),
-                      );
-                    },
-                    child: Text('Send Code',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: "Sora",
-                        )), // Anda juga bisa mengatur style dari teks jika diperlukan.
+                    onPressed: _isSendingEmail
+                        ? null
+                        : () async {
+                            await sendOtp();
+                          },
+                    child: _isSendingEmail
+                        ? CircularProgressIndicator()
+                        : Text('Send Code',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: "Sora",
+                            )),
                   ),
                 ),
               )
