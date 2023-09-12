@@ -30,7 +30,7 @@ class _detailDistribusiState extends State<detail_Distribusi> {
               ),
               Divider(
                 height: 1,
-                color: Colors.grey,
+                color: Color(0xFFd9d9d9),
               ),
               SizedBox(
                 height: 16,

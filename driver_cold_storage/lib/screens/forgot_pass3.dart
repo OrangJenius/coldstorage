@@ -66,6 +66,7 @@ class _forgot_PassState3 extends State<forgot_Pass3> {
                   controller: _newPasswordController,
                   decoration: InputDecoration(
                     focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(4.0),
                       borderSide: BorderSide(
                         color: Color(0xff6AD6F9),
                       ),
@@ -110,6 +111,7 @@ class _forgot_PassState3 extends State<forgot_Pass3> {
                   controller: _confirmPasswordController,
                   decoration: InputDecoration(
                     focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(4.0),
                       borderSide: BorderSide(
                         color: Color(0xff6AD6F9),
                       ),

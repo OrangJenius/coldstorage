@@ -141,6 +141,7 @@ class _forgot_PassState extends State<forgot_Pass> {
                       controller: _EmailInputController,
                       decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(4.0),
                           borderSide: BorderSide(
                             color: Color(0xff6AD6F9),
                           ),
