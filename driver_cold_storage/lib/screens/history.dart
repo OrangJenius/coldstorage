@@ -122,7 +122,6 @@ class _historyScreenState extends State<historyScreen> {
                 height: 16,
               ),
               Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Padding(
@@ -159,34 +158,30 @@ class _historyScreenState extends State<historyScreen> {
                       ),
                     ),
                   ),
-                  Container(
-                    width: 200,
-                    height: 43,
-                    child: Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                            borderSide: BorderSide(
-                              color: Colors.black,
+                  Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Container(
+                      padding: EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "ID: BJE290012KLOP",
+                            style: TextStyle(
+                              fontFamily: 'Sora',
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xFF747474),
+                              fontStyle: FontStyle.normal,
                             ),
                           ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                            borderSide: BorderSide(
-                              color: Colors.black,
-                            ),
-                          ),
-                          hintText: "ID:",
-                          hintStyle: TextStyle(
-                            color: Color(0xffaaaaaa),
-                            fontFamily: 'Sora',
-                          ),
-                          suffixIcon: Icon(Icons.bento),
-                          contentPadding:
-                              EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-                        ),
+                          SizedBox(width: 8),
+                          Icon(Icons.bento),
+                        ],
                       ),
                     ),
                   ),

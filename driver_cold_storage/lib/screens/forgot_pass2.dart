@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'otp_input.dart';
-import 'forgot_pass3.dart';
+import 'login.dart';
 
 // ignore: must_be_immutable
 class forgot_Pass2 extends StatefulWidget {
@@ -105,7 +105,7 @@ class _forgot_PassState2 extends State<forgot_Pass2> {
                   if (verify()) {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => forgot_Pass3()),
+                      MaterialPageRoute(builder: (context) => Login()),
                     );
                   }
                 },
