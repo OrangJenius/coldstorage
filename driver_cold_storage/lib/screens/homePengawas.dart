@@ -57,8 +57,18 @@ class _homePengawasState extends State<HomePengawas> {
                   width: 360,
                   height: 152,
                   decoration: BoxDecoration(
-                      border: Border.all(width: 1, color: Colors.grey),
-                      borderRadius: BorderRadius.circular(10)),
+                    border: Border.all(width: 1, color: Colors.grey),
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey, // Warna bayangan
+                        offset:
+                            Offset(2, 5), // Jarak bayangan pada sumbu X dan Y
+                        blurRadius: 6.0, // Radius blur bayangan
+                      ),
+                    ],
+                  ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -170,7 +180,7 @@ class _homePengawasState extends State<HomePengawas> {
                             SizedBox(height: 8),
                             ..._buildDetailColumn("Weight", "20kg"),
                             SizedBox(height: 8),
-                            ..._buildDetailColumn("Stops", "2"),
+                            ..._buildDetailColumn("Location", "Building A "),
                           ],
                         ),
                       ),
