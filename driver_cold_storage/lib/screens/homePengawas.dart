@@ -18,8 +18,8 @@ class _homePengawasState extends State<HomePengawas> {
             children: [
               Padding(
                 padding: EdgeInsets.only(
-                  left: 24.0,
-                  top: 8,
+                  left: 16.0,
+                  top: 16,
                 ),
                 child: Text(
                   "Home",
@@ -39,7 +39,7 @@ class _homePengawasState extends State<HomePengawas> {
               ),
               Padding(
                 padding: EdgeInsets.only(
-                  left: 32,
+                  left: 16,
                   top: 16,
                 ),
                 child: Text(
@@ -52,9 +52,9 @@ class _homePengawasState extends State<HomePengawas> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 30, right: 30, top: 8),
+                padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
                 child: Container(
-                  width: 360,
+                  width: 380,
                   height: 152,
                   decoration: BoxDecoration(
                     border: Border.all(width: 1, color: Colors.grey),

@@ -16,7 +16,10 @@ class _reportScreenState extends State<reportScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: EdgeInsets.only(left: 16, top: 24, bottom: 16),
+                padding: EdgeInsets.only(
+                  left: 16,
+                  top: 16,
+                ),
                 child: Text(
                   "Report Services",
                   style: TextStyle(
@@ -35,7 +38,7 @@ class _reportScreenState extends State<reportScreen> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(32),
+                padding: const EdgeInsets.all(16),
                 child: InkWell(
                   onTap: () => {
                     Navigator.push(
@@ -46,13 +49,12 @@ class _reportScreenState extends State<reportScreen> {
                   child: Container(
                     decoration: BoxDecoration(
                       border: Border.all(
-                        style: BorderStyle.solid,
-                        color: Color(0xffD7D7D7),
-                      ),
+                          style: BorderStyle.solid, color: Colors.grey),
                       borderRadius: BorderRadius.circular(16),
+                      color: Colors.white,
                       boxShadow: [
                         BoxShadow(
-                          color: Color(0xffffffff),
+                          color: Colors.grey,
                           spreadRadius: 1,
                           offset: Offset(0, 3), // changes position of shadow
                         ),

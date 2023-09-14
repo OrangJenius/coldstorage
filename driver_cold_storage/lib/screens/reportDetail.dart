@@ -15,7 +15,7 @@ class _reportDetailScreenState extends State<reportDetailScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: EdgeInsets.only(left: 16, top: 24, bottom: 16),
+                padding: EdgeInsets.only(left: 16, top: 16),
                 child: Text(
                   "Report Services",
                   style: TextStyle(
@@ -460,7 +460,7 @@ class _reportDetailScreenState extends State<reportDetailScreen> {
               Padding(
                 padding: EdgeInsets.symmetric(
                     horizontal: 32,
-                    vertical: 100), // Padding horizontal 32 dan vertikal 24
+                    vertical: 20), // Padding horizontal 32 dan vertikal 24
                 child: Container(
                   width: double
                       .infinity, // Ini akan membuat Container mengambil lebar maksimal yang tersedia.
