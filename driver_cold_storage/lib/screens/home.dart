@@ -27,8 +27,8 @@ class _homeScreenState extends State<homeScreen> {
                     Expanded(
                       child: Padding(
                         padding: EdgeInsets.only(
-                          left: 24.0,
-                          top: 32,
+                          left: 16.0,
+                          top: 16,
                         ),
                         child: Text(
                           "Your Task",
@@ -41,7 +41,7 @@ class _homeScreenState extends State<homeScreen> {
                       ),
                     ),
                     Padding(
-                        padding: const EdgeInsets.only(top: 32, right: 24),
+                        padding: const EdgeInsets.only(top: 16, right: 16),
                         child: Transform.scale(
                           scale: 1.2, // Ubah faktor skala sesuai keinginan Anda
                           child: CircleAvatar(
@@ -60,16 +60,17 @@ class _homeScreenState extends State<homeScreen> {
                   ],
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
+                  padding: const EdgeInsets.only(top: 12.0),
                   child: Divider(
                     height: 1, // Atur tinggi garis sesuai kebutuhan
-                    color: Colors.grey, // Atur warna garis sesuai kebutuhan
+                    color:
+                        Colors.grey[350], // Atur warna garis sesuai kebutuhan
                   ),
                 ),
                 Padding(
                   padding: EdgeInsets.only(
-                    left: 32,
-                    top: 32,
+                    left: 24,
+                    top: 12,
                   ),
                   child: Text(
                     "Today",
@@ -84,12 +85,12 @@ class _homeScreenState extends State<homeScreen> {
                   children: [
                     Expanded(
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 25),
+                        padding: const EdgeInsets.only(left: 8),
                         child: Container(
-                          height: 90,
+                          height: 85,
                           child: ListView.builder(
                             scrollDirection: Axis.horizontal,
-                            itemExtent: 90,
+                            itemExtent: 85,
                             itemCount: hari.length,
                             itemBuilder: (context, index) {
                               // Cek apakah item ini adalah yang dipilih
@@ -103,7 +104,7 @@ class _homeScreenState extends State<homeScreen> {
                                   });
                                 },
                                 child: Container(
-                                  margin: EdgeInsets.all(8.0),
+                                  margin: EdgeInsets.all(8),
                                   decoration: BoxDecoration(
                                     border: Border.all(
                                         width: 1.5, color: Color(0xFF6AD6F9)),
@@ -120,7 +121,7 @@ class _homeScreenState extends State<homeScreen> {
                                       Text(
                                         angka[index],
                                         style: TextStyle(
-                                          fontSize: 20,
+                                          fontSize: 25,
                                           fontWeight: FontWeight.bold,
                                           color: isSelected
                                               ? Colors.white
@@ -131,7 +132,7 @@ class _homeScreenState extends State<homeScreen> {
                                       Text(
                                         hari[index],
                                         style: TextStyle(
-                                          fontSize: 20,
+                                          fontSize: 25,
                                           fontWeight: FontWeight.bold,
                                           color: isSelected
                                               ? Colors.white
@@ -152,8 +153,7 @@ class _homeScreenState extends State<homeScreen> {
                 Row(
                   children: [
                     Padding(
-                      padding:
-                          const EdgeInsets.only(left: 32, right: 32, top: 16),
+                      padding: const EdgeInsets.only(left: 16, top: 16),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(12),
                         child: Stack(
@@ -162,13 +162,195 @@ class _homeScreenState extends State<homeScreen> {
                               decoration: BoxDecoration(
                                 color: Color(0xFF6AD6F9),
                               ),
-                              width: 150,
-                              height: 150,
+                              width: 175,
+                              height: 175,
                             ),
 
                             Positioned(
-                              left: -10, // Posisi dari kiri
-                              top: -10, // Posisi dari atas
+                              left: 20, // Posisi dari kiri
+                              top: 1, // Posisi dari atas
+                              child: Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  Container(
+                                    width: 45,
+                                    height: 45,
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.white70),
+                                  ),
+                                  Container(
+                                    width: 35,
+                                    height: 35,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Color(0xFF6AD6F9),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Positioned(
+                              left: 10, // Posisi dari kiri
+                              top: 70, // Posisi dari atas
+                              child: Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  Container(
+                                    width: 45,
+                                    height: 45,
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.white70),
+                                  ),
+                                  Container(
+                                    width: 35,
+                                    height: 35,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Color(0xFF6AD6F9),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Positioned(
+                              left: 80, // Posisi dari kiri
+                              top: 90, // Posisi dari atas
+                              child: Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  Container(
+                                    width: 45,
+                                    height: 45,
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.white70),
+                                  ),
+                                  Container(
+                                    width: 35,
+                                    height: 35,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Color(0xFF6AD6F9),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Positioned(
+                              left: 4, // Posisi dari kiri
+                              top: 140, // Posisi dari atas
+                              child: Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  Container(
+                                    width: 120,
+                                    height: 25,
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.rectangle,
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(8)),
+                                    child: Text(
+                                      "Distribute",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: Color(0xFF6AD6F9),
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+
+                            Positioned(
+                              left: 75, // Posisi dari kiri
+                              top: -25, // Posisi dari atas
+                              child: Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  Container(
+                                    width: 125,
+                                    height: 125,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  Align(
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      "01",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                          fontSize: 30,
+                                          fontFamily: "Sora"),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              width: 175,
+                              height: 175,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Color(0xFF6AD6F9),
+                                  width: 2.0,
+                                ),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+
+                            // Tambahkan Positioned lain sesuai dengan kebutuhan Anda
+                          ],
+                        ),
+                      ),
+                    ),
+                    Expanded(child: Container()),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 16, top: 16),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: Stack(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                color: Color(0xFF6AD6F9),
+                              ),
+                              width: 175,
+                              height: 175,
+                            ),
+                            Positioned(
+                              left: 5, // Posisi dari kiri
+                              top: 20, // Posisi dari atas
+                              child: Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  Container(
+                                    width: 40,
+                                    height: 40,
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.white70),
+                                  ),
+                                  Container(
+                                    width: 30,
+                                    height: 30,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Color(0xFF6AD6F9),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Positioned(
+                              left: 70, // Posisi dari kiri
+                              top: 35, // Posisi dari atas
                               child: Stack(
                                 alignment: Alignment.center,
                                 children: [
@@ -192,67 +374,43 @@ class _homeScreenState extends State<homeScreen> {
                             ),
                             Positioned(
                               left: 10, // Posisi dari kiri
-                              top: 50, // Posisi dari atas
-                              child: Stack(
-                                alignment: Alignment.center,
-                                children: [
-                                  Container(
-                                    width: 40,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Colors.white70),
-                                  ),
-                                  Container(
-                                    width: 30,
-                                    height: 30,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Color(0xFF6AD6F9),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Positioned(
-                              left: 40, // Posisi dari kiri
-                              top: 130, // Posisi dari atas
-                              child: Stack(
-                                alignment: Alignment.center,
-                                children: [
-                                  Container(
-                                    width: 40,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Colors.white70),
-                                  ),
-                                  Container(
-                                    width: 30,
-                                    height: 30,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Color(0xFF6AD6F9),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Positioned(
-                              left: 4, // Posisi dari kiri
                               top: 100, // Posisi dari atas
                               child: Stack(
                                 alignment: Alignment.center,
                                 children: [
                                   Container(
-                                    width: 110,
-                                    height: 23,
+                                    width: 40,
+                                    height: 40,
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.white70),
+                                  ),
+                                  Container(
+                                    width: 30,
+                                    height: 30,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Color(0xFF6AD6F9),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Positioned(
+                              left: 50, // Posisi dari kiri
+                              top: 10, // Posisi dari atas
+                              child: Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  Container(
+                                    width: 120,
+                                    height: 25,
                                     decoration: BoxDecoration(
                                         shape: BoxShape.rectangle,
                                         color: Colors.white,
                                         borderRadius: BorderRadius.circular(8)),
                                     child: Text(
-                                      "Distribute",
+                                      "Pickup",
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                           color: Color(0xFF6AD6F9),
@@ -265,14 +423,14 @@ class _homeScreenState extends State<homeScreen> {
                             ),
 
                             Positioned(
-                              left: 70, // Posisi dari kiri
-                              top: -20, // Posisi dari atas
+                              left: 80, // Posisi dari kiri
+                              top: 80, // Posisi dari atas
                               child: Stack(
                                 alignment: Alignment.center,
                                 children: [
                                   Container(
-                                    width: 100,
-                                    height: 100,
+                                    width: 125,
+                                    height: 125,
                                     decoration: BoxDecoration(
                                       shape: BoxShape.circle,
                                       color: Colors.white,
@@ -281,7 +439,7 @@ class _homeScreenState extends State<homeScreen> {
                                   Align(
                                     alignment: Alignment.center,
                                     child: Text(
-                                      "01",
+                                      "10",
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           color: Colors.black,
@@ -294,12 +452,12 @@ class _homeScreenState extends State<homeScreen> {
                               ),
                             ),
                             Container(
-                              width: 150,
-                              height: 150,
+                              width: 175,
+                              height: 175,
                               decoration: BoxDecoration(
                                 border: Border.all(
-                                  color: Colors.black,
-                                  width: 1.0,
+                                  color: Color(0xFF6AD6F9),
+                                  width: 2.0,
                                 ),
                                 borderRadius: BorderRadius.circular(12),
                               ),
@@ -310,176 +468,15 @@ class _homeScreenState extends State<homeScreen> {
                         ),
                       ),
                     ),
-                    Expanded(
-                      child: Padding(
-                        padding:
-                            const EdgeInsets.only(left: 16, right: 32, top: 16),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(12),
-                          child: Stack(
-                            children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                  color: Color(0xFF6AD6F9),
-                                ),
-                                width: 150,
-                                height: 150,
-                              ),
-                              Positioned(
-                                left: 5, // Posisi dari kiri
-                                top: 20, // Posisi dari atas
-                                child: Stack(
-                                  alignment: Alignment.center,
-                                  children: [
-                                    Container(
-                                      width: 40,
-                                      height: 40,
-                                      decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Colors.white70),
-                                    ),
-                                    Container(
-                                      width: 30,
-                                      height: 30,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Color(0xFF6AD6F9),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Positioned(
-                                left: 70, // Posisi dari kiri
-                                top: 35, // Posisi dari atas
-                                child: Stack(
-                                  alignment: Alignment.center,
-                                  children: [
-                                    Container(
-                                      width: 40,
-                                      height: 40,
-                                      decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Colors.white70),
-                                    ),
-                                    Container(
-                                      width: 30,
-                                      height: 30,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Color(0xFF6AD6F9),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Positioned(
-                                left: 10, // Posisi dari kiri
-                                top: 100, // Posisi dari atas
-                                child: Stack(
-                                  alignment: Alignment.center,
-                                  children: [
-                                    Container(
-                                      width: 40,
-                                      height: 40,
-                                      decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Colors.white70),
-                                    ),
-                                    Container(
-                                      width: 30,
-                                      height: 30,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Color(0xFF6AD6F9),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Positioned(
-                                left: 35, // Posisi dari kiri
-                                top: 10, // Posisi dari atas
-                                child: Stack(
-                                  alignment: Alignment.center,
-                                  children: [
-                                    Container(
-                                      width: 110,
-                                      height: 23,
-                                      decoration: BoxDecoration(
-                                          shape: BoxShape.rectangle,
-                                          color: Colors.white,
-                                          borderRadius:
-                                              BorderRadius.circular(8)),
-                                      child: Text(
-                                        "Pickup",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            color: Color(0xFF6AD6F9),
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-
-                              Positioned(
-                                left: 70, // Posisi dari kiri
-                                top: 70, // Posisi dari atas
-                                child: Stack(
-                                  alignment: Alignment.center,
-                                  children: [
-                                    Container(
-                                      width: 100,
-                                      height: 100,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    Align(
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        "10",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.black,
-                                            fontSize: 30,
-                                            fontFamily: "Sora"),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                width: 150,
-                                height: 150,
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Colors.black,
-                                    width: 1.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                              ),
-
-                              // Tambahkan Positioned lain sesuai dengan kebutuhan Anda
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
                   ],
                 ),
                 Padding(
                   padding: EdgeInsets.only(
-                    left: 32,
-                    top: 32,
+                    left: 16,
+                    top: 16,
                   ),
                   child: Text(
-                    "Task",
+                    "Tasks",
                     style: TextStyle(
                         color: Color(0xFF6AD6F9),
                         fontSize: 30,
@@ -489,25 +486,39 @@ class _homeScreenState extends State<homeScreen> {
                 ),
                 Padding(
                   padding: EdgeInsets.only(
-                    left: 32,
-                    top: 16,
+                    left: 16,
+                    top: 8,
                   ),
-                  child: Text(
-                    "10:00",
-                    style: TextStyle(
-                        color: Color(0xFF6AD6F9),
-                        fontSize: 24,
-                        fontWeight: FontWeight.w700,
-                        fontFamily: "Sora"),
+                  child: Row(
+                    children: [
+                      Text(
+                        "Target Time :",
+                        style: TextStyle(
+                            color: Color(0xFF6AD6F9),
+                            fontSize: 24,
+                            fontWeight: FontWeight.w700,
+                            fontFamily: "Sora"),
+                      ),
+                      Text(
+                        " 10.00",
+                        style: TextStyle(
+                            color: Color(0xFF6AD6F9),
+                            fontSize: 24,
+                            fontWeight: FontWeight.w700,
+                            fontFamily: "Sora"),
+                      ),
+                    ],
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 30, right: 30, top: 8),
+                  padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
                   child: Container(
-                    width: 360,
+                    width: 390,
                     height: 152,
                     decoration: BoxDecoration(
-                        border: Border.all(width: 1, color: Colors.grey),
+                        border: Border.all(
+                            width: 2,
+                            color: Color.fromARGB(255, 215, 215, 215)),
                         borderRadius: BorderRadius.circular(10)),
                     child: Row(
                       children: [
@@ -665,25 +676,39 @@ class _homeScreenState extends State<homeScreen> {
                 ),
                 Padding(
                   padding: EdgeInsets.only(
-                    left: 32,
-                    top: 16,
+                    left: 16,
+                    top: 8,
                   ),
-                  child: Text(
-                    "13:00",
-                    style: TextStyle(
-                        color: Color(0xFF6AD6F9),
-                        fontSize: 24,
-                        fontWeight: FontWeight.w700,
-                        fontFamily: "Sora"),
+                  child: Row(
+                    children: [
+                      Text(
+                        "Target Time :",
+                        style: TextStyle(
+                            color: Color(0xFF6AD6F9),
+                            fontSize: 24,
+                            fontWeight: FontWeight.w700,
+                            fontFamily: "Sora"),
+                      ),
+                      Text(
+                        " 13.00",
+                        style: TextStyle(
+                            color: Color(0xFF6AD6F9),
+                            fontSize: 24,
+                            fontWeight: FontWeight.w700,
+                            fontFamily: "Sora"),
+                      ),
+                    ],
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 30, right: 30, top: 8),
+                  padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
                   child: Container(
-                    width: 360,
+                    width: 390,
                     height: 152,
                     decoration: BoxDecoration(
-                        border: Border.all(width: 1, color: Colors.grey),
+                        border: Border.all(
+                            width: 2,
+                            color: Color.fromARGB(255, 215, 215, 215)),
                         borderRadius: BorderRadius.circular(10)),
                     child: Row(
                       children: [
@@ -715,7 +740,7 @@ class _homeScreenState extends State<homeScreen> {
                                       left: 8,
                                     ),
                                     child: Text(
-                                      "BJE454879BJEP",
+                                      "BJE432529BJEP",
                                       style: TextStyle(
                                         color: Color(0xFF6AD6F9),
                                         fontSize: 22,
@@ -737,9 +762,9 @@ class _homeScreenState extends State<homeScreen> {
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.only(left: 8, top: 8),
+                                padding: const EdgeInsets.only(left: 8, top: 4),
                                 child: Text(
-                                  "Distribute",
+                                  "Daging ayam",
                                   style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 16,
@@ -750,15 +775,73 @@ class _homeScreenState extends State<homeScreen> {
                               Padding(
                                 padding: const EdgeInsets.only(left: 8, top: 8),
                                 child: Text(
-                                  "Cold Storage --- Toko ABCD --- Toko EFGH --- Toko IJKLM --- Toko AFJSAJF",
+                                  "Distribute",
                                   style: TextStyle(
-                                    color: Colors.red,
+                                    color: Colors.black,
                                     fontSize: 16,
                                     fontFamily: "Sora",
                                   ),
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 2,
                                 ),
+                              ),
+                              Row(
+                                children: [
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.only(left: 8, top: 8),
+                                    child: Text(
+                                      "Cold Storage",
+                                      style: TextStyle(
+                                        color: Colors.red,
+                                        fontSize: 15,
+                                        fontFamily: "Sora",
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                      width:
+                                          8), // Add a SizedBox for spacing between the two Text widgets
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment
+                                        .start, // Align content to start
+                                    crossAxisAlignment: CrossAxisAlignment
+                                        .start, // Align content to start
+                                    children: [
+                                      Text(
+                                        "10pcs",
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                          fontSize: 12,
+                                          fontFamily: "Sora",
+                                        ),
+                                      ),
+                                      Text(
+                                        "-----",
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                          fontSize: 15,
+                                          fontFamily: "Sora",
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 8, top: 8),
+                                      child: Text(
+                                        "Toko ABCDEasdadadas",
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                          fontSize: 15,
+                                          fontFamily: "Sora",
+                                        ),
+                                        maxLines: 1, // Set maximum lines to 2
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(width: 8),
+                                ],
                               ),
                             ],
                           ),
