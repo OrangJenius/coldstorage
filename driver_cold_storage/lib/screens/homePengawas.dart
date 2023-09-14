@@ -19,7 +19,7 @@ class _homePengawasState extends State<HomePengawas> {
               Padding(
                 padding: EdgeInsets.only(
                   left: 24.0,
-                  top: 32,
+                  top: 8,
                 ),
                 child: Text(
                   "Home",
