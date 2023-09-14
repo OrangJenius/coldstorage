@@ -99,11 +99,21 @@ class CustomStep extends StatelessWidget {
                               Container(
                                 width: 250,
                                 decoration: BoxDecoration(
+                                  color: Colors.white,
                                   border: Border.all(
                                     width: 1,
-                                    color: Colors.black,
+                                    color: Colors.grey,
                                     style: BorderStyle.solid,
                                   ),
+                                  borderRadius: BorderRadius.circular(8),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey, // Warna bayangan
+                                      offset: Offset(2,
+                                          5), // Jarak bayangan pada sumbu X dan Y
+                                      blurRadius: 6.0, // Radius blur bayangan
+                                    ),
+                                  ],
                                 ),
                                 padding: EdgeInsets.all(8),
                                 child: Row(
