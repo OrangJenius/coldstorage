@@ -20,6 +20,7 @@ class _historyScreenState extends State<historyScreen> {
     'Store A',
     'Store B',
     'Store C',
+    'Store D',
     'Store A',
     'Store B',
     'Store C',
@@ -63,8 +64,6 @@ class _historyScreenState extends State<historyScreen> {
 
   List<Widget> steps = [];
 
-  String? _selectedValue = "All";
-
   @override
   void initState() {
     super.initState();
@@ -103,7 +102,10 @@ class _historyScreenState extends State<historyScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: EdgeInsets.only(left: 16, top: 24, bottom: 16),
+                padding: EdgeInsets.only(
+                  left: 16,
+                  top: 16,
+                ),
                 child: Text(
                   "History",
                   style: TextStyle(
@@ -205,7 +207,7 @@ class _historyScreenState extends State<historyScreen> {
                           : '',
                       style: TextStyle(
                         fontFamily: 'Sora',
-                        fontSize: 18,
+                        fontSize: 20,
                         fontWeight: FontWeight.w700,
                         color: Color(0xFF6AD6F9),
                         fontStyle: FontStyle.normal,
@@ -215,9 +217,7 @@ class _historyScreenState extends State<historyScreen> {
                     PopupMenuButton<String>(
                       // Use PopupMenuButton
                       onSelected: (value) {
-                        setState(() {
-                          _selectedValue = value;
-                        });
+                        setState(() {});
                       },
                       itemBuilder: (BuildContext context) {
                         return <PopupMenuEntry<String>>[
@@ -297,9 +297,6 @@ class _historyScreenState extends State<historyScreen> {
               Divider(
                 height: 1,
                 color: Colors.grey,
-              ),
-              SizedBox(
-                height: 8,
               ),
               CustomVerticalStepper(steps: steps)
             ],

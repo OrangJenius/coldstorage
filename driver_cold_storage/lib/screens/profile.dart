@@ -19,7 +19,7 @@ class _profileScreeState extends State<profileScree> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: EdgeInsets.only(left: 16, top: 24, bottom: 16),
+              padding: EdgeInsets.only(left: 16, top: 16),
               child: Text(
                 "Profile",
                 style: TextStyle(
@@ -101,7 +101,7 @@ class _profileScreeState extends State<profileScree> {
                     "Edit",
                     style: TextStyle(
                       fontFamily: 'Sora',
-                      fontSize: 16,
+                      fontSize: 18,
                       fontStyle: FontStyle.normal,
                       fontWeight: FontWeight.w700,
                       decoration: TextDecoration.underline,
@@ -114,140 +114,140 @@ class _profileScreeState extends State<profileScree> {
             SizedBox(
               height: 32,
             ),
-            Container(
-              padding: EdgeInsets.all(16),
-              child: Row(
-                children: [
-                  Icon(Icons.access_alarm),
-                  SizedBox(
-                    width: 16,
-                  ),
-                  Text(
-                    "History",
-                    style: TextStyle(
-                      fontFamily: 'Sora',
-                      fontStyle: FontStyle.normal,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                      color: Color(0xff929292),
+            InkWell(
+              onTap: () => {
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => historyScreen())),
+              },
+              child: Container(
+                padding: EdgeInsets.all(16),
+                child: Row(
+                  children: [
+                    Icon(Icons.access_alarm),
+                    SizedBox(
+                      width: 16,
                     ),
-                  ),
-                  Expanded(
-                    child: Row(),
-                  ),
-                  InkWell(
-                    onTap: () => {
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (context) => historyScreen())),
-                    },
-                    child: Icon(Icons.chevron_right),
-                  ),
-                ],
+                    Text(
+                      "History",
+                      style: TextStyle(
+                        fontFamily: 'Sora',
+                        fontStyle: FontStyle.normal,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xff929292),
+                      ),
+                    ),
+                    Expanded(
+                      child: Row(),
+                    ),
+                    Icon(Icons.chevron_right)
+                  ],
+                ),
               ),
             ),
             Divider(
               height: 1, // Atur tinggi garis sesuai kebutuhan
               color: Colors.grey,
             ),
-            Container(
-              padding: EdgeInsets.all(16),
-              child: Row(
-                children: [
-                  Icon(Icons.lock),
-                  SizedBox(
-                    width: 16,
-                  ),
-                  Text(
-                    "Change Password",
-                    style: TextStyle(
-                      fontFamily: 'Sora',
-                      fontStyle: FontStyle.normal,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                      color: Color(0xff929292),
+            InkWell(
+              onTap: () => {
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => forgot_Pass3())),
+              },
+              child: Container(
+                padding: EdgeInsets.all(16),
+                child: Row(
+                  children: [
+                    Icon(Icons.lock_outline_rounded),
+                    SizedBox(
+                      width: 16,
                     ),
-                  ),
-                  Expanded(
-                    child: Row(),
-                  ),
-                  InkWell(
-                    onTap: () => {
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (context) => forgot_Pass3())),
-                    },
-                    child: Icon(Icons.chevron_right),
-                  ),
-                ],
+                    Text(
+                      "Change Password",
+                      style: TextStyle(
+                        fontFamily: 'Sora',
+                        fontStyle: FontStyle.normal,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xff929292),
+                      ),
+                    ),
+                    Expanded(
+                      child: Row(),
+                    ),
+                    Icon(Icons.chevron_right)
+                  ],
+                ),
               ),
             ),
             Divider(
               height: 1, // Atur tinggi garis sesuai kebutuhan
               color: Colors.grey,
             ),
-            Container(
-              padding: EdgeInsets.all(16),
-              child: Row(
-                children: [
-                  Icon(Icons.heart_broken),
-                  SizedBox(
-                    width: 16,
-                  ),
-                  Text(
-                    "Report Services",
-                    style: TextStyle(
-                      fontFamily: 'Sora',
-                      fontStyle: FontStyle.normal,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                      color: Color(0xff929292),
+            InkWell(
+              onTap: () => {
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => reportScreen())),
+              },
+              child: Container(
+                padding: EdgeInsets.all(16),
+                child: Row(
+                  children: [
+                    Icon(Icons.heart_broken_outlined),
+                    SizedBox(
+                      width: 16,
                     ),
-                  ),
-                  Expanded(
-                    child: Row(),
-                  ),
-                  InkWell(
-                    onTap: () => {
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (context) => reportScreen())),
-                    },
-                    child: Icon(Icons.chevron_right),
-                  ),
-                ],
+                    Text(
+                      "Report Services",
+                      style: TextStyle(
+                        fontFamily: 'Sora',
+                        fontStyle: FontStyle.normal,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xff929292),
+                      ),
+                    ),
+                    Expanded(
+                      child: Row(),
+                    ),
+                    Icon(Icons.chevron_right)
+                  ],
+                ),
               ),
             ),
             Divider(
               height: 1, // Atur tinggi garis sesuai kebutuhan
               color: Colors.grey,
             ),
-            Container(
-              padding: EdgeInsets.all(16),
-              child: Row(
-                children: [
-                  Icon(Icons.logout),
-                  SizedBox(
-                    width: 16,
-                  ),
-                  Text(
-                    "Logout",
-                    style: TextStyle(
-                      fontFamily: 'Sora',
-                      fontStyle: FontStyle.normal,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                      color: Color(0xff929292),
+            InkWell(
+              onTap: () => {
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => SplashScreen())),
+              },
+              child: Container(
+                padding: EdgeInsets.all(16),
+                child: Row(
+                  children: [
+                    Icon(Icons.logout),
+                    SizedBox(
+                      width: 16,
                     ),
-                  ),
-                  Expanded(
-                    child: Row(),
-                  ),
-                  InkWell(
-                    onTap: () => {
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (context) => SplashScreen())),
-                    },
-                    child: Icon(Icons.chevron_right),
-                  ),
-                ],
+                    Text(
+                      "Logout",
+                      style: TextStyle(
+                        fontFamily: 'Sora',
+                        fontStyle: FontStyle.normal,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xff929292),
+                      ),
+                    ),
+                    Expanded(
+                      child: Row(),
+                    ),
+                    Icon(Icons.chevron_right)
+                  ],
+                ),
               ),
             ),
           ],

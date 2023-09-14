@@ -1,3 +1,5 @@
+import 'package:driver_cold_storage/screens/detail_distribusi.dart';
+import 'package:driver_cold_storage/screens/detail_penjemputan.dart';
 import 'package:flutter/material.dart';
 import 'profile.dart';
 
@@ -510,167 +512,182 @@ class _homeScreenState extends State<homeScreen> {
                     ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
-                  child: Container(
-                    width: 390,
-                    height: 152,
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                            width: 2,
-                            color: Color.fromARGB(255, 215, 215, 215)),
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Row(
-                      children: [
-                        // Left Side Content
-                        Flexible(
-                          // <-- Tambahkan ini
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // ID Section
-                              Row(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 8.0, left: 8),
-                                    child: Text(
-                                      "ID:",
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 22,
-                                        fontWeight: FontWeight.w700,
-                                        fontFamily: "Sora",
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                      top: 8,
-                                      left: 8,
-                                    ),
-                                    child: Text(
-                                      "BJE454879BJEP",
-                                      style: TextStyle(
-                                        color: Color(0xFF6AD6F9),
-                                        fontSize: 22,
-                                        fontFamily: "Sora",
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 8, top: 4),
-                                child: Text(
-                                  "7 Juli 2023 | 10:00",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 14,
-                                    fontFamily: "Sora",
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 8, top: 4),
-                                child: Text(
-                                  "Daging ayam",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 16,
-                                    fontFamily: "Sora",
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 8, top: 8),
-                                child: Text(
-                                  "Distribute",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 16,
-                                    fontFamily: "Sora",
-                                  ),
-                                ),
-                              ),
-                              Row(
-                                children: [
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.only(left: 8, top: 8),
-                                    child: Text(
-                                      "Cold Storage",
-                                      style: TextStyle(
-                                        color: Colors.red,
-                                        fontSize: 15,
-                                        fontFamily: "Sora",
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                      width:
-                                          8), // Add a SizedBox for spacing between the two Text widgets
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment
-                                        .start, // Align content to start
-                                    crossAxisAlignment: CrossAxisAlignment
-                                        .start, // Align content to start
-                                    children: [
-                                      Text(
-                                        "10pcs",
+                InkWell(
+                  onTap: () {
+                    // Navigasi ke halaman DetailDistribusi
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            detail_Penjemputan(), // Ganti dengan widget halaman DetailDistribusi yang sesuai
+                      ),
+                    );
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
+                    child: Container(
+                      width: 390,
+                      height: 152,
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                              width: 2,
+                              color: Color.fromARGB(255, 215, 215, 215)),
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Row(
+                        children: [
+                          // Left Side Content
+                          Flexible(
+                            // <-- Tambahkan ini
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // ID Section
+                                Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 8.0, left: 8),
+                                      child: Text(
+                                        "ID:",
                                         style: TextStyle(
-                                          color: Colors.red,
-                                          fontSize: 12,
+                                          color: Colors.black,
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.w700,
                                           fontFamily: "Sora",
                                         ),
                                       ),
-                                      Text(
-                                        "-----",
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                        top: 8,
+                                        left: 8,
+                                      ),
+                                      child: Text(
+                                        "BJE454879BJEP",
                                         style: TextStyle(
-                                          color: Colors.red,
-                                          fontSize: 15,
+                                          color: Color(0xFF6AD6F9),
+                                          fontSize: 22,
                                           fontFamily: "Sora",
+                                          decoration: TextDecoration.underline,
                                         ),
                                       ),
-                                    ],
+                                    ),
+                                  ],
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.only(left: 8, top: 4),
+                                  child: Text(
+                                    "7 Juli 2023 | 10:00",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 14,
+                                      fontFamily: "Sora",
+                                    ),
                                   ),
-                                  Expanded(
-                                    child: Padding(
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.only(left: 8, top: 4),
+                                  child: Text(
+                                    "Daging ayam",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      fontFamily: "Sora",
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.only(left: 8, top: 8),
+                                  child: Text(
+                                    "Distribute",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      fontFamily: "Sora",
+                                    ),
+                                  ),
+                                ),
+                                Row(
+                                  children: [
+                                    Padding(
                                       padding: const EdgeInsets.only(
                                           left: 8, top: 8),
                                       child: Text(
-                                        "Toko ABCDEasdadadas",
+                                        "Cold Storage",
                                         style: TextStyle(
                                           color: Colors.red,
                                           fontSize: 15,
                                           fontFamily: "Sora",
                                         ),
-                                        maxLines: 1, // Set maximum lines to 2
-                                        overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
-                                  ),
-                                  SizedBox(width: 8),
-                                ],
-                              ),
-                            ],
+                                    SizedBox(
+                                        width:
+                                            8), // Add a SizedBox for spacing between the two Text widgets
+                                    Column(
+                                      mainAxisAlignment: MainAxisAlignment
+                                          .start, // Align content to start
+                                      crossAxisAlignment: CrossAxisAlignment
+                                          .start, // Align content to start
+                                      children: [
+                                        Text(
+                                          "10pcs",
+                                          style: TextStyle(
+                                            color: Colors.red,
+                                            fontSize: 12,
+                                            fontFamily: "Sora",
+                                          ),
+                                        ),
+                                        Text(
+                                          "-----",
+                                          style: TextStyle(
+                                            color: Colors.red,
+                                            fontSize: 15,
+                                            fontFamily: "Sora",
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Expanded(
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 8, top: 8),
+                                        child: Text(
+                                          "Toko ABCDEasdadadas",
+                                          style: TextStyle(
+                                            color: Colors.red,
+                                            fontSize: 15,
+                                            fontFamily: "Sora",
+                                          ),
+                                          maxLines: 1, // Set maximum lines to 2
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(width: 8),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
 
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8, right: 8),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              ..._buildDetailColumn("Items", "20"),
-                              SizedBox(height: 8),
-                              ..._buildDetailColumn("Weight", "20kg"),
-                              SizedBox(height: 8),
-                              ..._buildDetailColumn("Stops", "2"),
-                            ],
+                          Padding(
+                            padding: const EdgeInsets.only(top: 8, right: 8),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                ..._buildDetailColumn("Items", "20"),
+                                SizedBox(height: 8),
+                                ..._buildDetailColumn("Weight", "20kg"),
+                                SizedBox(height: 8),
+                                ..._buildDetailColumn("Stops", "2"),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -745,6 +762,7 @@ class _homeScreenState extends State<homeScreen> {
                                         color: Color(0xFF6AD6F9),
                                         fontSize: 22,
                                         fontFamily: "Sora",
+                                        decoration: TextDecoration.underline,
                                       ),
                                     ),
                                   ),
@@ -775,7 +793,7 @@ class _homeScreenState extends State<homeScreen> {
                               Padding(
                                 padding: const EdgeInsets.only(left: 8, top: 8),
                                 child: Text(
-                                  "Distribute",
+                                  "Pickup",
                                   style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 16,

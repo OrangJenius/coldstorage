@@ -26,7 +26,7 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: EdgeInsets.only(left: 16, top: 24, bottom: 16),
+                padding: EdgeInsets.only(left: 16, top: 16, bottom: 8),
                 child: Text(
                   "Detail Order",
                   style: TextStyle(
@@ -42,7 +42,7 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                 color: Color(0xffd9d9d9),
               ),
               SizedBox(
-                height: 16,
+                height: 8,
               ),
               Row(
                 children: [
@@ -85,7 +85,7 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                             style: TextStyle(
                               fontFamily: 'Sora',
                               fontWeight: FontWeight.w400,
-                              fontSize: 12,
+                              fontSize: 14,
                               color: Color(0xFF505050),
                             ),
                           ),
@@ -97,7 +97,7 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                             style: TextStyle(
                               fontFamily: 'Sora',
                               fontWeight: FontWeight.w400,
-                              fontSize: 10,
+                              fontSize: 12,
                               color: Color(0xFFA5A5A5),
                             ),
                           ),
@@ -108,7 +108,7 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                 ],
               ),
               SizedBox(
-                height: 24,
+                height: 16,
               ),
               Row(
                 children: [
@@ -179,7 +179,7 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                   Padding(
                     padding: EdgeInsets.only(left: 16),
                     child: Text(
-                      "Jenis",
+                      "Items",
                       style: TextStyle(
                         fontFamily: 'Sora',
                         fontSize: 20,
@@ -196,7 +196,38 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                       style: TextStyle(
                         fontFamily: 'Sora',
                         fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF505050),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Expanded(child: Container()),
+                  Padding(
+                    padding: EdgeInsets.only(right: 16),
+                    child: Text(
+                      "Daging Sapi",
+                      style: TextStyle(
+                        fontFamily: 'Sora',
+                        fontSize: 18,
+                        color: Color(0xFF505050),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Expanded(child: Container()),
+                  Padding(
+                    padding: EdgeInsets.only(right: 16),
+                    child: Text(
+                      "Daging Banteng",
+                      style: TextStyle(
+                        fontFamily: 'Sora',
+                        fontSize: 18,
                         color: Color(0xFF505050),
                       ),
                     ),
@@ -211,7 +242,7 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                   Padding(
                     padding: EdgeInsets.only(left: 16),
                     child: Text(
-                      "Items",
+                      "Quantities",
                       style: TextStyle(
                         fontFamily: 'Sora',
                         fontSize: 20,
@@ -303,14 +334,14 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                 height: 16,
               ),
               Container(
-                height: 250,
+                height: 300,
                 child: Scrollbar(
                   thumbVisibility: true,
                   controller: _listViewController,
                   child: ListView.builder(
                     controller: _listViewController,
                     shrinkWrap: true,
-                    itemCount: 3,
+                    itemCount: 5,
                     itemBuilder: (context, index) {
                       return Container(
                         padding: EdgeInsets.only(
@@ -330,7 +361,7 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                                 SizedBox(
                                   height: 4,
                                 ),
-                                if (index < 2)
+                                if (index < 4)
                                   CustomPaint(
                                     size: Size(2, 65),
                                     painter: DottedLinePainter(
