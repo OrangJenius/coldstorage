@@ -48,3 +48,31 @@ class LinePainter extends CustomPainter {
     return false;
   }
 }
+
+class DrawDottedhorizontalline extends CustomPainter {
+  final Color color;
+  final double strokeWidth;
+
+  DrawDottedhorizontalline({required this.color, this.strokeWidth = 2.0});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final Paint paint = Paint()
+      ..color = color
+      ..strokeCap = StrokeCap.square
+      ..strokeWidth = strokeWidth;
+
+    final double startX = 0;
+    final double endX =
+        size.width; // Set the end point to the container's width
+
+    for (double i = startX; i < endX; i += 5.0) {
+      canvas.drawLine(Offset(i, 0.0), Offset(i + 1, 0.0), paint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) {
+    return false;
+  }
+}
