@@ -26,8 +26,8 @@ class _SplashScreenState extends State<SplashScreen> {
     await Future.delayed(Duration(seconds: 2));
 
     // Navigate to the main screen
-    Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => HomePengawas()));
+    Navigator.of(context)
+        .pushReplacement(MaterialPageRoute(builder: (context) => Login()));
   }
 
   @override

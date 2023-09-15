@@ -46,17 +46,18 @@ class _homeScreenState extends State<homeScreen> {
                         padding: const EdgeInsets.only(top: 16, right: 16),
                         child: Transform.scale(
                           scale: 1.2, // Ubah faktor skala sesuai keinginan Anda
-                          child: CircleAvatar(
-                            child: InkWell(
-                              onTap: () => {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => profileScree()),
-                                )
-                              },
-                              child: Icon(Icons.image),
-                            ), // Ganti dengan thumbnail Anda
+                          child: InkWell(
+                            onTap: () => {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => profileScree()),
+                              )
+                            },
+                            child: CircleAvatar(
+                              child: Icon(
+                                  Icons.image), // Ganti dengan thumbnail Anda
+                            ),
                           ),
                         )),
                   ],

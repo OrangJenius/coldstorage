@@ -1,3 +1,4 @@
+import 'package:driver_cold_storage/screens/detail_history.dart';
 import 'package:flutter/material.dart';
 import 'linePainter.dart';
 
@@ -96,66 +97,76 @@ class CustomStep extends StatelessWidget {
                                 ),
                               ),
                               Expanded(child: Container()),
-                              Container(
-                                width: 250,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  border: Border.all(
-                                    width: 1,
-                                    color: Colors.grey,
-                                    style: BorderStyle.solid,
+                              InkWell(
+                                onTap: () => {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => DetailHistory()),
+                                  )
+                                },
+                                child: Container(
+                                  width: 250,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    border: Border.all(
+                                      width: 1,
+                                      color: Colors.grey,
+                                      style: BorderStyle.solid,
+                                    ),
+                                    borderRadius: BorderRadius.circular(8),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey, // Warna bayangan
+                                        offset: Offset(2,
+                                            5), // Jarak bayangan pada sumbu X dan Y
+                                        blurRadius: 6.0, // Radius blur bayangan
+                                      ),
+                                    ],
                                   ),
-                                  borderRadius: BorderRadius.circular(8),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey, // Warna bayangan
-                                      offset: Offset(2,
-                                          5), // Jarak bayangan pada sumbu X dan Y
-                                      blurRadius: 6.0, // Radius blur bayangan
-                                    ),
-                                  ],
-                                ),
-                                padding: EdgeInsets.all(8),
-                                child: Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(right: 8),
-                                      child: Icon(Icons.directions_bus),
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          store[i],
-                                          style: TextStyle(
-                                            fontFamily: 'Sora',
-                                            color: Color(0xFF6AD6F9),
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w700,
+                                  padding: EdgeInsets.all(8),
+                                  child: Row(
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 8),
+                                        child: Icon(Icons.directions_bus),
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            store[i],
+                                            style: TextStyle(
+                                              fontFamily: 'Sora',
+                                              color: Color(0xFF6AD6F9),
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w700,
+                                            ),
                                           ),
-                                        ),
-                                        Text(
-                                          receiver[i],
-                                          style: TextStyle(
-                                            fontFamily: 'Sora',
-                                            color: Color(0xFF989898),
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.w700,
+                                          Text(
+                                            receiver[i],
+                                            style: TextStyle(
+                                              fontFamily: 'Sora',
+                                              color: Color(0xFF989898),
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.w700,
+                                            ),
                                           ),
-                                        ),
-                                        Text(
-                                          address[i],
-                                          style: TextStyle(
-                                            fontFamily: 'Sora',
-                                            color: Color(0xFF989898),
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.w700,
+                                          Text(
+                                            address[i],
+                                            style: TextStyle(
+                                              fontFamily: 'Sora',
+                                              color: Color(0xFF989898),
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.w700,
+                                            ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ],

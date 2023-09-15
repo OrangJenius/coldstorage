@@ -29,7 +29,7 @@ class _DetailHistoryState extends State<DetailHistory> {
               Padding(
                 padding: EdgeInsets.only(
                   left: 16.0,
-                  top: 32,
+                  top: 16,
                 ),
                 child: Text(
                   "Detail History",
