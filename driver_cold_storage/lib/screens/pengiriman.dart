@@ -194,7 +194,125 @@ class _pengirimanScreenState extends State<pengirimanScreen> {
                               backgroundColor: MaterialStateProperty.all<Color>(
                                   Colors.white),
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              showDialog(
+                                  barrierDismissible: false,
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(16)),
+                                      scrollable: true,
+                                      title: Text(
+                                        "Details",
+                                        style: TextStyle(
+                                          fontFamily: 'Sora',
+                                          fontSize: 20,
+                                          fontStyle: FontStyle.normal,
+                                          fontWeight: FontWeight.w700,
+                                          color: Color(0xff6ad6f9),
+                                        ),
+                                      ),
+                                      content: Container(
+                                        child: Column(
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  "Ayam goyeng",
+                                                  style: TextStyle(
+                                                    fontFamily: 'Sora',
+                                                    fontSize: 14,
+                                                    fontStyle: FontStyle.normal,
+                                                    fontWeight: FontWeight.w400,
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                                Expanded(child: Row()),
+                                                Text(
+                                                  "(5 pcs)",
+                                                  style: TextStyle(
+                                                    fontFamily: 'Sora',
+                                                    fontSize: 14,
+                                                    fontStyle: FontStyle.normal,
+                                                    fontWeight: FontWeight.w400,
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              height: 8,
+                                            ),
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  "Es Batu",
+                                                  style: TextStyle(
+                                                    fontFamily: 'Sora',
+                                                    fontSize: 14,
+                                                    fontStyle: FontStyle.normal,
+                                                    fontWeight: FontWeight.w400,
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                                Expanded(child: Row()),
+                                                Text(
+                                                  "(5 pcs)",
+                                                  style: TextStyle(
+                                                    fontFamily: 'Sora',
+                                                    fontSize: 14,
+                                                    fontStyle: FontStyle.normal,
+                                                    fontWeight: FontWeight.w400,
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      actions: [
+                                        Center(
+                                          child: ElevatedButton(
+                                              style: ButtonStyle(
+                                                shape:
+                                                    MaterialStateProperty.all<
+                                                        RoundedRectangleBorder>(
+                                                  RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8),
+                                                      side: BorderSide(
+                                                          color: Color(
+                                                              0xff6AD6F9))),
+                                                ),
+                                                elevation:
+                                                    MaterialStateProperty.all(
+                                                        5),
+                                                backgroundColor:
+                                                    MaterialStateProperty.all<
+                                                        Color>(Colors.white),
+                                              ),
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: Text(
+                                                "Go back",
+                                                style: TextStyle(
+                                                  fontFamily: 'Sora',
+                                                  fontSize: 14,
+                                                  fontStyle: FontStyle.normal,
+                                                  fontWeight: FontWeight.w400,
+                                                  color: Color(0xff6AD6F9),
+                                                ),
+                                              )),
+                                        )
+                                      ],
+                                    );
+                                  });
+                            },
                             child: Text(
                               "Details",
                               style: TextStyle(
@@ -218,36 +336,39 @@ class _pengirimanScreenState extends State<pengirimanScreen> {
                           radius: Radius.circular(12),
                           color: Colors.white,
                           strokeCap: StrokeCap.round,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Color(0xffe0e0e0),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            padding: EdgeInsets.all(16),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "+",
-                                  style: TextStyle(
-                                    fontFamily: 'Sora',
-                                    fontSize: 48,
-                                    fontStyle: FontStyle.normal,
-                                    fontWeight: FontWeight.w700,
-                                    color: Colors.white,
+                          child: InkWell(
+                            onTap: () => {},
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Color(0xffe0e0e0),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              padding: EdgeInsets.all(16),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "+",
+                                    style: TextStyle(
+                                      fontFamily: 'Sora',
+                                      fontSize: 48,
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.w700,
+                                      color: Colors.white,
+                                    ),
                                   ),
-                                ),
-                                Text(
-                                  "Add photos",
-                                  style: TextStyle(
-                                    fontFamily: 'Sora',
-                                    fontSize: 13,
-                                    fontStyle: FontStyle.normal,
-                                    fontWeight: FontWeight.w700,
-                                    color: Colors.white,
-                                  ),
-                                )
-                              ],
+                                  Text(
+                                    "Add photos",
+                                    style: TextStyle(
+                                      fontFamily: 'Sora',
+                                      fontSize: 13,
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.w700,
+                                      color: Colors.white,
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         ),
