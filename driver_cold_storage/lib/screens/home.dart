@@ -695,7 +695,7 @@ class _homeScreenState extends State<homeScreen> {
                 Padding(
                   padding: EdgeInsets.only(
                     left: 16,
-                    top: 8,
+                    top: 16,
                   ),
                   child: Row(
                     children: [
