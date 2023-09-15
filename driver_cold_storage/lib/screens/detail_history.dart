@@ -397,10 +397,7 @@ class _DetailHistoryState extends State<DetailHistory> {
                           MaterialStateProperty.all<Color>(Color(0xFF6AD6F9)),
                     ),
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => homeScreen()),
-                      );
+                      Navigator.pop(context);
                     },
                     child: Text('Back',
                         style: TextStyle(

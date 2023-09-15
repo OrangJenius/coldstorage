@@ -61,116 +61,133 @@ class CustomStep extends StatelessWidget {
                         ),
                       ],
                     ),
+                    SizedBox(
+                      height: 8,
+                    ),
                     for (int i = startIndex;
                         i < endIndex && i < time.length;
                         i++)
-                      Padding(
-                        padding: const EdgeInsets.only(left: 8, right: 8),
-                        child: Container(
-                          child: Row(
-                            children: [
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.circle,
-                                    color: Color(0xFF6AD6F9),
-                                  ),
-                                  if (i < endIndex)
-                                    CustomPaint(
-                                      size: Size(2, 65),
-                                      painter: LinePainter(),
+                      Container(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Icon(
+                                  Icons.circle,
+                                  color: Color(0xFF6AD6F9),
+                                ),
+                                SizedBox(width: 8),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 8.0),
+                                  child: Text(
+                                    time[i],
+                                    style: TextStyle(
+                                      fontFamily: 'Sora',
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 15,
+                                      color: Color(0xFF6AD6F9),
                                     ),
-                                ],
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 8.0),
-                                child: Text(
-                                  time[i],
-                                  style: TextStyle(
-                                    fontFamily: 'Sora',
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 15,
-                                    color: Color(0xFF6AD6F9),
                                   ),
                                 ),
-                              ),
-                              Expanded(child: Container()),
-                              InkWell(
-                                onTap: () => {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => DetailHistory()),
-                                  )
-                                },
-                                child: Container(
-                                  width: 250,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    border: Border.all(
-                                      width: 1,
-                                      color: Colors.grey,
-                                      style: BorderStyle.solid,
+                                Expanded(child: Row()),
+                                InkWell(
+                                  onTap: () => {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              DetailHistory()),
+                                    )
+                                  },
+                                  child: Container(
+                                    width: 250,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      border: Border.all(
+                                        width: 1,
+                                        color: Colors.grey,
+                                        style: BorderStyle.solid,
+                                      ),
+                                      borderRadius: BorderRadius.circular(8),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey, // Warna bayangan
+                                          offset: Offset(2,
+                                              5), // Jarak bayangan pada sumbu X dan Y
+                                          blurRadius:
+                                              6.0, // Radius blur bayangan
+                                        ),
+                                      ],
                                     ),
-                                    borderRadius: BorderRadius.circular(8),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey, // Warna bayangan
-                                        offset: Offset(2,
-                                            5), // Jarak bayangan pada sumbu X dan Y
-                                        blurRadius: 6.0, // Radius blur bayangan
-                                      ),
-                                    ],
-                                  ),
-                                  padding: EdgeInsets.all(8),
-                                  child: Row(
-                                    children: [
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(right: 8),
-                                        child: Icon(Icons.directions_bus),
-                                      ),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            store[i],
-                                            style: TextStyle(
-                                              fontFamily: 'Sora',
-                                              color: Color(0xFF6AD6F9),
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w700,
-                                            ),
+                                    padding: EdgeInsets.all(8),
+                                    child: Row(
+                                      children: [
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(right: 8),
+                                          child: Stack(
+                                            alignment: Alignment.center,
+                                            children: [
+                                              Icon(
+                                                Icons.circle,
+                                                color: Color(0xFF6AD6F9),
+                                                size: 45,
+                                              ),
+                                              Image.asset(
+                                                  "assets/Delivery Truck.png")
+                                            ],
                                           ),
-                                          Text(
-                                            receiver[i],
-                                            style: TextStyle(
-                                              fontFamily: 'Sora',
-                                              color: Color(0xFF989898),
-                                              fontSize: 10,
-                                              fontWeight: FontWeight.w700,
+                                        ),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              store[i],
+                                              style: TextStyle(
+                                                fontFamily: 'Sora',
+                                                color: Color(0xFF6AD6F9),
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w700,
+                                              ),
                                             ),
-                                          ),
-                                          Text(
-                                            address[i],
-                                            style: TextStyle(
-                                              fontFamily: 'Sora',
-                                              color: Color(0xFF989898),
-                                              fontSize: 10,
-                                              fontWeight: FontWeight.w700,
+                                            Text(
+                                              receiver[i],
+                                              style: TextStyle(
+                                                fontFamily: 'Sora',
+                                                color: Color(0xFF989898),
+                                                fontSize: 10,
+                                                fontWeight: FontWeight.w700,
+                                              ),
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
+                                            Text(
+                                              address[i],
+                                              style: TextStyle(
+                                                fontFamily: 'Sora',
+                                                color: Color(0xFF989898),
+                                                fontSize: 10,
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
+                              ],
+                            ),
+                            if (i < endIndex - 1)
+                              Container(
+                                padding: EdgeInsets.only(left: 11.5),
+                                child: CustomPaint(
+                                  size: Size(0, 80),
+                                  painter: LinePainter(),
+                                ),
                               ),
-                            ],
-                          ),
+                          ],
                         ),
                       ),
                     Padding(

@@ -133,7 +133,7 @@ class _forgot_PassState extends State<forgot_Pass> {
                           color: Color(0xff6AD6F9),
                           fontFamily: 'Sora',
                           fontWeight: FontWeight.w700,
-                          fontSize: 16,
+                          fontSize: 20,
                         ),
                       ),
                     ]),
