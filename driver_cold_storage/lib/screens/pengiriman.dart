@@ -116,7 +116,8 @@ class _pengirimanScreenState extends State<pengirimanScreen> {
             height: 350,
             decoration: BoxDecoration(
               color: Color(0xff6ad6f9),
-              borderRadius: BorderRadius.circular(24),
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(24), topRight: Radius.circular(24)),
             ),
             child: ListView.builder(
                 shrinkWrap: true,
@@ -124,10 +125,10 @@ class _pengirimanScreenState extends State<pengirimanScreen> {
                 itemBuilder: (context, index) {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(
-                            top: 8.0, left: 16, right: 16),
+                        padding: const EdgeInsets.only(left: 16, right: 16),
                         child: Row(
                           children: [
                             Padding(
@@ -327,7 +328,7 @@ class _pengirimanScreenState extends State<pengirimanScreen> {
                         ),
                       ),
                       SizedBox(
-                        height: 16,
+                        height: 8,
                       ),
                       Padding(
                         padding: const EdgeInsets.all(16.0),
@@ -374,7 +375,8 @@ class _pengirimanScreenState extends State<pengirimanScreen> {
                         ),
                       ),
                       Container(
-                        padding: EdgeInsets.all(16),
+                        padding:
+                            EdgeInsets.only(left: 16, right: 16, bottom: 8),
                         child: Row(
                           children: [
                             Text(
@@ -393,7 +395,7 @@ class _pengirimanScreenState extends State<pengirimanScreen> {
                         ),
                       ),
                       SizedBox(
-                        height: 16,
+                        height: 8,
                       ),
                       Center(
                         child: Container(
@@ -427,7 +429,7 @@ class _pengirimanScreenState extends State<pengirimanScreen> {
                         ),
                       ),
                       SizedBox(
-                        height: 16,
+                        height: 24,
                       ),
                       Row(
                         children: [
