@@ -5,7 +5,8 @@ import 'forgot_pass3.dart';
 // ignore: must_be_immutable
 class forgot_Pass2 extends StatefulWidget {
   String? generatedOtp;
-  forgot_Pass2({required this.generatedOtp});
+  final String email;
+  forgot_Pass2({required this.generatedOtp, required this.email});
   @override
   _forgot_PassState2 createState() => _forgot_PassState2();
 }
@@ -105,7 +106,10 @@ class _forgot_PassState2 extends State<forgot_Pass2> {
                   if (verify()) {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => forgot_Pass3()),
+                      MaterialPageRoute(
+                          builder: (context) => forgot_Pass3(
+                                email: widget.email,
+                              )),
                     );
                   }
                 },

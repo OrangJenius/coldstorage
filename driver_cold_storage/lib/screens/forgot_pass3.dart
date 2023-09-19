@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'login.dart';
+import 'package:http/http.dart' as http;
 
 class forgot_Pass3 extends StatefulWidget {
-  String? generatedOtp;
+  final String email;
+
+  const forgot_Pass3({super.key, required this.email});
+
   @override
   _forgot_PassState3 createState() => _forgot_PassState3();
 }
@@ -26,6 +30,92 @@ class _forgot_PassState3 extends State<forgot_Pass3> {
   final TextEditingController _newPasswordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
+
+  String _message = '';
+
+  bool _submitNewPassword() {
+    String newPassword = _newPasswordController.text;
+    String confirmPassword = _confirmPasswordController.text;
+    if (newPassword == confirmPassword) {
+      // TODO: Implement password reset logic here
+      print('Password Match');
+      return true;
+    } else {
+      print('Passwords do not match');
+      return false;
+    }
+  }
+
+  Future<void> gantiPass() async {
+    setState(() {
+      _message = '';
+    });
+    final apiUrl = 'http://116.68.252.201:1945/ForgetPassAdminNDriver';
+    final password = _newPasswordController.text;
+    bool passwordsMatch = _submitNewPassword();
+    print(passwordsMatch); // Print the result here
+    if (passwordsMatch) {
+      print("yoho");
+      print(widget.email);
+      try {
+        final response = await http.put(Uri.parse(apiUrl),
+            body: {'Email': widget.email, 'Password': password});
+
+        if (response.statusCode == 200) {
+          // Login successful
+          setState(() {
+            _message = 'password changed successful';
+            _showSuccessSnackbar(
+                _message); // Use a custom method for success snackbar
+            // Navigate to the HomeScreen if needed
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Login()),
+            );
+          });
+        } else if (response.statusCode == 401) {
+          setState(() {
+            _message = 'Invalid Password or Confirm password';
+            _showErrorSnackbar(_message);
+          });
+        } else {
+          // Other server errors
+          setState(() {
+            _message = 'Server error occurred. Please try again later.';
+            _showErrorSnackbar(_message);
+          });
+        }
+      } catch (e) {
+        // Error occurred during API call
+        setState(() {
+          _message =
+              'Failed to connect to the server. Please check your internet connection.';
+          _showErrorSnackbar(_message);
+        });
+      }
+    } else {
+      _message = "password dan confirm password harus sama";
+      _showErrorSnackbar(_message);
+    }
+  }
+
+  void _showSuccessSnackbar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Colors.green, // Use a success color
+      ),
+    );
+  }
+
+  void _showErrorSnackbar(String errorMessage) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(errorMessage),
+        backgroundColor: Colors.red,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -159,15 +249,7 @@ class _forgot_PassState3 extends State<forgot_Pass3> {
                           MaterialStateProperty.all<Color>(Color(0xFF6AD6F9)),
                     ),
                     onPressed: () {
-                      if (_newPasswordController.text ==
-                          _confirmPasswordController.text) {
-                        print(_newPasswordController);
-                        print(_confirmPasswordController);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Login()),
-                        );
-                      }
+                      gantiPass();
                     },
                     child: Text('Change Password',
                         style: TextStyle(

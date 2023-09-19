@@ -167,8 +167,8 @@ class _profileScreeState extends State<profileScree> {
             ),
             InkWell(
               onTap: () => {
-                Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) => forgot_Pass3())),
+                // Navigator.of(context).pushReplacement(
+                //     MaterialPageRoute(builder: (context) => forgot_Pass3())),
               },
               child: Container(
                 padding: EdgeInsets.all(16),

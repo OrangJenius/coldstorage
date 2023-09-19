@@ -100,7 +100,6 @@ class _homeScreenState extends State<homeScreen> {
                             itemBuilder: (context, index) {
                               // Cek apakah item ini adalah yang dipilih
                               bool isSelected = index == selectedIndex;
-
                               return GestureDetector(
                                 onTap: () {
                                   setState(() {
@@ -113,7 +112,6 @@ class _homeScreenState extends State<homeScreen> {
                                   decoration: BoxDecoration(
                                     border: Border.all(
                                         width: 1.5, color: Color(0xFF6AD6F9)),
-
                                     color: isSelected
                                         ? Color(0xFF6AD6F9)
                                         : Colors.white,
