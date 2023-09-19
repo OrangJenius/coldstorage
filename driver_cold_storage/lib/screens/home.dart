@@ -1,4 +1,3 @@
-import 'package:driver_cold_storage/screens/detail_distribusi.dart';
 import 'package:driver_cold_storage/screens/detail_penjemputan.dart';
 import 'package:flutter/material.dart';
 import 'profile.dart';
