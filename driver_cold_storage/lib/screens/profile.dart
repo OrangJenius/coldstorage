@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'history.dart';
 import 'forgot_pass3.dart';
-import 'splashScreen.dart';
+
 import 'report.dart';
 
 class profileScree extends StatefulWidget {
