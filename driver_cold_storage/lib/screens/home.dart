@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'profile.dart';
 
 class homeScreen extends StatefulWidget {
+  final String userID;
+  homeScreen({required this.userID});
   @override
   _homeScreenState createState() => _homeScreenState();
 }

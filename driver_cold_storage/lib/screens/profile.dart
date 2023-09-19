@@ -1,4 +1,6 @@
+import 'package:driver_cold_storage/screens/login.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'history.dart';
 import 'forgot_pass3.dart';
 import 'splashScreen.dart';
@@ -10,6 +12,20 @@ class profileScree extends StatefulWidget {
 }
 
 class _profileScreeState extends State<profileScree> {
+  void _logout() async {
+    // Hapus status login dan data terkait lainnya dari SharedPreferences
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove('isLoggedIn');
+    prefs.remove('userID');
+
+    // Navigate to the Login screen and remove all previous routes
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => Login()),
+      (route) => false, // Pop all routes until the login screen
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -220,9 +236,9 @@ class _profileScreeState extends State<profileScree> {
               color: Colors.grey,
             ),
             InkWell(
-              onTap: () => {
-                Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) => SplashScreen())),
+              onTap: () {
+                // Add your desired functionality when the button is pressed
+                _logout();
               },
               child: Container(
                 padding: EdgeInsets.all(16),

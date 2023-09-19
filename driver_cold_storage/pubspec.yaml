@@ -18,7 +18,7 @@ dependencies:
   geolocator: ^10.0.1
   permission_handler: ^11.0.0
   dotted_border: ^2.0.0+3
-
+  shared_preferences: ^2.0.10
 
 dev_dependencies:
   flutter_test:
