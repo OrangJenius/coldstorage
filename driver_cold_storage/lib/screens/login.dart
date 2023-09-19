@@ -81,7 +81,7 @@ class _loginState extends State<Login> {
                 builder: (context) => homeScreen(userID: simpanData),
               ),
             );
-          } else if (roleValue == "staff") {
+          } else if (roleValue == "staff  ") {
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -214,7 +214,12 @@ class _loginState extends State<Login> {
                     onPressed: _isLoading ? null : _login,
                     child: _isLoading
                         ? CircularProgressIndicator()
-                        : Text('Login'),
+                        : Text('Login',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: "Sora",
+                            )),
                     // child: Text('Login',
                     //     style: TextStyle(
                     //       fontSize: 20,
