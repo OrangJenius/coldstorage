@@ -1,6 +1,12 @@
+import 'dart:convert';
+
+import 'package:driver_cold_storage/models/pengantaranModel.dart';
 import 'package:driver_cold_storage/screens/detail_penjemputan.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'profile.dart';
+import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 class homeScreen extends StatefulWidget {
   final String userID;
@@ -10,11 +16,61 @@ class homeScreen extends StatefulWidget {
 }
 
 class _homeScreenState extends State<homeScreen> {
-  final List<String> hari = ['M', 'T', 'W', 'T', 'F', 'S'];
-
-  final List<String> angka = ['01', '02', '03', '04', '05', '06', '07'];
   Map<int, bool> selectedItems = {};
   int? selectedIndex;
+  List<PengantaranModel> pengantaranData = [];
+
+  List<String> hari = [];
+  List<String> tanggal = [];
+  @override
+  void initState() {
+    super.initState();
+    fetchPengantaranData(); // Fetch pengantaran data from API when the screen initializes
+    selectedIndex = 0;
+
+    // Mendapatkan tanggal saat ini
+    DateTime now = DateTime.now();
+
+    // Loop untuk mengisi daftar tanggal dan hari untuk 7 hari ke depan
+    for (int i = 0; i < 7; i++) {
+      // Menambahkan tanggal saat ini ditambah i hari
+      DateTime nextDate = now.add(Duration(days: i));
+      tanggal.add(nextDate.day.toString().padLeft(2, '0'));
+
+      // Menambahkan nama hari sesuai dengan tanggal
+      String dayName = DateFormat('E').format(nextDate);
+      hari.add(dayName);
+    }
+  }
+
+  Future<void> fetchPengantaranData() async {
+    final apiUrl =
+        'http://116.68.252.201:1945/DataDistributeWithUSERID/${widget.userID}';
+
+    try {
+      final response = await http.get(Uri.parse(apiUrl));
+
+      if (response.statusCode == 200) {
+        // Successfully fetched data from the API
+        final responseJson = jsonDecode(response.body);
+        final List<dynamic> apiPengantaranData = responseJson['data'];
+
+        List<PengantaranModel> pengantaranModel = apiPengantaranData
+            .map((data) => PengantaranModel.fromJson(data))
+            .toList();
+
+        setState(() {
+          pengantaranData = pengantaranModel;
+        });
+      } else {
+        // API call failed or returned an error status code
+        print('API call failed with status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      // Error occurred during API call
+      print('Error: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -121,7 +177,7 @@ class _homeScreenState extends State<homeScreen> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
-                                        angka[index],
+                                        tanggal[index],
                                         style: TextStyle(
                                           fontSize: 25,
                                           fontWeight: FontWeight.bold,
@@ -486,401 +542,253 @@ class _homeScreenState extends State<homeScreen> {
                         fontFamily: "Sora"),
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.only(
-                    left: 16,
-                    top: 8,
-                  ),
-                  child: Row(
-                    children: [
-                      Text(
-                        "Target Time :",
-                        style: TextStyle(
-                            color: Color(0xFF6AD6F9),
-                            fontSize: 24,
-                            fontWeight: FontWeight.w700,
-                            fontFamily: "Sora"),
-                      ),
-                      Text(
-                        " 10.00",
-                        style: TextStyle(
-                            color: Color(0xFF6AD6F9),
-                            fontSize: 24,
-                            fontWeight: FontWeight.w700,
-                            fontFamily: "Sora"),
-                      ),
-                    ],
-                  ),
-                ),
-                InkWell(
-                  onTap: () {
-                    // Navigasi ke halaman DetailDistribusi
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            detail_Penjemputan(), // Ganti dengan widget halaman DetailDistribusi yang sesuai
-                      ),
-                    );
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
-                    child: Container(
-                      width: 390,
-                      height: 152,
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                              width: 2,
-                              color: Color.fromARGB(255, 215, 215, 215)),
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Row(
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: pengantaranData
+                      .length, // Replace 'itemCount' with the number of items you have
+
+                  itemBuilder: (BuildContext context, int index) {
+                    String storeName = "Toko ABCDEasdadadas";
+
+                    final pengantaranItem = pengantaranData[index];
+                    String timeString = pengantaranItem.time
+                        .toString(); // Replace with your time string
+
+// Split the time string using the ':' delimiter
+                    List<String> timeParts = timeString.split(':');
+
+                    // Get the hour and minute parts
+                    String hour = timeParts[0];
+                    String minute = timeParts[1];
+
+                    // Now you have the hour and minute separately
+                    String formattedTime = "$hour:$minute"; // "hh:mm" format
+
+                    print(formattedTime); // Output: "12:34"
+                    String itemDate = DateFormat('dd')
+                        .format(pengantaranItem.jadwalPengantaran.toLocal());
+                    print(pengantaranData.length);
+                    print(itemDate);
+                    print(tanggal[selectedIndex ?? 0]);
+                    if (itemDate == tanggal[selectedIndex ?? 0]) {
+                      return Column(
                         children: [
-                          // Left Side Content
-                          Flexible(
-                            // <-- Tambahkan ini
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                          Padding(
+                            padding: EdgeInsets.only(
+                              left: 16,
+                              top: 8,
+                            ),
+                            child: Row(
                               children: [
-                                // ID Section
-                                Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 8.0, left: 8),
-                                      child: Text(
-                                        "ID:",
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 22,
-                                          fontWeight: FontWeight.w700,
-                                          fontFamily: "Sora",
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                        top: 8,
-                                        left: 8,
-                                      ),
-                                      child: Text(
-                                        "BJE454879BJEP",
-                                        style: TextStyle(
-                                          color: Color(0xFF6AD6F9),
-                                          fontSize: 22,
-                                          fontFamily: "Sora",
-                                          decoration: TextDecoration.underline,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
+                                Text(
+                                  "Target Time :",
+                                  style: TextStyle(
+                                      color: Color(0xFF6AD6F9),
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.w700,
+                                      fontFamily: "Sora"),
                                 ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.only(left: 8, top: 4),
-                                  child: Text(
-                                    "7 Juli 2023 | 10:00",
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 14,
-                                      fontFamily: "Sora",
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.only(left: 8, top: 4),
-                                  child: Text(
-                                    "Daging ayam",
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 16,
-                                      fontFamily: "Sora",
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.only(left: 8, top: 8),
-                                  child: Text(
-                                    "Distribute",
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 16,
-                                      fontFamily: "Sora",
-                                    ),
-                                  ),
-                                ),
-                                Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 8, top: 8),
-                                      child: Text(
-                                        "Cold Storage",
-                                        style: TextStyle(
-                                          color: Colors.red,
-                                          fontSize: 15,
-                                          fontFamily: "Sora",
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                        width:
-                                            8), // Add a SizedBox for spacing between the two Text widgets
-                                    Column(
-                                      mainAxisAlignment: MainAxisAlignment
-                                          .start, // Align content to start
-                                      crossAxisAlignment: CrossAxisAlignment
-                                          .start, // Align content to start
-                                      children: [
-                                        Text(
-                                          "10pcs",
-                                          style: TextStyle(
-                                            color: Colors.red,
-                                            fontSize: 12,
-                                            fontFamily: "Sora",
-                                          ),
-                                        ),
-                                        Text(
-                                          "-----",
-                                          style: TextStyle(
-                                            color: Colors.red,
-                                            fontSize: 15,
-                                            fontFamily: "Sora",
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Expanded(
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 8, top: 8),
-                                        child: Text(
-                                          "Toko ABCDEasdadadas",
-                                          style: TextStyle(
-                                            color: Colors.red,
-                                            fontSize: 15,
-                                            fontFamily: "Sora",
-                                          ),
-                                          maxLines: 1, // Set maximum lines to 2
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(width: 8),
-                                  ],
+                                Text(
+                                  formattedTime,
+                                  style: TextStyle(
+                                      color: Color(0xFF6AD6F9),
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.w700,
+                                      fontFamily: "Sora"),
                                 ),
                               ],
                             ),
                           ),
+                          InkWell(
+                            onTap: () {
+                              // Navigasi ke halaman DetailDistribusi
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      detail_Penjemputan(), // Ganti dengan widget halaman DetailDistribusi yang sesuai
+                                ),
+                              );
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 16, right: 16, top: 8, bottom: 16),
+                              child: Container(
+                                width: 390,
+                                height: 152,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                      width: 2,
+                                      color:
+                                          Color.fromARGB(255, 215, 215, 215)),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Row(
+                                  children: [
+                                    // Left Side Content
+                                    Flexible(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          // ID Section
+                                          Row(
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 8.0, left: 8),
+                                                child: Text(
+                                                  "ID:",
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 22,
+                                                    fontWeight: FontWeight.w700,
+                                                    fontFamily: "Sora",
+                                                  ),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 8, left: 8),
+                                                child: Text(
+                                                  pengantaranItem.orderNumber,
+                                                  style: TextStyle(
+                                                    color: Color(0xFF6AD6F9),
+                                                    fontSize: 22,
+                                                    fontFamily: "Sora",
+                                                    decoration: TextDecoration
+                                                        .underline,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 8, top: 4),
+                                              child: Text(
+                                                '${DateFormat('yyyy-MM-dd').format(pengantaranItem.jadwalPengantaran.toLocal())} | ${formattedTime}',
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 14,
+                                                  fontFamily: "Sora",
+                                                ),
+                                              )),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 8, top: 4),
+                                            child: Text(
+                                              pengantaranItem.item,
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 16,
+                                                fontFamily: "Sora",
+                                              ),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 8, top: 8),
+                                            child: Text(
+                                              pengantaranItem.status,
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 16,
+                                                fontFamily: "Sora",
+                                              ),
+                                            ),
+                                          ),
+                                          Row(
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 8, top: 8),
+                                                child: Text(
+                                                  "Cold Storage",
+                                                  style: TextStyle(
+                                                    color: Colors.red,
+                                                    fontSize: 15,
+                                                    fontFamily: "Sora",
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(width: 8),
+                                              Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    '${pengantaranItem.quantities} pcs',
+                                                    style: TextStyle(
+                                                      color: Colors.red,
+                                                      fontSize: 12,
+                                                      fontFamily: "Sora",
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    "-----",
+                                                    style: TextStyle(
+                                                      color: Colors.red,
+                                                      fontSize: 15,
+                                                      fontFamily: "Sora",
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              Expanded(
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 8, top: 8),
+                                                  child: Text(
+                                                    storeName,
+                                                    style: TextStyle(
+                                                      color: Colors.red,
+                                                      fontSize: 15,
+                                                      fontFamily: "Sora",
+                                                    ),
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(width: 8),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
 
-                          Padding(
-                            padding: const EdgeInsets.only(top: 8, right: 8),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                ..._buildDetailColumn("Items", "20"),
-                                SizedBox(height: 8),
-                                ..._buildDetailColumn("Weight", "20kg"),
-                                SizedBox(height: 8),
-                                ..._buildDetailColumn("Stops", "2"),
-                              ],
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 8, right: 8),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          ..._buildDetailColumn("Items", "20"),
+                                          SizedBox(height: 8),
+                                          ..._buildDetailColumn(
+                                              "Weight", "20kg"),
+                                          SizedBox(height: 8),
+                                          ..._buildDetailColumn("Stops", "2"),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
                         ],
-                      ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(
-                    left: 16,
-                    top: 16,
-                  ),
-                  child: Row(
-                    children: [
-                      Text(
-                        "Target Time :",
-                        style: TextStyle(
-                            color: Color(0xFF6AD6F9),
-                            fontSize: 24,
-                            fontWeight: FontWeight.w700,
-                            fontFamily: "Sora"),
-                      ),
-                      Text(
-                        " 13.00",
-                        style: TextStyle(
-                            color: Color(0xFF6AD6F9),
-                            fontSize: 24,
-                            fontWeight: FontWeight.w700,
-                            fontFamily: "Sora"),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
-                  child: Container(
-                    width: 390,
-                    height: 152,
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                            width: 2,
-                            color: Color.fromARGB(255, 215, 215, 215)),
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Row(
-                      children: [
-                        // Left Side Content
-                        Flexible(
-                          // <-- Tambahkan ini
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // ID Section
-                              Row(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 8.0, left: 8),
-                                    child: Text(
-                                      "ID:",
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 22,
-                                        fontWeight: FontWeight.w700,
-                                        fontFamily: "Sora",
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                      top: 8,
-                                      left: 8,
-                                    ),
-                                    child: Text(
-                                      "BJE432529BJEP",
-                                      style: TextStyle(
-                                        color: Color(0xFF6AD6F9),
-                                        fontSize: 22,
-                                        fontFamily: "Sora",
-                                        decoration: TextDecoration.underline,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 8, top: 4),
-                                child: Text(
-                                  "7 Juli 2023 | 10:00",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 14,
-                                    fontFamily: "Sora",
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 8, top: 4),
-                                child: Text(
-                                  "Daging ayam",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 16,
-                                    fontFamily: "Sora",
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 8, top: 8),
-                                child: Text(
-                                  "Pickup",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 16,
-                                    fontFamily: "Sora",
-                                  ),
-                                ),
-                              ),
-                              Row(
-                                children: [
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.only(left: 8, top: 8),
-                                    child: Text(
-                                      "Cold Storage",
-                                      style: TextStyle(
-                                        color: Colors.red,
-                                        fontSize: 15,
-                                        fontFamily: "Sora",
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                      width:
-                                          8), // Add a SizedBox for spacing between the two Text widgets
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment
-                                        .start, // Align content to start
-                                    crossAxisAlignment: CrossAxisAlignment
-                                        .start, // Align content to start
-                                    children: [
-                                      Text(
-                                        "10pcs",
-                                        style: TextStyle(
-                                          color: Colors.red,
-                                          fontSize: 12,
-                                          fontFamily: "Sora",
-                                        ),
-                                      ),
-                                      Text(
-                                        "-----",
-                                        style: TextStyle(
-                                          color: Colors.red,
-                                          fontSize: 15,
-                                          fontFamily: "Sora",
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Expanded(
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 8, top: 8),
-                                      child: Text(
-                                        "Toko ABCDEasdadadas",
-                                        style: TextStyle(
-                                          color: Colors.red,
-                                          fontSize: 15,
-                                          fontFamily: "Sora",
-                                        ),
-                                        maxLines: 1, // Set maximum lines to 2
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(width: 8),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8, right: 8),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              ..._buildDetailColumn("Items", "20"),
-                              SizedBox(height: 8),
-                              ..._buildDetailColumn("Weight", "20kg"),
-                              SizedBox(height: 8),
-                              ..._buildDetailColumn("Stops", "2"),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                      );
+                    } else {
+                      return Container();
+                    }
+                  },
                 ),
                 SizedBox(
                   height: 25,
