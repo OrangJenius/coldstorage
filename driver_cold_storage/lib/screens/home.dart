@@ -74,725 +74,737 @@ class _homeScreenState extends State<homeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                          left: 16.0,
-                          top: 16,
-                        ),
-                        child: Text(
-                          "Your Task",
-                          style: TextStyle(
-                              color: Color(0xFF6AD6F9),
-                              fontSize: 36,
-                              fontWeight: FontWeight.w700,
-                              fontFamily: "Sora"),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                        padding: const EdgeInsets.only(top: 16, right: 16),
-                        child: Transform.scale(
-                          scale: 1.2, // Ubah faktor skala sesuai keinginan Anda
-                          child: InkWell(
-                            onTap: () => {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => profileScree()),
-                              )
-                            },
-                            child: CircleAvatar(
-                              child: Icon(
-                                  Icons.image), // Ganti dengan thumbnail Anda
-                            ),
+      body: RefreshIndicator(
+        onRefresh: fetchPengantaranData,
+        child: SafeArea(
+          child: SingleChildScrollView(
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                            left: 16.0,
+                            top: 16,
                           ),
-                        )),
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 12.0),
-                  child: Divider(
-                    height: 1, // Atur tinggi garis sesuai kebutuhan
-                    color:
-                        Colors.grey[350], // Atur warna garis sesuai kebutuhan
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(
-                    left: 24,
-                    top: 12,
-                  ),
-                  child: Text(
-                    "Today",
-                    style: TextStyle(
-                        color: Color(0xFF6AD6F9),
-                        fontSize: 30,
-                        fontWeight: FontWeight.w700,
-                        fontFamily: "Sora"),
-                  ),
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 8),
-                        child: Container(
-                          height: 85,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemExtent: 85,
-                            itemCount: hari.length,
-                            itemBuilder: (context, index) {
-                              // Cek apakah item ini adalah yang dipilih
-                              bool isSelected = index == selectedIndex;
-                              return GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    // Mengubah state item ketika diklik
-                                    selectedIndex = index;
-                                  });
-                                },
-                                child: Container(
-                                  margin: EdgeInsets.all(8),
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                        width: 1.5, color: Color(0xFF6AD6F9)),
-                                    color: isSelected
-                                        ? Color(0xFF6AD6F9)
-                                        : Colors.white,
-                                    borderRadius: BorderRadius.circular(
-                                        12), // Tambahkan ini
-                                  ),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        tanggal[index],
-                                        style: TextStyle(
-                                          fontSize: 25,
-                                          fontWeight: FontWeight.bold,
-                                          color: isSelected
-                                              ? Colors.white
-                                              : Colors
-                                                  .black, // Perubahan di sini
-                                        ),
-                                      ),
-                                      Text(
-                                        hari[index],
-                                        style: TextStyle(
-                                          fontSize: 25,
-                                          fontWeight: FontWeight.bold,
-                                          color: isSelected
-                                              ? Colors.white
-                                              : Colors.black, // Dan di sini
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 16, top: 16),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(12),
-                        child: Stack(
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
+                          child: Text(
+                            "Your Task",
+                            style: TextStyle(
                                 color: Color(0xFF6AD6F9),
-                              ),
-                              width: 175,
-                              height: 175,
-                            ),
-
-                            Positioned(
-                              left: 20, // Posisi dari kiri
-                              top: 1, // Posisi dari atas
-                              child: Stack(
-                                alignment: Alignment.center,
-                                children: [
-                                  Container(
-                                    width: 45,
-                                    height: 45,
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Colors.white70),
-                                  ),
-                                  Container(
-                                    width: 35,
-                                    height: 35,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Color(0xFF6AD6F9),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Positioned(
-                              left: 10, // Posisi dari kiri
-                              top: 70, // Posisi dari atas
-                              child: Stack(
-                                alignment: Alignment.center,
-                                children: [
-                                  Container(
-                                    width: 45,
-                                    height: 45,
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Colors.white70),
-                                  ),
-                                  Container(
-                                    width: 35,
-                                    height: 35,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Color(0xFF6AD6F9),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Positioned(
-                              left: 80, // Posisi dari kiri
-                              top: 90, // Posisi dari atas
-                              child: Stack(
-                                alignment: Alignment.center,
-                                children: [
-                                  Container(
-                                    width: 45,
-                                    height: 45,
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Colors.white70),
-                                  ),
-                                  Container(
-                                    width: 35,
-                                    height: 35,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Color(0xFF6AD6F9),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Positioned(
-                              left: 4, // Posisi dari kiri
-                              top: 140, // Posisi dari atas
-                              child: Stack(
-                                alignment: Alignment.center,
-                                children: [
-                                  Container(
-                                    width: 120,
-                                    height: 25,
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.rectangle,
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(8)),
-                                    child: Text(
-                                      "Distribute",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          color: Color(0xFF6AD6F9),
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 18),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-
-                            Positioned(
-                              left: 75, // Posisi dari kiri
-                              top: -25, // Posisi dari atas
-                              child: Stack(
-                                alignment: Alignment.center,
-                                children: [
-                                  Container(
-                                    width: 125,
-                                    height: 125,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                  Align(
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      "01",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black,
-                                          fontSize: 30,
-                                          fontFamily: "Sora"),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              width: 175,
-                              height: 175,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: Color(0xFF6AD6F9),
-                                  width: 2.0,
-                                ),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                            ),
-
-                            // Tambahkan Positioned lain sesuai dengan kebutuhan Anda
-                          ],
+                                fontSize: 36,
+                                fontWeight: FontWeight.w700,
+                                fontFamily: "Sora"),
+                          ),
                         ),
                       ),
-                    ),
-                    Expanded(child: Container()),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 16, top: 16),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(12),
-                        child: Stack(
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                color: Color(0xFF6AD6F9),
-                              ),
-                              width: 175,
-                              height: 175,
-                            ),
-                            Positioned(
-                              left: 5, // Posisi dari kiri
-                              top: 20, // Posisi dari atas
-                              child: Stack(
-                                alignment: Alignment.center,
-                                children: [
-                                  Container(
-                                    width: 40,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Colors.white70),
-                                  ),
-                                  Container(
-                                    width: 30,
-                                    height: 30,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Color(0xFF6AD6F9),
-                                    ),
-                                  ),
-                                ],
+                      Padding(
+                          padding: const EdgeInsets.only(top: 16, right: 16),
+                          child: Transform.scale(
+                            scale:
+                                1.2, // Ubah faktor skala sesuai keinginan Anda
+                            child: InkWell(
+                              onTap: () => {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => profileScree()),
+                                )
+                              },
+                              child: CircleAvatar(
+                                child: Icon(
+                                    Icons.image), // Ganti dengan thumbnail Anda
                               ),
                             ),
-                            Positioned(
-                              left: 70, // Posisi dari kiri
-                              top: 35, // Posisi dari atas
-                              child: Stack(
-                                alignment: Alignment.center,
-                                children: [
-                                  Container(
-                                    width: 40,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Colors.white70),
-                                  ),
-                                  Container(
-                                    width: 30,
-                                    height: 30,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Color(0xFF6AD6F9),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Positioned(
-                              left: 10, // Posisi dari kiri
-                              top: 100, // Posisi dari atas
-                              child: Stack(
-                                alignment: Alignment.center,
-                                children: [
-                                  Container(
-                                    width: 40,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Colors.white70),
-                                  ),
-                                  Container(
-                                    width: 30,
-                                    height: 30,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Color(0xFF6AD6F9),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Positioned(
-                              left: 50, // Posisi dari kiri
-                              top: 10, // Posisi dari atas
-                              child: Stack(
-                                alignment: Alignment.center,
-                                children: [
-                                  Container(
-                                    width: 120,
-                                    height: 25,
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.rectangle,
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(8)),
-                                    child: Text(
-                                      "Pickup",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          color: Color(0xFF6AD6F9),
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 18),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-
-                            Positioned(
-                              left: 80, // Posisi dari kiri
-                              top: 80, // Posisi dari atas
-                              child: Stack(
-                                alignment: Alignment.center,
-                                children: [
-                                  Container(
-                                    width: 125,
-                                    height: 125,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                  Align(
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      "10",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black,
-                                          fontSize: 30,
-                                          fontFamily: "Sora"),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              width: 175,
-                              height: 175,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: Color(0xFF6AD6F9),
-                                  width: 2.0,
-                                ),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                            ),
-
-                            // Tambahkan Positioned lain sesuai dengan kebutuhan Anda
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Padding(
-                  padding: EdgeInsets.only(
-                    left: 16,
-                    top: 16,
+                          )),
+                    ],
                   ),
-                  child: Text(
-                    "Tasks",
-                    style: TextStyle(
-                        color: Color(0xFF6AD6F9),
-                        fontSize: 30,
-                        fontWeight: FontWeight.w700,
-                        fontFamily: "Sora"),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 12.0),
+                    child: Divider(
+                      height: 1, // Atur tinggi garis sesuai kebutuhan
+                      color:
+                          Colors.grey[350], // Atur warna garis sesuai kebutuhan
+                    ),
                   ),
-                ),
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: pengantaranData
-                      .length, // Replace 'itemCount' with the number of items you have
-
-                  itemBuilder: (BuildContext context, int index) {
-                    String storeName = "Toko ABCDEasdadadas";
-
-                    final pengantaranItem = pengantaranData[index];
-                    String timeString = pengantaranItem.time
-                        .toString(); // Replace with your time string
-
-// Split the time string using the ':' delimiter
-                    List<String> timeParts = timeString.split(':');
-
-                    // Get the hour and minute parts
-                    String hour = timeParts[0];
-                    String minute = timeParts[1];
-
-                    // Now you have the hour and minute separately
-                    String formattedTime = "$hour:$minute"; // "hh:mm" format
-
-                    print(formattedTime); // Output: "12:34"
-                    String itemDate = DateFormat('dd')
-                        .format(pengantaranItem.jadwalPengantaran.toLocal());
-                    print(pengantaranData.length);
-                    print(itemDate);
-                    print(tanggal[selectedIndex ?? 0]);
-                    if (itemDate == tanggal[selectedIndex ?? 0]) {
-                      return Column(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(
-                              left: 16,
-                              top: 8,
-                            ),
-                            child: Row(
-                              children: [
-                                Text(
-                                  "Target Time :",
-                                  style: TextStyle(
-                                      color: Color(0xFF6AD6F9),
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.w700,
-                                      fontFamily: "Sora"),
-                                ),
-                                Text(
-                                  formattedTime,
-                                  style: TextStyle(
-                                      color: Color(0xFF6AD6F9),
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.w700,
-                                      fontFamily: "Sora"),
-                                ),
-                              ],
+                  Padding(
+                    padding: EdgeInsets.only(
+                      left: 24,
+                      top: 12,
+                    ),
+                    child: Text(
+                      "Today",
+                      style: TextStyle(
+                          color: Color(0xFF6AD6F9),
+                          fontSize: 30,
+                          fontWeight: FontWeight.w700,
+                          fontFamily: "Sora"),
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 8),
+                          child: Container(
+                            height: 85,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemExtent: 85,
+                              itemCount: hari.length,
+                              itemBuilder: (context, index) {
+                                // Cek apakah item ini adalah yang dipilih
+                                bool isSelected = index == selectedIndex;
+                                return GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      // Mengubah state item ketika diklik
+                                      selectedIndex = index;
+                                    });
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                          width: 1.5, color: Color(0xFF6AD6F9)),
+                                      color: isSelected
+                                          ? Color(0xFF6AD6F9)
+                                          : Colors.white,
+                                      borderRadius: BorderRadius.circular(
+                                          12), // Tambahkan ini
+                                    ),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          tanggal[index],
+                                          style: TextStyle(
+                                            fontSize: 25,
+                                            fontWeight: FontWeight.bold,
+                                            color: isSelected
+                                                ? Colors.white
+                                                : Colors
+                                                    .black, // Perubahan di sini
+                                          ),
+                                        ),
+                                        Text(
+                                          hari[index],
+                                          style: TextStyle(
+                                            fontSize: 25,
+                                            fontWeight: FontWeight.bold,
+                                            color: isSelected
+                                                ? Colors.white
+                                                : Colors.black, // Dan di sini
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
                           ),
-                          InkWell(
-                            onTap: () {
-                              // Navigasi ke halaman DetailDistribusi
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      detail_Penjemputan(), // Ganti dengan widget halaman DetailDistribusi yang sesuai
-                                ),
-                              );
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 16, right: 16, top: 8, bottom: 16),
-                              child: Container(
-                                width: 390,
-                                height: 152,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 16, top: 16),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: Stack(
+                            children: [
+                              Container(
                                 decoration: BoxDecoration(
-                                  border: Border.all(
-                                      width: 2,
-                                      color:
-                                          Color.fromARGB(255, 215, 215, 215)),
-                                  borderRadius: BorderRadius.circular(10),
+                                  color: Color(0xFF6AD6F9),
                                 ),
-                                child: Row(
-                                  children: [
-                                    // Left Side Content
-                                    Flexible(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          // ID Section
-                                          Row(
-                                            children: [
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 8.0, left: 8),
-                                                child: Text(
-                                                  "ID:",
-                                                  style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 22,
-                                                    fontWeight: FontWeight.w700,
-                                                    fontFamily: "Sora",
-                                                  ),
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 8, left: 8),
-                                                child: Text(
-                                                  pengantaranItem.orderNumber,
-                                                  style: TextStyle(
-                                                    color: Color(0xFF6AD6F9),
-                                                    fontSize: 22,
-                                                    fontFamily: "Sora",
-                                                    decoration: TextDecoration
-                                                        .underline,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 8, top: 4),
-                                              child: Text(
-                                                '${DateFormat('yyyy-MM-dd').format(pengantaranItem.jadwalPengantaran.toLocal())} | ${formattedTime}',
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 14,
-                                                  fontFamily: "Sora",
-                                                ),
-                                              )),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 8, top: 4),
-                                            child: Text(
-                                              pengantaranItem.item,
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 16,
-                                                fontFamily: "Sora",
-                                              ),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 8, top: 8),
-                                            child: Text(
-                                              pengantaranItem.status,
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 16,
-                                                fontFamily: "Sora",
-                                              ),
-                                            ),
-                                          ),
-                                          Row(
-                                            children: [
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 8, top: 8),
-                                                child: Text(
-                                                  "Cold Storage",
-                                                  style: TextStyle(
-                                                    color: Colors.red,
-                                                    fontSize: 15,
-                                                    fontFamily: "Sora",
-                                                  ),
-                                                ),
-                                              ),
-                                              SizedBox(width: 8),
-                                              Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    '${pengantaranItem.quantities} pcs',
-                                                    style: TextStyle(
-                                                      color: Colors.red,
-                                                      fontSize: 12,
-                                                      fontFamily: "Sora",
-                                                    ),
-                                                  ),
-                                                  Text(
-                                                    "-----",
-                                                    style: TextStyle(
-                                                      color: Colors.red,
-                                                      fontSize: 15,
-                                                      fontFamily: "Sora",
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              Expanded(
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 8, top: 8),
-                                                  child: Text(
-                                                    storeName,
-                                                    style: TextStyle(
-                                                      color: Colors.red,
-                                                      fontSize: 15,
-                                                      fontFamily: "Sora",
-                                                    ),
-                                                    maxLines: 1,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                  ),
-                                                ),
-                                              ),
-                                              SizedBox(width: 8),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
+                                width: 175,
+                                height: 175,
+                              ),
 
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 8, right: 8),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          ..._buildDetailColumn("Items", "20"),
-                                          SizedBox(height: 8),
-                                          ..._buildDetailColumn(
-                                              "Weight", "20kg"),
-                                          SizedBox(height: 8),
-                                          ..._buildDetailColumn("Stops", "2"),
-                                        ],
+                              Positioned(
+                                left: 20, // Posisi dari kiri
+                                top: 1, // Posisi dari atas
+                                child: Stack(
+                                  alignment: Alignment.center,
+                                  children: [
+                                    Container(
+                                      width: 45,
+                                      height: 45,
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Colors.white70),
+                                    ),
+                                    Container(
+                                      width: 35,
+                                      height: 35,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Color(0xFF6AD6F9),
                                       ),
                                     ),
                                   ],
                                 ),
                               ),
-                            ),
+                              Positioned(
+                                left: 10, // Posisi dari kiri
+                                top: 70, // Posisi dari atas
+                                child: Stack(
+                                  alignment: Alignment.center,
+                                  children: [
+                                    Container(
+                                      width: 45,
+                                      height: 45,
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Colors.white70),
+                                    ),
+                                    Container(
+                                      width: 35,
+                                      height: 35,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Color(0xFF6AD6F9),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Positioned(
+                                left: 80, // Posisi dari kiri
+                                top: 90, // Posisi dari atas
+                                child: Stack(
+                                  alignment: Alignment.center,
+                                  children: [
+                                    Container(
+                                      width: 45,
+                                      height: 45,
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Colors.white70),
+                                    ),
+                                    Container(
+                                      width: 35,
+                                      height: 35,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Color(0xFF6AD6F9),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Positioned(
+                                left: 4, // Posisi dari kiri
+                                top: 140, // Posisi dari atas
+                                child: Stack(
+                                  alignment: Alignment.center,
+                                  children: [
+                                    Container(
+                                      width: 120,
+                                      height: 25,
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.rectangle,
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(8)),
+                                      child: Text(
+                                        "Distribute",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color: Color(0xFF6AD6F9),
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+
+                              Positioned(
+                                left: 75, // Posisi dari kiri
+                                top: -25, // Posisi dari atas
+                                child: Stack(
+                                  alignment: Alignment.center,
+                                  children: [
+                                    Container(
+                                      width: 125,
+                                      height: 125,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    Align(
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        '${pengantaranData.length}',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                            fontSize: 30,
+                                            fontFamily: "Sora"),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                width: 175,
+                                height: 175,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: Color(0xFF6AD6F9),
+                                    width: 2.0,
+                                  ),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                              ),
+
+                              // Tambahkan Positioned lain sesuai dengan kebutuhan Anda
+                            ],
                           ),
-                        ],
-                      );
-                    } else {
-                      return Container();
-                    }
-                  },
-                ),
-                SizedBox(
-                  height: 25,
-                )
-              ]),
+                        ),
+                      ),
+                      Expanded(child: Container()),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 16, top: 16),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: Stack(
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: Color(0xFF6AD6F9),
+                                ),
+                                width: 175,
+                                height: 175,
+                              ),
+                              Positioned(
+                                left: 5, // Posisi dari kiri
+                                top: 20, // Posisi dari atas
+                                child: Stack(
+                                  alignment: Alignment.center,
+                                  children: [
+                                    Container(
+                                      width: 40,
+                                      height: 40,
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Colors.white70),
+                                    ),
+                                    Container(
+                                      width: 30,
+                                      height: 30,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Color(0xFF6AD6F9),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Positioned(
+                                left: 70, // Posisi dari kiri
+                                top: 35, // Posisi dari atas
+                                child: Stack(
+                                  alignment: Alignment.center,
+                                  children: [
+                                    Container(
+                                      width: 40,
+                                      height: 40,
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Colors.white70),
+                                    ),
+                                    Container(
+                                      width: 30,
+                                      height: 30,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Color(0xFF6AD6F9),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Positioned(
+                                left: 10, // Posisi dari kiri
+                                top: 100, // Posisi dari atas
+                                child: Stack(
+                                  alignment: Alignment.center,
+                                  children: [
+                                    Container(
+                                      width: 40,
+                                      height: 40,
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Colors.white70),
+                                    ),
+                                    Container(
+                                      width: 30,
+                                      height: 30,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Color(0xFF6AD6F9),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Positioned(
+                                left: 50, // Posisi dari kiri
+                                top: 10, // Posisi dari atas
+                                child: Stack(
+                                  alignment: Alignment.center,
+                                  children: [
+                                    Container(
+                                      width: 120,
+                                      height: 25,
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.rectangle,
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(8)),
+                                      child: Text(
+                                        "Pickup",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color: Color(0xFF6AD6F9),
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+
+                              Positioned(
+                                left: 80, // Posisi dari kiri
+                                top: 80, // Posisi dari atas
+                                child: Stack(
+                                  alignment: Alignment.center,
+                                  children: [
+                                    Container(
+                                      width: 125,
+                                      height: 125,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    Align(
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        "10",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                            fontSize: 30,
+                                            fontFamily: "Sora"),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                width: 175,
+                                height: 175,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: Color(0xFF6AD6F9),
+                                    width: 2.0,
+                                  ),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                              ),
+
+                              // Tambahkan Positioned lain sesuai dengan kebutuhan Anda
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      left: 16,
+                      top: 16,
+                    ),
+                    child: Text(
+                      "Tasks",
+                      style: TextStyle(
+                          color: Color(0xFF6AD6F9),
+                          fontSize: 30,
+                          fontWeight: FontWeight.w700,
+                          fontFamily: "Sora"),
+                    ),
+                  ),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: pengantaranData
+                        .length, // Replace 'itemCount' with the number of items you have
+
+                    itemBuilder: (BuildContext context, int index) {
+                      String storeName = "Toko ABCDEasdadadas";
+
+                      final pengantaranItem = pengantaranData[index];
+                      String timeString = pengantaranItem.time
+                          .toString(); // Replace with your time string
+
+                      // Split the time string using the ':' delimiter
+                      List<String> timeParts = timeString.split(':');
+
+                      // Get the hour and minute parts
+                      String hour = timeParts[0];
+                      String minute = timeParts[1];
+
+                      // Now you have the hour and minute separately
+                      String formattedTime = "$hour:$minute"; // "hh:mm" format
+
+                      print(formattedTime); // Output: "12:34"
+                      String itemDate = DateFormat('dd')
+                          .format(pengantaranItem.jadwalPengantaran.toLocal());
+                      print(pengantaranData.length);
+                      print(itemDate);
+                      print(tanggal[selectedIndex ?? 0]);
+                      if (itemDate == tanggal[selectedIndex ?? 0]) {
+                        return Column(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(
+                                left: 16,
+                                top: 8,
+                              ),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    "Target Time :",
+                                    style: TextStyle(
+                                        color: Color(0xFF6AD6F9),
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.w700,
+                                        fontFamily: "Sora"),
+                                  ),
+                                  Text(
+                                    formattedTime,
+                                    style: TextStyle(
+                                        color: Color(0xFF6AD6F9),
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.w700,
+                                        fontFamily: "Sora"),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                // Navigasi ke halaman DetailDistribusi
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        detail_Penjemputan(), // Ganti dengan widget halaman DetailDistribusi yang sesuai
+                                  ),
+                                );
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 16, right: 16, top: 8, bottom: 16),
+                                child: Container(
+                                  width: 390,
+                                  height: 152,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                        width: 2,
+                                        color:
+                                            Color.fromARGB(255, 215, 215, 215)),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      // Left Side Content
+                                      Flexible(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            // ID Section
+                                            Row(
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 8.0, left: 8),
+                                                  child: Text(
+                                                    "ID:",
+                                                    style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 22,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      fontFamily: "Sora",
+                                                    ),
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 8, left: 8),
+                                                  child: Text(
+                                                    pengantaranItem.orderNumber,
+                                                    style: TextStyle(
+                                                      color: Color(0xFF6AD6F9),
+                                                      fontSize: 22,
+                                                      fontFamily: "Sora",
+                                                      decoration: TextDecoration
+                                                          .underline,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 8, top: 4),
+                                                child: Text(
+                                                  '${DateFormat('yyyy-MM-dd').format(pengantaranItem.jadwalPengantaran.toLocal())} | ${formattedTime}',
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 14,
+                                                    fontFamily: "Sora",
+                                                  ),
+                                                )),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 8, top: 4),
+                                              child: Text(
+                                                pengantaranItem.item,
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 16,
+                                                  fontFamily: "Sora",
+                                                ),
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 8, top: 8),
+                                              child: Text(
+                                                pengantaranItem.status,
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 16,
+                                                  fontFamily: "Sora",
+                                                ),
+                                              ),
+                                            ),
+                                            Row(
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 8, top: 8),
+                                                  child: Text(
+                                                    "Cold Storage",
+                                                    style: TextStyle(
+                                                      color: Colors.red,
+                                                      fontSize: 15,
+                                                      fontFamily: "Sora",
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(width: 8),
+                                                Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      '${pengantaranItem.quantities} pcs',
+                                                      style: TextStyle(
+                                                        color: Colors.red,
+                                                        fontSize: 12,
+                                                        fontFamily: "Sora",
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      "-----",
+                                                      style: TextStyle(
+                                                        color: Colors.red,
+                                                        fontSize: 15,
+                                                        fontFamily: "Sora",
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                Expanded(
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 8, top: 8),
+                                                    child: Text(
+                                                      storeName,
+                                                      style: TextStyle(
+                                                        color: Colors.red,
+                                                        fontSize: 15,
+                                                        fontFamily: "Sora",
+                                                      ),
+                                                      maxLines: 1,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(width: 8),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 8, right: 8),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            ..._buildDetailColumn(
+                                                "Items", "20"),
+                                            SizedBox(height: 8),
+                                            ..._buildDetailColumn(
+                                                "Weight", "20kg"),
+                                            SizedBox(height: 8),
+                                            ..._buildDetailColumn("Stops", "2"),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      } else {
+                        return Container();
+                      }
+                    },
+                  ),
+                  SizedBox(
+                    height: 25,
+                  )
+                ]),
+          ),
         ),
       ),
     );
