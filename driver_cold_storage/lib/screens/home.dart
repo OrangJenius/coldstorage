@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'profile.dart';
 import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart';
 
 class homeScreen extends StatefulWidget {
   final String userID;
