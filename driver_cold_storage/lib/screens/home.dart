@@ -18,7 +18,7 @@ class _homeScreenState extends State<homeScreen> {
   Map<int, bool> selectedItems = {};
   int? selectedIndex;
   List<PengantaranModel> pengantaranData = [];
-
+  int jumlahDistribute = 0;
   List<String> hari = [];
   List<String> tanggal = [];
   @override
@@ -343,7 +343,7 @@ class _homeScreenState extends State<homeScreen> {
                                     Align(
                                       alignment: Alignment.center,
                                       child: Text(
-                                        '${pengantaranData.length}',
+                                        '${jumlahDistribute}',
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             color: Colors.black,
@@ -570,13 +570,11 @@ class _homeScreenState extends State<homeScreen> {
                       // Now you have the hour and minute separately
                       String formattedTime = "$hour:$minute"; // "hh:mm" format
 
-                      print(formattedTime); // Output: "12:34"
                       String itemDate = DateFormat('dd')
                           .format(pengantaranItem.jadwalPengantaran.toLocal());
-                      print(pengantaranData.length);
-                      print(itemDate);
-                      print(tanggal[selectedIndex ?? 0]);
+
                       if (itemDate == tanggal[selectedIndex ?? 0]) {
+                        jumlahDistribute = pengantaranData.length;
                         return Column(
                           children: [
                             Padding(
