@@ -1,17 +1,65 @@
+import 'dart:convert';
+
+import 'package:driver_cold_storage/screens/changepass.dart';
 import 'package:driver_cold_storage/screens/login.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'history.dart';
-import 'forgot_pass3.dart';
-
+import 'package:driver_cold_storage/models/ProfileModel.dart';
+import 'package:http/http.dart' as http;
 import 'report.dart';
 
-class profileScree extends StatefulWidget {
+class profileScreen extends StatefulWidget {
+  final String id;
+
+  const profileScreen({super.key, required this.id});
   @override
-  _profileScreeState createState() => _profileScreeState();
+  _profileScreenState createState() => _profileScreenState();
 }
 
-class _profileScreeState extends State<profileScree> {
+class _profileScreenState extends State<profileScreen> {
+  List<ProfileModel> profileData = [];
+
+  Future<List<ProfileModel>> getProfile() async {
+    final apiUrl = 'http://116.68.252.201:1945/ProfileUser/${widget.id}';
+
+    try {
+      final response = await http.get(Uri.parse(apiUrl));
+
+      if (response.statusCode == 200) {
+        // Successfully fetched data from the API
+        // Parse the response body (JSON), which should be a Map<String, dynamic>
+        Map<String, dynamic> apiResponse = jsonDecode(response.body);
+
+        //print(apiResponse); // Print the API response to check the data format
+
+        // Assuming that the API response contains a key called 'users' that holds the list of users
+        List<dynamic> userList = apiResponse['data'];
+
+        //print(userList);
+
+        // Convert each item in the list to a UserModel instance using the factory method
+        List<ProfileModel> profiles = (userList as List)
+            .map((json) => ProfileModel.fromJson(json))
+            .toList();
+
+        return profiles;
+      } else {
+        // API call failed or returned an error status code
+        print('API call failed with status code: ${response.statusCode}');
+        return [];
+      }
+    } catch (e) {
+      // Error occurred during API call
+      print('Error: $e');
+      return [];
+    }
+  }
+
+  void isiData() async {
+    profileData = await getProfile();
+  }
+
   void _logout() async {
     // Hapus status login dan data terkait lainnya dari SharedPreferences
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -24,6 +72,13 @@ class _profileScreeState extends State<profileScree> {
       MaterialPageRoute(builder: (context) => Login()),
       (route) => false, // Pop all routes until the login screen
     );
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    isiData();
   }
 
   @override
@@ -66,48 +121,52 @@ class _profileScreeState extends State<profileScree> {
                     ),
                   ),
                 ),
-                Container(
-                  padding: EdgeInsets.only(top: 16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Budi",
-                        style: TextStyle(
-                            fontFamily: 'Sora',
-                            fontSize: 24,
-                            fontStyle: FontStyle.normal,
-                            fontWeight: FontWeight.w600,
-                            color: Color(0xff000000)),
-                      ),
-                      Text(
-                        "budi@coldstorage.com",
-                        style: TextStyle(
-                            fontFamily: 'Sora',
-                            fontSize: 16,
-                            fontStyle: FontStyle.normal,
-                            fontWeight: FontWeight.w600,
-                            color: Color(0xff929292)),
-                      ),
-                      Text(
-                        "+62 9128912983",
-                        style: TextStyle(
-                            fontFamily: 'Sora',
-                            fontSize: 16,
-                            fontStyle: FontStyle.normal,
-                            fontWeight: FontWeight.w600,
-                            color: Color(0xff929292)),
-                      ),
-                      Text(
-                        "Role: Driver",
-                        style: TextStyle(
-                            fontFamily: 'Sora',
-                            fontSize: 16,
-                            fontStyle: FontStyle.normal,
-                            fontWeight: FontWeight.w600,
-                            color: Color(0xff929292)),
-                      ),
-                    ],
+                Expanded(
+                  child: Container(
+                    padding: EdgeInsets.only(top: 16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          profileData.isNotEmpty ? profileData[0].name : "",
+                          style: TextStyle(
+                              fontFamily: 'Sora',
+                              fontSize: 24,
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xff000000)),
+                        ),
+                        Text(
+                          profileData.isNotEmpty ? profileData[0].Email : "",
+                          style: TextStyle(
+                              fontFamily: 'Sora',
+                              fontSize: 16,
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xff929292)),
+                        ),
+                        Text(
+                          profileData.isNotEmpty
+                              ? profileData[0].nomor_telpon
+                              : "",
+                          style: TextStyle(
+                              fontFamily: 'Sora',
+                              fontSize: 16,
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xff929292)),
+                        ),
+                        Text(
+                          "Role: ${profileData.isNotEmpty ? profileData[0].Role : ""}",
+                          style: TextStyle(
+                              fontFamily: 'Sora',
+                              fontSize: 16,
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xff929292)),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 Padding(
@@ -167,8 +226,14 @@ class _profileScreeState extends State<profileScree> {
             ),
             InkWell(
               onTap: () => {
-                // Navigator.of(context).pushReplacement(
-                //     MaterialPageRoute(builder: (context) => forgot_Pass3())),
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (context) => change_pass(
+                          email: profileData.isNotEmpty
+                              ? profileData[0].Email
+                              : "",
+                          role:
+                              profileData.isNotEmpty ? profileData[0].Role : "",
+                        ))),
               },
               child: Container(
                 padding: EdgeInsets.all(16),

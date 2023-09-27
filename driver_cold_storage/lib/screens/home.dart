@@ -110,7 +110,9 @@ class _homeScreenState extends State<homeScreen> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => profileScree()),
+                                      builder: (context) => profileScreen(
+                                            id: widget.userID,
+                                          )),
                                 )
                               },
                               child: CircleAvatar(
