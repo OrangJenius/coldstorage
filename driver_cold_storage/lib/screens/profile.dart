@@ -56,9 +56,24 @@ class _profileScreenState extends State<profileScreen> {
     }
   }
 
-  void isiData() async {
-    profileData = await getProfile();
-  }
+  // void isiData() async {
+  //   profileData = await getProfile();
+  //   print(
+  //     profileData.isNotEmpty ? profileData[0].name : "",
+  //   );
+  //   print(
+  //     profileData.isNotEmpty ? profileData[0].Email : "",
+  //   );
+  //   print(
+  //     profileData.isNotEmpty ? profileData[0].nomor_telpon : "",
+  //   );
+  //   print(
+  //     profileData.isNotEmpty ? profileData[0].Role : "",
+  //   );
+  //   print(
+  //     profileData.isNotEmpty ? profileData[0].id : "",
+  //   );
+  // }
 
   void _logout() async {
     // Hapus status login dan data terkait lainnya dari SharedPreferences
@@ -76,9 +91,33 @@ class _profileScreenState extends State<profileScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    isiData();
+    print(widget.id);
+    _fetchData(); // Call an async function to fetch data
+  }
+
+  Future<void> _fetchData() async {
+    await isiData();
+    setState(() {}); // Trigger widget rebuild when data is available
+  }
+
+  Future<void> isiData() async {
+    profileData = await getProfile();
+    print(
+      profileData.isNotEmpty ? profileData[0].name : "",
+    );
+    print(
+      profileData.isNotEmpty ? profileData[0].Email : "",
+    );
+    print(
+      profileData.isNotEmpty ? profileData[0].nomor_telpon : "",
+    );
+    print(
+      profileData.isNotEmpty ? profileData[0].Role : "",
+    );
+    print(
+      profileData.isNotEmpty ? profileData[0].id : "",
+    );
   }
 
   @override
