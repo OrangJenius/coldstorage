@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class DetailHistory extends StatefulWidget {
   @override
@@ -6,6 +7,7 @@ class DetailHistory extends StatefulWidget {
 }
 
 class _DetailHistoryState extends State<DetailHistory> {
+  late LatLng _destLoc = LatLng(37.411374, -122.071204);
   final List<String> image = [
     'assets/gambar.jpg',
     'assets/gambar.jpg',
@@ -75,11 +77,28 @@ class _DetailHistoryState extends State<DetailHistory> {
                   ),
                 ],
               ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Container(
-                  height: 240,
-                  color: Colors.grey,
+              Container(
+                padding: EdgeInsets.all(16),
+                height: 200,
+                child: Expanded(
+                  child: GoogleMap(
+                    initialCameraPosition: CameraPosition(
+                      zoom: 13.5,
+                      target: _destLoc,
+                    ),
+                    markers: {
+                      Marker(
+                        markerId: const MarkerId('destination'),
+                        position: _destLoc,
+                        infoWindow:
+                            const InfoWindow(title: 'Destination Location'),
+                      ),
+                    },
+                    onMapCreated: (GoogleMapController controller) {
+                      // Remove the setState call from this method
+                      // as it is not required
+                    },
+                  ),
                 ),
               ),
               Row(
