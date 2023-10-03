@@ -17,12 +17,10 @@ class homeScreen extends StatefulWidget {
 class _homeScreenState extends State<homeScreen> {
   Map<int, bool> selectedItems = {};
   int? selectedIndex;
-  List<PengantaranModel> pengantaranData = [];
+
   int jumlahDistribute = 0;
   List<String> hari = [];
   List<String> tanggal = [];
-  // Map<String, List<Map<String, dynamic>>> groupedData = {};
-
   @override
   void initState() {
     super.initState();
@@ -44,6 +42,9 @@ class _homeScreenState extends State<homeScreen> {
     }
   }
 
+  List<PengantaranModel> pengantaranData = [];
+  Map<String, List<PengantaranModel>> groupedData = {};
+
   Future<void> fetchPengantaranData() async {
     final apiUrl =
         'http://116.68.252.201:1945/DataDistributeANDOrderWithUSERID/${widget.userID}';
@@ -60,8 +61,18 @@ class _homeScreenState extends State<homeScreen> {
             .map((data) => PengantaranModel.fromJson(data))
             .toList();
 
+        for (var item in pengantaranModel) {
+          if (!groupedData.containsKey(item.Distribute_Id)) {
+            groupedData[item.Distribute_Id] = [item];
+          } else {
+            groupedData[item.Distribute_Id]!.add(item);
+          }
+        }
+
         setState(() {
           pengantaranData = pengantaranModel;
+          print("tessssssssssssssssss");
+          print(groupedData);
         });
       } else {
         // API call failed or returned an error status code
@@ -73,8 +84,39 @@ class _homeScreenState extends State<homeScreen> {
     }
   }
 
+  // void dataDistribute(index) {
+  //   String distributeId = groupedData.keys
+  //       .elementAt(index); // Ambil Distribute_Id berdasarkan indeks
+  //   List<PengantaranModel>? items = groupedData[distributeId];
+  //   final pengantaranItem = items![0];
+
+  //   String timeString =
+  //       pengantaranItem.Time.toString(); // Replace with your time string
+
+  //   // Split the time string using the ':' delimiter
+  //   List<String> timeParts = timeString.split(':');
+
+  //   // Get the hour and minute parts
+  //   String hour = timeParts[0];
+  //   String minute = timeParts[1];
+
+  //   // Now you have the hour and minute separately
+  //   String formattedTime = "$hour:$minute"; // "hh:mm" format
+
+  //   final namaItem = items.map((item) {
+  //     return item.Nama_Item; // Ganti dengan properti yang ingin Anda tampilkan
+  //   }).join(', ');
+
+  //   final totalBerat = items.map((item) => item.Berat).reduce((a, b) => a + b);
+
+  //   final totalJumlah =
+  //       items.map((item) => item.Jumlah).reduce((a, b) => a + b);
+  // }
+
   @override
   Widget build(BuildContext context) {
+    int distributeCount = 0;
+    int pickupCount = 0;
     return Scaffold(
       body: RefreshIndicator(
         onRefresh: fetchPengantaranData,
@@ -347,7 +389,7 @@ class _homeScreenState extends State<homeScreen> {
                                     Align(
                                       alignment: Alignment.center,
                                       child: Text(
-                                        '${jumlahDistribute}',
+                                        distributeCount.toString(),
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             color: Colors.black,
@@ -506,7 +548,7 @@ class _homeScreenState extends State<homeScreen> {
                                     Align(
                                       alignment: Alignment.center,
                                       child: Text(
-                                        "10",
+                                        pickupCount.toString(),
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             color: Colors.black,
@@ -554,13 +596,15 @@ class _homeScreenState extends State<homeScreen> {
                   ListView.builder(
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
-                    itemCount: pengantaranData
+                    itemCount: groupedData
                         .length, // Replace 'itemCount' with the number of items you have
 
                     itemBuilder: (BuildContext context, int index) {
-                      String storeName = "Toko A";
+                      String distributeId = groupedData.keys.elementAt(
+                          index); // Ambil Distribute_Id berdasarkan indeks
+                      List<PengantaranModel>? items = groupedData[distributeId];
+                      final pengantaranItem = items![0];
 
-                      final pengantaranItem = pengantaranData[index];
                       String timeString = pengantaranItem.Time
                           .toString(); // Replace with your time string
 
@@ -574,10 +618,34 @@ class _homeScreenState extends State<homeScreen> {
                       // Now you have the hour and minute separately
                       String formattedTime = "$hour:$minute"; // "hh:mm" format
 
+                      final namaItem = items.map((item) {
+                        return item
+                            .Nama_Item; // Ganti dengan properti yang ingin Anda tampilkan
+                      }).join(', ');
+
+                      final totalBerat = items
+                          .map((item) => item.Berat)
+                          .reduce((a, b) => a + b);
+
+                      final totalJumlah = items
+                          .map((item) => item.Jumlah)
+                          .reduce((a, b) => a + b);
+
                       String itemDate = DateFormat('dd')
                           .format(pengantaranItem.Tanggal_PickUp.toLocal());
 
                       if (itemDate == tanggal[selectedIndex ?? 0]) {
+                        // setState(() {
+                        //   for (var item in items) {
+                        //     final status = item.Status;
+                        //     if (status == "Distribute") {
+                        //       distributeCount++;
+                        //     } else if (status == "Pick-Up") {
+                        //       pickupCount++;
+                        //     }
+                        //   }
+                        // });
+
                         jumlahDistribute = pengantaranData.length;
                         return Column(
                           children: [
@@ -661,8 +729,7 @@ class _homeScreenState extends State<homeScreen> {
                                                       const EdgeInsets.only(
                                                           top: 8, left: 8),
                                                   child: Text(
-                                                    pengantaranItem
-                                                        .Distribute_Id,
+                                                    distributeId,
                                                     style: TextStyle(
                                                       color: Color(0xFF6AD6F9),
                                                       fontSize: 22,
@@ -689,7 +756,7 @@ class _homeScreenState extends State<homeScreen> {
                                               padding: const EdgeInsets.only(
                                                   left: 8, top: 4),
                                               child: Text(
-                                                pengantaranItem.Nama_Item,
+                                                namaItem,
                                                 style: TextStyle(
                                                   color: Colors.black,
                                                   fontSize: 16,
@@ -755,7 +822,7 @@ class _homeScreenState extends State<homeScreen> {
                                                         const EdgeInsets.only(
                                                             left: 8, top: 8),
                                                     child: Text(
-                                                      storeName,
+                                                      pengantaranItem.Nama_Toko,
                                                       style: TextStyle(
                                                         color: Colors.red,
                                                         fontSize: 15,
@@ -781,11 +848,11 @@ class _homeScreenState extends State<homeScreen> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.center,
                                           children: [
-                                            ..._buildDetailColumn(
-                                                "Items", "20"),
+                                            ..._buildDetailColumn("Items",
+                                                totalJumlah.toString()),
                                             SizedBox(height: 8),
-                                            ..._buildDetailColumn(
-                                                "Weight", "20kg"),
+                                            ..._buildDetailColumn("Weight",
+                                                totalBerat.toString()),
                                             SizedBox(height: 8),
                                             ..._buildDetailColumn("Stops", "2"),
                                           ],
