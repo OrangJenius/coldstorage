@@ -1,15 +1,51 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'customStepper.dart';
 import 'customStep.dart';
+import 'package:driver_cold_storage/models/historyModel.dart';
+import 'package:http/http.dart' as http;
 
 class historyScreen extends StatefulWidget {
+  final String id;
+
+  const historyScreen({super.key, required this.id});
   @override
   _historyScreenState createState() => _historyScreenState();
 }
 
 class _historyScreenState extends State<historyScreen> {
   DateTime? pickedDate = DateTime.now();
+
+  late List<HistoryModel> historyData;
+
+  Future<void> getHistory() async {
+    final apiurl =
+        "http://116.68.252.201:1945/DataHistoryWithUSERID/${widget.id}";
+    try {
+      final response = await http.get(Uri.parse(apiurl));
+
+      if (response.statusCode == 200) {
+        // Successfully fetched data from the API
+        final responseJson = jsonDecode(response.body);
+        final List<dynamic> apihistoryData = responseJson['data'];
+
+        List<HistoryModel> historyModel =
+            apihistoryData.map((data) => HistoryModel.fromJson(data)).toList();
+
+        setState(() {
+          historyData = historyModel;
+        });
+      } else {
+        // API call failed or returned an error status code
+        print('API call failed with status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      // Error occurred during API call
+      print('Error: $e');
+    }
+  }
 
   List<String> id = [
     'BJE290012KLOP',
