@@ -21,6 +21,8 @@ class _homeScreenState extends State<homeScreen> {
   int jumlahDistribute = 0;
   List<String> hari = [];
   List<String> tanggal = [];
+  // Map<String, List<Map<String, dynamic>>> groupedData = {};
+
   @override
   void initState() {
     super.initState();
@@ -44,7 +46,7 @@ class _homeScreenState extends State<homeScreen> {
 
   Future<void> fetchPengantaranData() async {
     final apiUrl =
-        'http://116.68.252.201:1945/DataDistributeWithUSERID/${widget.userID}';
+        'http://116.68.252.201:1945/DataDistributeANDOrderWithUSERID/${widget.userID}';
 
     try {
       final response = await http.get(Uri.parse(apiUrl));
@@ -556,10 +558,10 @@ class _homeScreenState extends State<homeScreen> {
                         .length, // Replace 'itemCount' with the number of items you have
 
                     itemBuilder: (BuildContext context, int index) {
-                      String storeName = "Toko ABCDEasdadadas";
+                      String storeName = "Toko A";
 
                       final pengantaranItem = pengantaranData[index];
-                      String timeString = pengantaranItem.time
+                      String timeString = pengantaranItem.Time
                           .toString(); // Replace with your time string
 
                       // Split the time string using the ':' delimiter
@@ -573,7 +575,7 @@ class _homeScreenState extends State<homeScreen> {
                       String formattedTime = "$hour:$minute"; // "hh:mm" format
 
                       String itemDate = DateFormat('dd')
-                          .format(pengantaranItem.jadwalPengantaran.toLocal());
+                          .format(pengantaranItem.Tanggal_PickUp.toLocal());
 
                       if (itemDate == tanggal[selectedIndex ?? 0]) {
                         jumlahDistribute = pengantaranData.length;
@@ -659,7 +661,8 @@ class _homeScreenState extends State<homeScreen> {
                                                       const EdgeInsets.only(
                                                           top: 8, left: 8),
                                                   child: Text(
-                                                    pengantaranItem.orderNumber,
+                                                    pengantaranItem
+                                                        .Distribute_Id,
                                                     style: TextStyle(
                                                       color: Color(0xFF6AD6F9),
                                                       fontSize: 22,
@@ -675,7 +678,7 @@ class _homeScreenState extends State<homeScreen> {
                                                 padding: const EdgeInsets.only(
                                                     left: 8, top: 4),
                                                 child: Text(
-                                                  '${DateFormat('yyyy-MM-dd').format(pengantaranItem.jadwalPengantaran.toLocal())} | ${formattedTime}',
+                                                  '${DateFormat('yyyy-MM-dd').format(pengantaranItem.Tanggal_PickUp.toLocal())} | ${formattedTime}',
                                                   style: TextStyle(
                                                     color: Colors.black,
                                                     fontSize: 14,
@@ -686,7 +689,7 @@ class _homeScreenState extends State<homeScreen> {
                                               padding: const EdgeInsets.only(
                                                   left: 8, top: 4),
                                               child: Text(
-                                                pengantaranItem.item,
+                                                pengantaranItem.Nama_Item,
                                                 style: TextStyle(
                                                   color: Colors.black,
                                                   fontSize: 16,
@@ -698,7 +701,7 @@ class _homeScreenState extends State<homeScreen> {
                                               padding: const EdgeInsets.only(
                                                   left: 8, top: 8),
                                               child: Text(
-                                                pengantaranItem.status,
+                                                pengantaranItem.Status,
                                                 style: TextStyle(
                                                   color: Colors.black,
                                                   fontSize: 16,
@@ -729,7 +732,7 @@ class _homeScreenState extends State<homeScreen> {
                                                       CrossAxisAlignment.start,
                                                   children: [
                                                     Text(
-                                                      '${pengantaranItem.quantities} pcs',
+                                                      '${pengantaranItem.Quantities} pcs',
                                                       style: TextStyle(
                                                         color: Colors.red,
                                                         fontSize: 12,
