@@ -82,6 +82,7 @@ class _DetailHistoryState extends State<DetailHistory> {
                 height: 200,
                 child: Expanded(
                   child: GoogleMap(
+                    zoomControlsEnabled: false,
                     initialCameraPosition: CameraPosition(
                       zoom: 13.5,
                       target: _destLoc,

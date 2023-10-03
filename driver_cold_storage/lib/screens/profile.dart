@@ -231,7 +231,12 @@ class _profileScreenState extends State<profileScreen> {
             InkWell(
               onTap: () => {
                 Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) => historyScreen())),
+                  MaterialPageRoute(
+                    builder: (context) => historyScreen(
+                      id: widget.id,
+                    ),
+                  ),
+                ),
               },
               child: Container(
                 padding: EdgeInsets.all(16),
