@@ -21,8 +21,16 @@ class CustomStep extends StatelessWidget {
           children: List.generate(
             (historyModel.length / 3).ceil(),
             (groupIndex) {
-              final startIndex = groupIndex * 3;
-              final endIndex = (groupIndex + 1) * 3;
+              List<List<String>> index = [];
+              for (int i = historyModel.length - 1;
+                  i >= (historyModel.length / 3) * 2;
+                  i--) {
+                List<String> temp = historyModel[i].orderId.contains(',')
+                    ? historyModel[i].orderId.split(',')
+                    : [historyModel[i].orderId];
+                index.add(temp);
+              }
+
               return Padding(
                 padding: const EdgeInsets.only(top: 16.0),
                 child: Column(
@@ -55,9 +63,7 @@ class CustomStep extends StatelessWidget {
                     SizedBox(
                       height: 8,
                     ),
-                    for (int i = startIndex;
-                        i < endIndex && i < historyModel.length / 1;
-                        i++)
+                    for (int i = 0; i < index[i].length; i++)
                       Container(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,7 +79,10 @@ class CustomStep extends StatelessWidget {
                                 Padding(
                                   padding: const EdgeInsets.only(right: 8.0),
                                   child: Text(
-                                    historyModel[groupIndex].time,
+                                    historyModel[historyModel.length -
+                                            groupIndex -
+                                            1]
+                                        .time,
                                     style: TextStyle(
                                       fontFamily: 'Sora',
                                       fontWeight: FontWeight.w700,
@@ -136,7 +145,10 @@ class CustomStep extends StatelessWidget {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              historyModel[groupIndex].namaToko,
+                                              historyModel[historyModel.length -
+                                                      groupIndex -
+                                                      1]
+                                                  .namaToko,
                                               style: TextStyle(
                                                 fontFamily: 'Sora',
                                                 color: Color(0xFF6AD6F9),
@@ -145,7 +157,9 @@ class CustomStep extends StatelessWidget {
                                               ),
                                             ),
                                             Text(
-                                              historyModel[groupIndex]
+                                              historyModel[historyModel.length -
+                                                      groupIndex -
+                                                      1]
                                                   .namaClient,
                                               style: TextStyle(
                                                 fontFamily: 'Sora',
@@ -155,7 +169,10 @@ class CustomStep extends StatelessWidget {
                                               ),
                                             ),
                                             Text(
-                                              historyModel[groupIndex].alamat,
+                                              historyModel[historyModel.length -
+                                                      groupIndex -
+                                                      1]
+                                                  .alamat,
                                               style: TextStyle(
                                                 fontFamily: 'Sora',
                                                 color: Color(0xFF989898),
@@ -171,7 +188,7 @@ class CustomStep extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            if (i < endIndex - 1)
+                            if (i < index[groupIndex].length - 1)
                               Container(
                                 padding: EdgeInsets.only(left: 11.5),
                                 child: CustomPaint(

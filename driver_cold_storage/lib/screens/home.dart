@@ -680,8 +680,9 @@ class _homeScreenState extends State<homeScreen> {
                                 // Navigasi ke halaman DetailDistribusi
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
-                                    builder: (context) =>
-                                        detail_Penjemputan(), // Ganti dengan widget halaman DetailDistribusi yang sesuai
+                                    builder: (context) => detail_Penjemputan(
+                                      pengantaranModel: pengantaranItem,
+                                    ), // Ganti dengan widget halaman DetailDistribusi yang sesuai
                                   ),
                                 );
                               },
