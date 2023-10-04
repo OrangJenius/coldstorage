@@ -22,20 +22,27 @@ class _historyScreenState extends State<historyScreen> {
 
   Future<void> getHistory() async {
     final apiurl =
-        "http://116.68.252.201:1945/DataHistoryWithUSERID/${widget.id}";
+        "http://116.68.252.201:1945/DataHistoryANDDistributeWithUSERID/${widget.id}";
     try {
       final response = await http.get(Uri.parse(apiurl));
 
       if (response.statusCode == 200) {
         // Successfully fetched data from the API
         final responseJson = jsonDecode(response.body);
-        final List<dynamic> apihistoryData = responseJson['data'];
+        final List<dynamic> apihistoryData = responseJson['data']['History'];
 
         List<HistoryModel> historyModel =
             apihistoryData.map((data) => HistoryModel.fromJson(data)).toList();
 
         setState(() {
           historyData = historyModel;
+          print('test');
+          print('historydata: ${historyData[0]}');
+          steps.add(
+            CustomStep(
+              historyModel: historyData,
+            ),
+          );
         });
       } else {
         // API call failed or returned an error status code
@@ -47,56 +54,56 @@ class _historyScreenState extends State<historyScreen> {
     }
   }
 
-  List<String> id = [
-    'BJE290012KLOP',
-    'BJE290012KLOP',
-    'BJE290012KLOP',
-  ];
-  List<String> store = [
-    'Store A',
-    'Store B',
-    'Store C',
-    'Store D',
-    'Store A',
-    'Store B',
-    'Store C',
-    'Store A',
-    'Store B',
-    'Store C',
-  ];
-  List<String> reciver = [
-    'Receiver: Budianto',
-    'Receiver: Budianto',
-    'Receiver: Budianto',
-    'Receiver: Budianto',
-    'Receiver: Budianto',
-    'Receiver: Budianto',
-    'Receiver: Budianto',
-    'Receiver: Budianto',
-    'Receiver: Budianto',
-  ];
-  List<String> address = [
-    'Address: Jl. aksjdnaiyd',
-    'Address: Jl. aksjdnaiyd',
-    'Address: Jl. aksjdnaiyd',
-    'Address: Jl. aksjdnaiyd',
-    'Address: Jl. aksjdnaiyd',
-    'Address: Jl. aksjdnaiyd',
-    'Address: Jl. aksjdnaiyd',
-    'Address: Jl. aksjdnaiyd',
-    'Address: Jl. aksjdnaiyd',
-  ];
-  List<String> time = [
-    '10.00 AM',
-    '11.00 AM',
-    '02.00 AM',
-    '10.00 AM',
-    '11.00 AM',
-    '02.00 AM',
-    '10.00 AM',
-    '11.00 AM',
-    '02.00 AM',
-  ];
+  // List<String> id = [
+  //   'BJE290012KLOP',
+  //   'BJE290012KLOP',
+  //   'BJE290012KLOP',
+  // ];
+  // List<String> store = [
+  //   'Store A',
+  //   'Store B',
+  //   'Store C',
+  //   'Store D',
+  //   'Store A',
+  //   'Store B',
+  //   'Store C',
+  //   'Store A',
+  //   'Store B',
+  //   'Store C',
+  // ];
+  // List<String> reciver = [
+  //   'Receiver: Budianto',
+  //   'Receiver: Budianto',
+  //   'Receiver: Budianto',
+  //   'Receiver: Budianto',
+  //   'Receiver: Budianto',
+  //   'Receiver: Budianto',
+  //   'Receiver: Budianto',
+  //   'Receiver: Budianto',
+  //   'Receiver: Budianto',
+  // ];
+  // List<String> address = [
+  //   'Address: Jl. aksjdnaiyd',
+  //   'Address: Jl. aksjdnaiyd',
+  //   'Address: Jl. aksjdnaiyd',
+  //   'Address: Jl. aksjdnaiyd',
+  //   'Address: Jl. aksjdnaiyd',
+  //   'Address: Jl. aksjdnaiyd',
+  //   'Address: Jl. aksjdnaiyd',
+  //   'Address: Jl. aksjdnaiyd',
+  //   'Address: Jl. aksjdnaiyd',
+  // ];
+  // List<String> time = [
+  //   '10.00 AM',
+  //   '11.00 AM',
+  //   '02.00 AM',
+  //   '10.00 AM',
+  //   '11.00 AM',
+  //   '02.00 AM',
+  //   '10.00 AM',
+  //   '11.00 AM',
+  //   '02.00 AM',
+  // ];
 
   List<Widget> steps = [];
 
@@ -104,15 +111,7 @@ class _historyScreenState extends State<historyScreen> {
   void initState() {
     super.initState();
 
-    steps.add(
-      CustomStep(
-        id: id,
-        time: time,
-        store: store,
-        receiver: reciver,
-        address: address,
-      ),
-    );
+    getHistory();
   }
 
   Future<void> _selectDate(BuildContext context) async {

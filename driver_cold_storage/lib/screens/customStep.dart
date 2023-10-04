@@ -1,21 +1,12 @@
 import 'package:driver_cold_storage/screens/detail_history.dart';
 import 'package:flutter/material.dart';
 import 'linePainter.dart';
+import 'package:driver_cold_storage/models/historyModel.dart';
 
 class CustomStep extends StatelessWidget {
-  final List<String> time;
-  final List<String> store;
-  final List<String> receiver;
-  final List<String> address;
-  final List<String> id;
+  final List<HistoryModel> historyModel;
 
-  CustomStep({
-    required this.id,
-    required this.time,
-    required this.store,
-    required this.receiver,
-    required this.address,
-  });
+  CustomStep({required this.historyModel});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +19,7 @@ class CustomStep extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: List.generate(
-            (time.length / 3).ceil(),
+            (historyModel.length / 3).ceil(),
             (groupIndex) {
               final startIndex = groupIndex * 3;
               final endIndex = (groupIndex + 1) * 3;
@@ -50,7 +41,7 @@ class CustomStep extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          id[groupIndex], // Display the id for the group
+                          '${historyModel[historyModel.length - groupIndex - 1].Id}', // Display the id for the group
                           style: TextStyle(
                             fontSize: 18,
                             fontFamily: 'Sora',
@@ -65,7 +56,7 @@ class CustomStep extends StatelessWidget {
                       height: 8,
                     ),
                     for (int i = startIndex;
-                        i < endIndex && i < time.length;
+                        i < endIndex && i < historyModel.length / 1;
                         i++)
                       Container(
                         child: Column(
@@ -82,7 +73,7 @@ class CustomStep extends StatelessWidget {
                                 Padding(
                                   padding: const EdgeInsets.only(right: 8.0),
                                   child: Text(
-                                    time[i],
+                                    historyModel[groupIndex].time,
                                     style: TextStyle(
                                       fontFamily: 'Sora',
                                       fontWeight: FontWeight.w700,
@@ -145,7 +136,7 @@ class CustomStep extends StatelessWidget {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              store[i],
+                                              historyModel[groupIndex].namaToko,
                                               style: TextStyle(
                                                 fontFamily: 'Sora',
                                                 color: Color(0xFF6AD6F9),
@@ -154,7 +145,8 @@ class CustomStep extends StatelessWidget {
                                               ),
                                             ),
                                             Text(
-                                              receiver[i],
+                                              historyModel[groupIndex]
+                                                  .namaClient,
                                               style: TextStyle(
                                                 fontFamily: 'Sora',
                                                 color: Color(0xFF989898),
@@ -163,7 +155,7 @@ class CustomStep extends StatelessWidget {
                                               ),
                                             ),
                                             Text(
-                                              address[i],
+                                              historyModel[groupIndex].alamat,
                                               style: TextStyle(
                                                 fontFamily: 'Sora',
                                                 color: Color(0xFF989898),

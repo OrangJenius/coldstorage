@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'linePainter.dart';
 import 'sliderButton.dart';
+import 'package:driver_cold_storage/models/pengantaranModel.dart';
 
 class detail_Penjemputan extends StatefulWidget {
+  final PengantaranModel pengantaranModel;
+
+  const detail_Penjemputan({super.key, required this.pengantaranModel});
+
   @override
   _detailPenjemputanState createState() => _detailPenjemputanState();
 }
@@ -65,7 +70,7 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                                   ),
                                 ),
                                 TextSpan(
-                                  text: 'BJE290012KLOP',
+                                  text: widget.pengantaranModel.Distribute_Id,
                                   style: TextStyle(
                                     fontSize: 24,
                                     fontFamily: 'Sora',
@@ -93,7 +98,7 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                         Padding(
                           padding: const EdgeInsets.only(left: 16),
                           child: Text(
-                            "Note: andkjnqwujdiuna",
+                            "Note: ${widget.pengantaranModel.Notes}",
                             style: TextStyle(
                               fontFamily: 'Sora',
                               fontWeight: FontWeight.w400,
@@ -128,7 +133,7 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                   Padding(
                     padding: EdgeInsets.only(right: 16),
                     child: Text(
-                      "Budianto",
+                      widget.pengantaranModel.Customer,
                       style: TextStyle(
                         fontFamily: 'Sora',
                         fontSize: 18,
@@ -160,7 +165,7 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                   Padding(
                     padding: EdgeInsets.only(right: 16),
                     child: Text(
-                      "Door to port",
+                      widget.pengantaranModel.Service_Type,
                       style: TextStyle(
                         fontFamily: 'Sora',
                         fontSize: 18,
@@ -192,7 +197,7 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                   Padding(
                     padding: EdgeInsets.only(right: 16),
                     child: Text(
-                      "Daging Ayam",
+                      widget.pengantaranModel.Nama_Item,
                       style: TextStyle(
                         fontFamily: 'Sora',
                         fontSize: 18,
@@ -202,38 +207,38 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                   ),
                 ],
               ),
-              Row(
-                children: [
-                  Expanded(child: Container()),
-                  Padding(
-                    padding: EdgeInsets.only(right: 16),
-                    child: Text(
-                      "Daging Sapi",
-                      style: TextStyle(
-                        fontFamily: 'Sora',
-                        fontSize: 18,
-                        color: Color(0xFF505050),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Expanded(child: Container()),
-                  Padding(
-                    padding: EdgeInsets.only(right: 16),
-                    child: Text(
-                      "Daging Banteng",
-                      style: TextStyle(
-                        fontFamily: 'Sora',
-                        fontSize: 18,
-                        color: Color(0xFF505050),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              // Row(
+              //   children: [
+              //     Expanded(child: Container()),
+              //     Padding(
+              //       padding: EdgeInsets.only(right: 16),
+              //       child: Text(
+              //         "Daging Sapi",
+              //         style: TextStyle(
+              //           fontFamily: 'Sora',
+              //           fontSize: 18,
+              //           color: Color(0xFF505050),
+              //         ),
+              //       ),
+              //     ),
+              //   ],
+              // ),
+              // Row(
+              //   children: [
+              //     Expanded(child: Container()),
+              //     Padding(
+              //       padding: EdgeInsets.only(right: 16),
+              //       child: Text(
+              //         "Daging Banteng",
+              //         style: TextStyle(
+              //           fontFamily: 'Sora',
+              //           fontSize: 18,
+              //           color: Color(0xFF505050),
+              //         ),
+              //       ),
+              //     ),
+              //   ],
+              // ),
               SizedBox(
                 height: 16,
               ),
@@ -255,7 +260,7 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                   Padding(
                     padding: EdgeInsets.only(right: 16),
                     child: Text(
-                      "20",
+                      widget.pengantaranModel.Quantities,
                       style: TextStyle(
                         fontFamily: 'Sora',
                         fontSize: 18,
@@ -287,7 +292,7 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                   Padding(
                     padding: EdgeInsets.only(right: 16),
                     child: Text(
-                      "10 Kg",
+                      "${widget.pengantaranModel.Weight.toString()} kg",
                       style: TextStyle(
                         fontFamily: 'Sora',
                         fontSize: 18,
