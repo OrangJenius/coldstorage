@@ -15,12 +15,13 @@ class homeScreen extends StatefulWidget {
 }
 
 class _homeScreenState extends State<homeScreen> {
-  Map<int, bool> selectedItems = {};
   int? selectedIndex;
 
   int jumlahDistribute = 0;
   List<String> hari = [];
   List<String> tanggal = [];
+  int countDistribute = 0;
+  int countPickup = 0;
   @override
   void initState() {
     super.initState();
@@ -61,6 +62,8 @@ class _homeScreenState extends State<homeScreen> {
             .map((data) => PengantaranModel.fromJson(data))
             .toList();
 
+        groupedData.clear();
+
         for (var item in pengantaranModel) {
           if (!groupedData.containsKey(item.Distribute_Id)) {
             groupedData[item.Distribute_Id] = [item];
@@ -69,10 +72,32 @@ class _homeScreenState extends State<homeScreen> {
           }
         }
 
+        countDistribute = 0; // Reset countDistribute menjadi 0
+        countPickup = 0; // Reset countPickup menjadi 0
+
+        for (String distributeId in groupedData.keys) {
+          List<PengantaranModel> items = groupedData[distributeId]!;
+
+          for (PengantaranModel item in items) {
+            String itemDate =
+                DateFormat('dd').format(item.Tanggal_PickUp.toLocal());
+
+            // Di sini Anda dapat mengakses dan melakukan operasi pada setiap item
+            if (itemDate == tanggal[selectedIndex ?? 0]) {
+              // Periksa status item
+              if (item.Status == "Distribute") {
+                countDistribute++; // Jika status "Distribute", tambahkan ke hitung Distribute
+                break;
+              } else if (item.Status == "Pick-Up") {
+                countPickup++; // Jika status "Pick-Up", tambahkan ke hitung Pickup
+                break;
+              }
+            }
+          }
+        }
+
         setState(() {
           pengantaranData = pengantaranModel;
-          print("tessssssssssssssssss");
-          print(groupedData);
         });
       } else {
         // API call failed or returned an error status code
@@ -84,39 +109,8 @@ class _homeScreenState extends State<homeScreen> {
     }
   }
 
-  // void dataDistribute(index) {
-  //   String distributeId = groupedData.keys
-  //       .elementAt(index); // Ambil Distribute_Id berdasarkan indeks
-  //   List<PengantaranModel>? items = groupedData[distributeId];
-  //   final pengantaranItem = items![0];
-
-  //   String timeString =
-  //       pengantaranItem.Time.toString(); // Replace with your time string
-
-  //   // Split the time string using the ':' delimiter
-  //   List<String> timeParts = timeString.split(':');
-
-  //   // Get the hour and minute parts
-  //   String hour = timeParts[0];
-  //   String minute = timeParts[1];
-
-  //   // Now you have the hour and minute separately
-  //   String formattedTime = "$hour:$minute"; // "hh:mm" format
-
-  //   final namaItem = items.map((item) {
-  //     return item.Nama_Item; // Ganti dengan properti yang ingin Anda tampilkan
-  //   }).join(', ');
-
-  //   final totalBerat = items.map((item) => item.Berat).reduce((a, b) => a + b);
-
-  //   final totalJumlah =
-  //       items.map((item) => item.Jumlah).reduce((a, b) => a + b);
-  // }
-
   @override
   Widget build(BuildContext context) {
-    int distributeCount = 0;
-    int pickupCount = 0;
     return Scaffold(
       body: RefreshIndicator(
         onRefresh: fetchPengantaranData,
@@ -203,11 +197,42 @@ class _homeScreenState extends State<homeScreen> {
                               itemBuilder: (context, index) {
                                 // Cek apakah item ini adalah yang dipilih
                                 bool isSelected = index == selectedIndex;
+
                                 return GestureDetector(
                                   onTap: () {
                                     setState(() {
                                       // Mengubah state item ketika diklik
                                       selectedIndex = index;
+                                      countDistribute =
+                                          0; // Reset countDistribute menjadi 0
+                                      countPickup =
+                                          0; // Reset countPickup menjadi 0
+
+                                      for (String distributeId
+                                          in groupedData.keys) {
+                                        List<PengantaranModel> items =
+                                            groupedData[distributeId]!;
+
+                                        for (PengantaranModel item in items) {
+                                          String itemDate = DateFormat('dd')
+                                              .format(item.Tanggal_PickUp
+                                                  .toLocal());
+
+                                          // Di sini Anda dapat mengakses dan melakukan operasi pada setiap item
+                                          if (itemDate ==
+                                              tanggal[selectedIndex ?? 0]) {
+                                            // Periksa status item
+                                            if (item.Status == "Distribute") {
+                                              countDistribute++; // Jika status "Distribute", tambahkan ke hitung Distribute
+                                              break;
+                                            } else if (item.Status ==
+                                                "Pick-Up") {
+                                              countPickup++; // Jika status "Pick-Up", tambahkan ke hitung Pickup
+                                              break;
+                                            }
+                                          }
+                                        }
+                                      }
                                     });
                                   },
                                   child: Container(
@@ -389,7 +414,7 @@ class _homeScreenState extends State<homeScreen> {
                                     Align(
                                       alignment: Alignment.center,
                                       child: Text(
-                                        distributeCount.toString(),
+                                        countDistribute.toString(),
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             color: Colors.black,
@@ -548,7 +573,7 @@ class _homeScreenState extends State<homeScreen> {
                                     Align(
                                       alignment: Alignment.center,
                                       child: Text(
-                                        pickupCount.toString(),
+                                        countPickup.toString(),
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             color: Colors.black,
@@ -635,18 +660,6 @@ class _homeScreenState extends State<homeScreen> {
                           .format(pengantaranItem.Tanggal_PickUp.toLocal());
 
                       if (itemDate == tanggal[selectedIndex ?? 0]) {
-                        // setState(() {
-                        //   for (var item in items) {
-                        //     final status = item.Status;
-                        //     if (status == "Distribute") {
-                        //       distributeCount++;
-                        //     } else if (status == "Pick-Up") {
-                        //       pickupCount++;
-                        //     }
-                        //   }
-                        // });
-
-                        jumlahDistribute = pengantaranData.length;
                         return Column(
                           children: [
                             Padding(
@@ -680,8 +693,9 @@ class _homeScreenState extends State<homeScreen> {
                                 // Navigasi ke halaman DetailDistribusi
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
-                                    builder: (context) =>
-                                        detail_Penjemputan(), // Ganti dengan widget halaman DetailDistribusi yang sesuai
+                                    builder: (context) => detail_Penjemputan(
+                                      pengantaranModel: pengantaranItem,
+                                    ), // Ganti dengan widget halaman DetailDistribusi yang sesuai
                                   ),
                                 );
                               },
