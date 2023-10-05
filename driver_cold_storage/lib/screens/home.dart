@@ -722,7 +722,8 @@ class _homeScreenState extends State<homeScreen> {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
                                     builder: (context) => detail_Penjemputan(
-                                      pengantaranModel: pengantaranItem,
+                                      sortedGroupedData: sortedGroupedData,
+                                      distributeId: distributeId,
                                     ), // Ganti dengan widget halaman DetailDistribusi yang sesuai
                                   ),
                                 );

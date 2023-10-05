@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'linePainter.dart';
 import 'sliderButton.dart';
 import 'package:driver_cold_storage/models/pengantaranModel.dart';
 
 class detail_Penjemputan extends StatefulWidget {
-  final PengantaranModel pengantaranModel;
+  final Map<String, List<PengantaranModel>> sortedGroupedData;
+  final distributeId;
 
-  const detail_Penjemputan({super.key, required this.pengantaranModel});
+  const detail_Penjemputan(
+      {super.key, required this.sortedGroupedData, required this.distributeId});
 
   @override
   _detailPenjemputanState createState() => _detailPenjemputanState();
@@ -24,6 +27,49 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
 
   @override
   Widget build(BuildContext context) {
+    List<PengantaranModel>? items =
+        widget.sortedGroupedData[widget.distributeId];
+    final pengantaranItem = items![0];
+    String timeString =
+        pengantaranItem.Time.toString(); // Replace with your time string
+
+    // Split the time string using the ':' delimiter
+    List<String> timeParts = timeString.split(':');
+
+    // Get the hour and minute parts
+    String hour = timeParts[0];
+    String minute = timeParts[1];
+
+    // Now you have the hour and minute separately
+    String formattedTime = "$hour:$minute"; // "hh:mm" format
+    List<String> quantitiesList = items.isNotEmpty
+        ? items.first.Quantities
+            .split(',')
+            .map((quantity) => quantity.trim())
+            .toList()
+        : [];
+
+    List<String> NamaTokoList = items.isNotEmpty
+        ? items.first.Nama_Toko
+            .split(',')
+            .map((namaToko) => namaToko.trim())
+            .toList()
+        : [];
+
+    List<String> addressList = items.isNotEmpty
+        ? items.first.Address
+            .split(',')
+            .map((address) => address.trim())
+            .toList()
+        : [];
+
+    List<String> noHPlist = items.isNotEmpty
+        ? items.first.Phone_Number
+            .split(',')
+            .map((noHP) => noHP.trim())
+            .toList()
+        : [];
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -70,7 +116,7 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                                   ),
                                 ),
                                 TextSpan(
-                                  text: widget.pengantaranModel.Distribute_Id,
+                                  text: widget.distributeId,
                                   style: TextStyle(
                                     fontSize: 24,
                                     fontFamily: 'Sora',
@@ -86,7 +132,7 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                         Padding(
                           padding: const EdgeInsets.only(left: 16, top: 8),
                           child: Text(
-                            "7 Juli 2023 | 20.00",
+                            '${DateFormat('yyyy-MM-dd').format(pengantaranItem.Tanggal_PickUp.toLocal())} | ${formattedTime}',
                             style: TextStyle(
                               fontFamily: 'Sora',
                               fontWeight: FontWeight.w400,
@@ -98,7 +144,7 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                         Padding(
                           padding: const EdgeInsets.only(left: 16),
                           child: Text(
-                            "Note: ${widget.pengantaranModel.Notes}",
+                            "Note: -",
                             style: TextStyle(
                               fontFamily: 'Sora',
                               fontWeight: FontWeight.w400,
@@ -133,7 +179,26 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                   Padding(
                     padding: EdgeInsets.only(right: 16),
                     child: Text(
-                      widget.pengantaranModel.Customer,
+                      items[0].Client,
+                      style: TextStyle(
+                        fontFamily: 'Sora',
+                        fontSize: 18,
+                        color: Color(0xFF505050),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: items
+                    .sublist(
+                        1) // Skip the first item and get the rest of the items
+                    .map((item) {
+                  return Padding(
+                    padding: EdgeInsets.only(right: 16),
+                    child: Text(
+                      item.Client,
                       style: TextStyle(
                         fontFamily: 'Sora',
                         fontSize: 18,
@@ -141,8 +206,8 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                         color: Color(0xFF505050),
                       ),
                     ),
-                  ),
-                ],
+                  );
+                }).toList(),
               ),
               SizedBox(
                 height: 16,
@@ -165,7 +230,26 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                   Padding(
                     padding: EdgeInsets.only(right: 16),
                     child: Text(
-                      widget.pengantaranModel.Service_Type,
+                      items[0].Service_Type,
+                      style: TextStyle(
+                        fontFamily: 'Sora',
+                        fontSize: 18,
+                        color: Color(0xFF505050),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: items
+                    .sublist(
+                        1) // Skip the first item and get the rest of the items
+                    .map((item) {
+                  return Padding(
+                    padding: EdgeInsets.only(right: 16),
+                    child: Text(
+                      item.Service_Type,
                       style: TextStyle(
                         fontFamily: 'Sora',
                         fontSize: 18,
@@ -173,8 +257,8 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                         color: Color(0xFF505050),
                       ),
                     ),
-                  ),
-                ],
+                  );
+                }).toList(),
               ),
               SizedBox(
                 height: 16,
@@ -197,7 +281,7 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                   Padding(
                     padding: EdgeInsets.only(right: 16),
                     child: Text(
-                      widget.pengantaranModel.Nama_Item,
+                      items[0].Nama_Item,
                       style: TextStyle(
                         fontFamily: 'Sora',
                         fontSize: 18,
@@ -207,38 +291,26 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                   ),
                 ],
               ),
-              // Row(
-              //   children: [
-              //     Expanded(child: Container()),
-              //     Padding(
-              //       padding: EdgeInsets.only(right: 16),
-              //       child: Text(
-              //         "Daging Sapi",
-              //         style: TextStyle(
-              //           fontFamily: 'Sora',
-              //           fontSize: 18,
-              //           color: Color(0xFF505050),
-              //         ),
-              //       ),
-              //     ),
-              //   ],
-              // ),
-              // Row(
-              //   children: [
-              //     Expanded(child: Container()),
-              //     Padding(
-              //       padding: EdgeInsets.only(right: 16),
-              //       child: Text(
-              //         "Daging Banteng",
-              //         style: TextStyle(
-              //           fontFamily: 'Sora',
-              //           fontSize: 18,
-              //           color: Color(0xFF505050),
-              //         ),
-              //       ),
-              //     ),
-              //   ],
-              // ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: items
+                    .sublist(
+                        1) // Skip the first item and get the rest of the items
+                    .map((item) {
+                  return Padding(
+                    padding: EdgeInsets.only(right: 16),
+                    child: Text(
+                      item.Nama_Item,
+                      style: TextStyle(
+                        fontFamily: 'Sora',
+                        fontSize: 18,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xFF505050),
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
               SizedBox(
                 height: 16,
               ),
@@ -260,7 +332,26 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                   Padding(
                     padding: EdgeInsets.only(right: 16),
                     child: Text(
-                      widget.pengantaranModel.Quantities,
+                      quantitiesList[0],
+                      style: TextStyle(
+                        fontFamily: 'Sora',
+                        fontSize: 18,
+                        color: Color(0xFF505050),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: quantitiesList
+                    .sublist(
+                        1) // Skip the first item and get the rest of the items
+                    .map((item) {
+                  return Padding(
+                    padding: EdgeInsets.only(right: 16),
+                    child: Text(
+                      item,
                       style: TextStyle(
                         fontFamily: 'Sora',
                         fontSize: 18,
@@ -268,8 +359,8 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                         color: Color(0xFF505050),
                       ),
                     ),
-                  ),
-                ],
+                  );
+                }).toList(),
               ),
               SizedBox(
                 height: 16,
@@ -292,7 +383,7 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                   Padding(
                     padding: EdgeInsets.only(right: 16),
                     child: Text(
-                      "${widget.pengantaranModel.Weight.toString()} kg",
+                      '',
                       style: TextStyle(
                         fontFamily: 'Sora',
                         fontSize: 18,
@@ -324,7 +415,7 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                   Padding(
                     padding: EdgeInsets.only(right: 16),
                     child: Text(
-                      "2",
+                      NamaTokoList.length.toString(),
                       style: TextStyle(
                         fontFamily: 'Sora',
                         fontSize: 18,
@@ -346,7 +437,7 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                   child: ListView.builder(
                     controller: _listViewController,
                     shrinkWrap: true,
-                    itemCount: 5,
+                    itemCount: items.length,
                     itemBuilder: (context, index) {
                       return Container(
                         padding: EdgeInsets.only(
@@ -366,9 +457,9 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                                 SizedBox(
                                   height: 4,
                                 ),
-                                if (index < 4)
+                                if (index < items.length - 1)
                                   CustomPaint(
-                                    size: Size(2, 65),
+                                    size: Size(3, 90),
                                     painter: DottedLinePainter(
                                       color: Color(0xFF6AD6F9),
                                     ),
@@ -384,7 +475,8 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Text(
-                                  "10.00 AM",
+                                  items[index].Time.toString().substring(0,
+                                      items[index].Time.toString().length - 3),
                                   style: TextStyle(
                                     fontFamily: 'Sora',
                                     color: Color(0xFF6AD6F9),
@@ -392,15 +484,17 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                                   ),
                                 ),
                                 Text(
-                                  "Toko A",
+                                  NamaTokoList[index],
                                   style: TextStyle(
                                     fontFamily: 'Sora',
                                     color: Color(0xFF808080),
                                   ),
                                 ),
-                                Text("Client: Budi"),
-                                Text("Address: Jl. akjsdakdn No 100"),
-                                Text("Qts: 10 Pcs")
+                                Text("Client: ${items[index].Client}"),
+                                Text("Address: ${addressList[index]}"),
+                                Text("Qts: ${quantitiesList[index]}"),
+                                Text("Item: ${items[index].Nama_Item}"),
+                                Text("No Hp: ${noHPlist[index]}"),
                               ],
                             ),
                             // Expanded(child: Container()),
