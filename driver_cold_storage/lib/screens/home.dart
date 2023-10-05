@@ -43,8 +43,8 @@ class _homeScreenState extends State<homeScreen> {
     }
   }
 
-  List<PengantaranModel> pengantaranData = [];
   Map<String, List<PengantaranModel>> groupedData = {};
+  Map<String, List<PengantaranModel>> sortedGroupedData = {};
 
   Future<void> fetchPengantaranData() async {
     final apiUrl =
@@ -97,7 +97,34 @@ class _homeScreenState extends State<homeScreen> {
         }
 
         setState(() {
-          pengantaranData = pengantaranModel;
+          // Konversi groupedData ke daftar entri yang berisi Distribute_Id dan waktu
+          List<Map<String, dynamic>> dataEntries = [];
+          groupedData.forEach((distributeId, items) {
+            if (items.isNotEmpty) {
+              final time = items[0].Time;
+              dataEntries.add({'Distribute_Id': distributeId, 'Time': time});
+            }
+          });
+
+// Urutkan dataEntries berdasarkan waktu
+          dataEntries.sort((a, b) {
+            final timeA = a['Time'] as String;
+            final timeB = b['Time'] as String;
+            return timeA.compareTo(timeB);
+          });
+
+// Buat daftar baru yang akan berisi groupedData yang sudah diurutkan
+
+// Iterasi melalui dataEntries yang sudah diurutkan
+          dataEntries.forEach((entry) {
+            final distributeId = entry['Distribute_Id'] as String;
+            final items = groupedData[distributeId];
+            sortedGroupedData[distributeId] = items!;
+          });
+
+// Sekarang, sortedGroupedData berisi groupedData yang telah diurutkan
+
+          print(sortedGroupedData);
         });
       } else {
         // API call failed or returned an error status code
@@ -621,13 +648,14 @@ class _homeScreenState extends State<homeScreen> {
                   ListView.builder(
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
-                    itemCount: groupedData
+                    itemCount: sortedGroupedData
                         .length, // Replace 'itemCount' with the number of items you have
 
                     itemBuilder: (BuildContext context, int index) {
-                      String distributeId = groupedData.keys.elementAt(
+                      String distributeId = sortedGroupedData.keys.elementAt(
                           index); // Ambil Distribute_Id berdasarkan indeks
-                      List<PengantaranModel>? items = groupedData[distributeId];
+                      List<PengantaranModel>? items =
+                          sortedGroupedData[distributeId];
                       final pengantaranItem = items![0];
 
                       String timeString = pengantaranItem.Time
