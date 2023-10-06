@@ -122,73 +122,80 @@ class CustomStep extends StatelessWidget {
                                       ],
                                     ),
                                     padding: EdgeInsets.all(8),
-                                    child: Row(
-                                      children: [
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(right: 8),
-                                          child: Stack(
-                                            alignment: Alignment.center,
-                                            children: [
-                                              Icon(
-                                                Icons.circle,
-                                                color: Color(0xFF6AD6F9),
-                                                size: 45,
-                                              ),
-                                              Image.asset(
-                                                  "assets/Delivery Truck.png")
-                                            ],
+                                    child: Expanded(
+                                      child: Row(
+                                        children: [
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(right: 8),
+                                            child: Stack(
+                                              alignment: Alignment.center,
+                                              children: [
+                                                Icon(
+                                                  Icons.circle,
+                                                  color: Color(0xFF6AD6F9),
+                                                  size: 45,
+                                                ),
+                                                Image.asset(
+                                                    "assets/Delivery Truck.png")
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              historyModel[historyModel.length -
-                                                      groupIndex -
-                                                      1]
-                                                  .namaToko,
-                                              style: TextStyle(
-                                                fontFamily: 'Sora',
-                                                color: Color(0xFF6AD6F9),
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.w700,
-                                              ),
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  historyModel[
+                                                          historyModel.length -
+                                                              groupIndex -
+                                                              1]
+                                                      .namaToko,
+                                                  style: TextStyle(
+                                                    fontFamily: 'Sora',
+                                                    color: Color(0xFF6AD6F9),
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.w700,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  historyModel[
+                                                          historyModel.length -
+                                                              groupIndex -
+                                                              1]
+                                                      .namaClient,
+                                                  style: TextStyle(
+                                                    fontFamily: 'Sora',
+                                                    color: Color(0xFF989898),
+                                                    fontSize: 10,
+                                                    fontWeight: FontWeight.w700,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  historyModel[
+                                                          historyModel.length -
+                                                              groupIndex -
+                                                              1]
+                                                      .alamat,
+                                                  style: TextStyle(
+                                                    fontFamily: 'Sora',
+                                                    color: Color(0xFF989898),
+                                                    fontSize: 10,
+                                                    fontWeight: FontWeight.w700,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
-                                            Text(
-                                              historyModel[historyModel.length -
-                                                      groupIndex -
-                                                      1]
-                                                  .namaClient,
-                                              style: TextStyle(
-                                                fontFamily: 'Sora',
-                                                color: Color(0xFF989898),
-                                                fontSize: 10,
-                                                fontWeight: FontWeight.w700,
-                                              ),
-                                            ),
-                                            Text(
-                                              historyModel[historyModel.length -
-                                                      groupIndex -
-                                                      1]
-                                                  .alamat,
-                                              style: TextStyle(
-                                                fontFamily: 'Sora',
-                                                color: Color(0xFF989898),
-                                                fontSize: 10,
-                                                fontWeight: FontWeight.w700,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
                               ],
                             ),
-                            if (i < index[groupIndex].length - 1)
+                            if (i < index[i].length - 1)
                               Container(
                                 padding: EdgeInsets.only(left: 11.5),
                                 child: CustomPaint(
