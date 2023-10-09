@@ -19,16 +19,29 @@ class CustomStep extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: List.generate(
-            (historyModel.length / 3).ceil(),
+            (historyModel.length),
             (groupIndex) {
-              List<List<String>> index = [];
-              for (int i = historyModel.length - 1;
-                  i >= (historyModel.length / 3) * 2;
-                  i--) {
+              List<List<String>> indexOrder = [];
+              List<List<String>> indexTime = [];
+              List<List<String>> indexToko = [];
+              List<List<String>> indexAlamat = [];
+              for (int i = 0; i < historyModel.length; i++) {
                 List<String> temp = historyModel[i].orderId.contains(',')
                     ? historyModel[i].orderId.split(',')
                     : [historyModel[i].orderId];
-                index.add(temp);
+                indexOrder.add(temp);
+                List<String> temp2 = historyModel[i].orderId.contains(',')
+                    ? historyModel[i].time.split(',')
+                    : [historyModel[i].time];
+                indexTime.add(temp2);
+                List<String> temp3 = historyModel[i].orderId.contains(',')
+                    ? historyModel[i].namaToko.split(',')
+                    : [historyModel[i].namaToko];
+                indexToko.add(temp3);
+                List<String> temp4 = historyModel[i].orderId.contains(',')
+                    ? historyModel[i].alamat.split(',')
+                    : [historyModel[i].alamat];
+                indexAlamat.add(temp4);
               }
 
               return Padding(
@@ -63,7 +76,7 @@ class CustomStep extends StatelessWidget {
                     SizedBox(
                       height: 8,
                     ),
-                    for (int i = 0; i < index[i].length; i++)
+                    for (int i = 0; i < indexOrder[groupIndex].length; i++)
                       Container(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -79,10 +92,7 @@ class CustomStep extends StatelessWidget {
                                 Padding(
                                   padding: const EdgeInsets.only(right: 8.0),
                                   child: Text(
-                                    historyModel[historyModel.length -
-                                            groupIndex -
-                                            1]
-                                        .time,
+                                    indexTime[groupIndex][i],
                                     style: TextStyle(
                                       fontFamily: 'Sora',
                                       fontWeight: FontWeight.w700,
@@ -147,11 +157,7 @@ class CustomStep extends StatelessWidget {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  historyModel[
-                                                          historyModel.length -
-                                                              groupIndex -
-                                                              1]
-                                                      .namaToko,
+                                                  indexToko[groupIndex][i],
                                                   style: TextStyle(
                                                     fontFamily: 'Sora',
                                                     color: Color(0xFF6AD6F9),
@@ -173,11 +179,7 @@ class CustomStep extends StatelessWidget {
                                                   ),
                                                 ),
                                                 Text(
-                                                  historyModel[
-                                                          historyModel.length -
-                                                              groupIndex -
-                                                              1]
-                                                      .alamat,
+                                                  indexAlamat[groupIndex][i],
                                                   style: TextStyle(
                                                     fontFamily: 'Sora',
                                                     color: Color(0xFF989898),
@@ -195,7 +197,7 @@ class CustomStep extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            if (i < index[i].length - 1)
+                            if (i < indexOrder[groupIndex].length - 1)
                               Container(
                                 padding: EdgeInsets.only(left: 11.5),
                                 child: CustomPaint(

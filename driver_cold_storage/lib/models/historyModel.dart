@@ -59,24 +59,27 @@ class HistoryModel {
         namaToko: json['Nama_Toko'] ?? '',
         alamat: json['Alamat'] ?? '',
         time: json['Time'] ?? '',
-        tanggalPickup: json['Tanggal_PickUp'] != null
-            ? DateTime.parse(json['Tanggal_PickUp'])
-            : DateTime.now(),
+        tanggalPickup:
+            json['Tanggal_PickUp'] != null && json['Tanggal_PickUp'] != ""
+                ? DateTime.parse(json['Tanggal_PickUp'])
+                : DateTime.now(),
         orderId: json['Order_Id'] ?? '',
         namaItem: json['Nama_Item'] ?? '',
         jumlah: json['Jumlah'] ?? 0,
         berat: json['Berat'] ?? 0,
-        tanggalMasuk: json['Tanggal_Masuk'] != null
-            ? DateTime.parse(json['Tanggal_Masuk'])
-            : DateTime.now(),
+        tanggalMasuk:
+            json['Tanggal_Masuk'] != null && json['Tanggal_Masuk'] != ""
+                ? DateTime.parse(json['Tanggal_Masuk'])
+                : DateTime.now(),
         gedung: json['gedung'] ?? '',
         aisle: json['Aisle'] ?? '',
         place: json['Place'] ?? '',
         serviceType: json['Service_Type'] ?? '',
         rentDriver: json['Rent_Driver'] ?? '',
-        tanggalAmbil: json['Tanggal_Masuk'] != null
-            ? DateTime.parse(json['Tanggal_Ambil'])
-            : DateTime.now(),
+        tanggalAmbil:
+            json['Tanggal_Ambil'] != null && json['Tanggal_Ambil'] != ""
+                ? DateTime.parse(json['Tanggal_Ambil'])
+                : DateTime.now(),
         photo: json['Foto'] ?? '',
         notes: json['Notes'] ?? '',
         kendaraanId: json['Kendaraan_id'] ?? 0,

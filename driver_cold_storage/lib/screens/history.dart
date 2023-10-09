@@ -31,8 +31,18 @@ class _historyScreenState extends State<historyScreen> {
         final responseJson = jsonDecode(response.body);
         final List<dynamic> apihistoryData = responseJson['data']['History'];
 
-        List<HistoryModel> historyModel =
-            apihistoryData.map((data) => HistoryModel.fromJson(data)).toList();
+        // Filter out duplicates based on the 'Id' field
+        final uniqueHistoryData = <String, dynamic>{};
+        apihistoryData.forEach((data) {
+          final id = data['Id'] as String;
+          if (!uniqueHistoryData.containsKey(id)) {
+            uniqueHistoryData[id] = data;
+          }
+        });
+
+        List<HistoryModel> historyModel = uniqueHistoryData.values
+            .map((data) => HistoryModel.fromJson(data))
+            .toList();
 
         setState(() {
           historyData = historyModel;
