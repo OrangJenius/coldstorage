@@ -12,8 +12,8 @@ class CustomStep extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(
-        left: 8,
-        right: 8,
+        left: 16,
+        right: 16,
       ),
       child: Container(
         child: Column(
@@ -101,38 +101,41 @@ class CustomStep extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                                Expanded(child: Row()),
-                                InkWell(
-                                  onTap: () => {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              DetailHistory()),
-                                    )
-                                  },
-                                  child: Container(
-                                    width: 250,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      border: Border.all(
-                                        width: 1,
-                                        color: Colors.grey,
-                                        style: BorderStyle.solid,
-                                      ),
-                                      borderRadius: BorderRadius.circular(8),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.grey, // Warna bayangan
-                                          offset: Offset(2,
-                                              5), // Jarak bayangan pada sumbu X dan Y
-                                          blurRadius:
-                                              6.0, // Radius blur bayangan
+                                SizedBox(
+                                  width: 8,
+                                ),
+                                Expanded(
+                                  child: InkWell(
+                                    onTap: () => {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                DetailHistory()),
+                                      )
+                                    },
+                                    child: Container(
+                                      width: 240,
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        border: Border.all(
+                                          width: 1,
+                                          color: Colors.grey,
+                                          style: BorderStyle.solid,
                                         ),
-                                      ],
-                                    ),
-                                    padding: EdgeInsets.all(8),
-                                    child: Expanded(
+                                        borderRadius: BorderRadius.circular(8),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color:
+                                                Colors.grey, // Warna bayangan
+                                            offset: Offset(2,
+                                                5), // Jarak bayangan pada sumbu X dan Y
+                                            blurRadius:
+                                                6.0, // Radius blur bayangan
+                                          ),
+                                        ],
+                                      ),
+                                      padding: EdgeInsets.all(8),
                                       child: Row(
                                         children: [
                                           Padding(
@@ -152,42 +155,47 @@ class CustomStep extends StatelessWidget {
                                             ),
                                           ),
                                           Expanded(
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  indexToko[groupIndex][i],
-                                                  style: TextStyle(
-                                                    fontFamily: 'Sora',
-                                                    color: Color(0xFF6AD6F9),
-                                                    fontSize: 15,
-                                                    fontWeight: FontWeight.w700,
+                                            child: Container(
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    indexToko[groupIndex][i],
+                                                    style: TextStyle(
+                                                      fontFamily: 'Sora',
+                                                      color: Color(0xFF6AD6F9),
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                    ),
                                                   ),
-                                                ),
-                                                Text(
-                                                  historyModel[
-                                                          historyModel.length -
-                                                              groupIndex -
-                                                              1]
-                                                      .namaClient,
-                                                  style: TextStyle(
-                                                    fontFamily: 'Sora',
-                                                    color: Color(0xFF989898),
-                                                    fontSize: 10,
-                                                    fontWeight: FontWeight.w700,
+                                                  Text(
+                                                    historyModel[historyModel
+                                                                .length -
+                                                            groupIndex -
+                                                            1]
+                                                        .namaClient,
+                                                    style: TextStyle(
+                                                      fontFamily: 'Sora',
+                                                      color: Color(0xFF989898),
+                                                      fontSize: 10,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                    ),
                                                   ),
-                                                ),
-                                                Text(
-                                                  indexAlamat[groupIndex][i],
-                                                  style: TextStyle(
-                                                    fontFamily: 'Sora',
-                                                    color: Color(0xFF989898),
-                                                    fontSize: 10,
-                                                    fontWeight: FontWeight.w700,
+                                                  Text(
+                                                    indexAlamat[groupIndex][i],
+                                                    style: TextStyle(
+                                                      fontFamily: 'Sora',
+                                                      color: Color(0xFF989898),
+                                                      fontSize: 10,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                    ),
                                                   ),
-                                                ),
-                                              ],
+                                                ],
+                                              ),
                                             ),
                                           ),
                                         ],
