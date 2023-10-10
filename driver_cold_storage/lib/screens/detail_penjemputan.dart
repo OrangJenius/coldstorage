@@ -17,11 +17,15 @@ class detail_Penjemputan extends StatefulWidget {
 
 class _detailPenjemputanState extends State<detail_Penjemputan> {
   final ScrollController _listViewController = ScrollController();
+  final ScrollController _listViewController2 = ScrollController();
+  final ScrollController _listViewController3 = ScrollController();
 
   @override
   void dispose() {
     // Dispose of the ScrollController when the widget is disposed
     _listViewController.dispose();
+    _listViewController2.dispose();
+    _listViewController3.dispose();
     super.dispose();
   }
 
@@ -49,6 +53,11 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
             .toList()
         : [];
 
+    final totalBerat = items.map((item) => item.Berat).reduce((a, b) => a + b);
+
+    final totalJumlah =
+        items.map((item) => item.Jumlah).reduce((a, b) => a + b);
+
     List<String> NamaTokoList = items.isNotEmpty
         ? items.first.Nama_Toko
             .split(',')
@@ -69,6 +78,14 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
             .map((noHP) => noHP.trim())
             .toList()
         : [];
+
+    List<String> totalNamaItem = [];
+
+    for (PengantaranModel item in items) {
+      totalNamaItem.add(item.Nama_Item);
+    }
+
+    print(totalNamaItem);
 
     return Scaffold(
       body: SafeArea(
@@ -279,37 +296,120 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                   ),
                   Expanded(child: Container()),
                   Padding(
-                    padding: EdgeInsets.only(right: 16),
-                    child: Text(
-                      items[0].Nama_Item,
-                      style: TextStyle(
-                        fontFamily: 'Sora',
-                        fontSize: 18,
-                        color: Color(0xFF505050),
+                    padding: const EdgeInsets.only(right: 16),
+                    child: InkWell(
+                      onTap: () {
+                        showDialog(
+                            barrierDismissible: true,
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8)),
+                                scrollable: true,
+                                title: Text(
+                                  "Details",
+                                  style: TextStyle(
+                                    fontFamily: 'Sora',
+                                    fontSize: 25,
+                                    fontStyle: FontStyle.normal,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color(0xff6ad6f9),
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                                content: Container(
+                                  width: 250,
+                                  height: 100,
+                                  child: Scrollbar(
+                                    thumbVisibility: true,
+                                    controller: _listViewController2,
+                                    child: ListView.builder(
+                                      controller: _listViewController2,
+                                      shrinkWrap: true,
+                                      itemCount: totalNamaItem.length,
+                                      itemBuilder: (context, index) {
+                                        return Column(
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  totalNamaItem[index],
+                                                  style: TextStyle(
+                                                    fontFamily: 'Sora',
+                                                    fontSize: 18,
+                                                    fontStyle: FontStyle.normal,
+                                                    fontWeight: FontWeight.w400,
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ),
+                                actions: [
+                                  Center(
+                                    child: ElevatedButton(
+                                        style: ButtonStyle(
+                                          shape: MaterialStateProperty.all<
+                                              RoundedRectangleBorder>(
+                                            RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                                side: BorderSide(
+                                                  color: Color(0xff6AD6F9),
+                                                )),
+                                          ),
+                                          elevation:
+                                              MaterialStateProperty.all(5),
+                                          backgroundColor:
+                                              MaterialStateProperty.all<Color>(
+                                                  Color(0xff6AD6F9)),
+                                        ),
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: Text(
+                                          "Go back",
+                                          style: TextStyle(
+                                              fontFamily: 'Sora',
+                                              fontSize: 15,
+                                              fontStyle: FontStyle.normal,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white),
+                                        )),
+                                  )
+                                ],
+                              );
+                            });
+                      },
+                      child: Container(
+                        width: 100,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8.0),
+                          border:
+                              Border.all(width: 2, color: Color(0xFF6AD6F9)),
+                        ),
+                        child: Center(
+                          child: Text(
+                            "Detail",
+                            style: TextStyle(
+                              fontFamily: 'Sora',
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF6AD6F9),
+                              fontSize: 17,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
-                  ),
+                  )
                 ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: items
-                    .sublist(
-                        1) // Skip the first item and get the rest of the items
-                    .map((item) {
-                  return Padding(
-                    padding: EdgeInsets.only(right: 16),
-                    child: Text(
-                      item.Nama_Item,
-                      style: TextStyle(
-                        fontFamily: 'Sora',
-                        fontSize: 18,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xFF505050),
-                      ),
-                    ),
-                  );
-                }).toList(),
               ),
               SizedBox(
                 height: 16,
@@ -332,7 +432,7 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                   Padding(
                     padding: EdgeInsets.only(right: 16),
                     child: Text(
-                      quantitiesList[0],
+                      '${totalJumlah.toString()} pcs',
                       style: TextStyle(
                         fontFamily: 'Sora',
                         fontSize: 18,
@@ -341,26 +441,6 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                     ),
                   ),
                 ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: quantitiesList
-                    .sublist(
-                        1) // Skip the first item and get the rest of the items
-                    .map((item) {
-                  return Padding(
-                    padding: EdgeInsets.only(right: 16),
-                    child: Text(
-                      item,
-                      style: TextStyle(
-                        fontFamily: 'Sora',
-                        fontSize: 18,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xFF505050),
-                      ),
-                    ),
-                  );
-                }).toList(),
               ),
               SizedBox(
                 height: 16,
@@ -383,7 +463,7 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                   Padding(
                     padding: EdgeInsets.only(right: 16),
                     child: Text(
-                      '',
+                      '${totalBerat.toString()} kg',
                       style: TextStyle(
                         fontFamily: 'Sora',
                         fontSize: 18,
@@ -459,7 +539,7 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                                 ),
                                 if (index < items.length - 1)
                                   CustomPaint(
-                                    size: Size(3, 90),
+                                    size: Size(3, 150),
                                     painter: DottedLinePainter(
                                       color: Color(0xFF6AD6F9),
                                     ),
@@ -478,23 +558,184 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                                   items[index].Time.toString().substring(0,
                                       items[index].Time.toString().length - 3),
                                   style: TextStyle(
-                                    fontFamily: 'Sora',
-                                    color: Color(0xFF6AD6F9),
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                      fontFamily: 'Sora',
+                                      color: Color(0xFF6AD6F9),
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18),
                                 ),
                                 Text(
                                   NamaTokoList[index],
                                   style: TextStyle(
-                                    fontFamily: 'Sora',
-                                    color: Color(0xFF808080),
+                                      fontFamily: 'Sora',
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.only(top: 8, bottom: 8),
+                                  child: Text("Client: ${items[index].Client}"),
+                                ),
+                                Text("Address: ${addressList[index]}"),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.only(top: 8, bottom: 8),
+                                  child: Text("No Hp: ${noHPlist[index]}"),
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.only(top: 8, bottom: 16),
+                                  child: InkWell(
+                                    onTap: () {
+                                      showDialog(
+                                          barrierDismissible: true,
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(8)),
+                                              scrollable: true,
+                                              title: Text(
+                                                "Details Items",
+                                                style: TextStyle(
+                                                  fontFamily: 'Sora',
+                                                  fontSize: 25,
+                                                  fontStyle: FontStyle.normal,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Color(0xff6ad6f9),
+                                                ),
+                                              ),
+                                              content: Container(
+                                                width: 300,
+                                                height: 100,
+                                                child: Scrollbar(
+                                                  thumbVisibility: true,
+                                                  controller:
+                                                      _listViewController3,
+                                                  child: Column(
+                                                    children: [
+                                                      ListView(
+                                                          controller:
+                                                              _listViewController3,
+                                                          shrinkWrap: true,
+                                                          children: [
+                                                            Column(
+                                                              children: [
+                                                                Row(
+                                                                  children: [
+                                                                    Text(
+                                                                      items[index]
+                                                                          .Nama_Item,
+                                                                      style:
+                                                                          TextStyle(
+                                                                        fontFamily:
+                                                                            'Sora',
+                                                                        fontSize:
+                                                                            18,
+                                                                        fontStyle:
+                                                                            FontStyle.normal,
+                                                                        fontWeight:
+                                                                            FontWeight.w400,
+                                                                        color: Colors
+                                                                            .black,
+                                                                      ),
+                                                                    ),
+                                                                    Expanded(
+                                                                        child:
+                                                                            Container()),
+                                                                    Text(
+                                                                      '${quantitiesList[index]} pcs',
+                                                                      style:
+                                                                          TextStyle(
+                                                                        fontFamily:
+                                                                            'Sora',
+                                                                        fontSize:
+                                                                            18,
+                                                                        fontStyle:
+                                                                            FontStyle.normal,
+                                                                        fontWeight:
+                                                                            FontWeight.w400,
+                                                                        color: Colors
+                                                                            .black,
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ],
+                                                            )
+                                                          ])
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                              actions: [
+                                                Center(
+                                                  child: ElevatedButton(
+                                                      style: ButtonStyle(
+                                                        shape: MaterialStateProperty
+                                                            .all<
+                                                                RoundedRectangleBorder>(
+                                                          RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          8),
+                                                              side: BorderSide(
+                                                                color: Color(
+                                                                    0xff6AD6F9),
+                                                              )),
+                                                        ),
+                                                        elevation:
+                                                            MaterialStateProperty
+                                                                .all(5),
+                                                        backgroundColor:
+                                                            MaterialStateProperty
+                                                                .all<Color>(Color(
+                                                                    0xff6AD6F9)),
+                                                      ),
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                      child: Text(
+                                                        "Go back",
+                                                        style: TextStyle(
+                                                            fontFamily: 'Sora',
+                                                            fontSize: 15,
+                                                            fontStyle: FontStyle
+                                                                .normal,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            color:
+                                                                Colors.white),
+                                                      )),
+                                                )
+                                              ],
+                                            );
+                                          });
+                                    },
+                                    child: Container(
+                                      width: 150,
+                                      height: 30,
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                        border: Border.all(
+                                            width: 2, color: Color(0xFF6AD6F9)),
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          "Detail Items",
+                                          style: TextStyle(
+                                            fontFamily: 'Sora',
+                                            fontWeight: FontWeight.bold,
+                                            color: Color(0xFF6AD6F9),
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ),
-                                Text("Client: ${items[index].Client}"),
-                                Text("Address: ${addressList[index]}"),
-                                Text("Qts: ${quantitiesList[index]}"),
-                                Text("Item: ${items[index].Nama_Item}"),
-                                Text("No Hp: ${noHPlist[index]}"),
                               ],
                             ),
                             // Expanded(child: Container()),
