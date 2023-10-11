@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:driver_cold_storage/models/historyModel.dart';
 
 class DetailHistory extends StatefulWidget {
   @override
   _DetailHistoryState createState() => _DetailHistoryState();
+  final List<HistoryModel> historyModel;
+  final List<HistoryModel2> historyModel2;
+  DetailHistory({
+    required this.historyModel,
+    required this.historyModel2,
+  });
 }
 
 class _DetailHistoryState extends State<DetailHistory> {

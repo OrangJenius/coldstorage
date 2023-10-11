@@ -8,11 +8,16 @@ class CustomStep extends StatefulWidget {
   final List<HistoryModel> historyModel;
   final List<HistoryModel2> historyModel2;
   final DateTime? selectedDate;
+  final String? selectedStatus;
+  final String? idHistory;
 
-  CustomStep(
-      {required this.historyModel,
-      required this.historyModel2,
-      this.selectedDate});
+  CustomStep({
+    required this.historyModel,
+    required this.historyModel2,
+    this.selectedDate,
+    this.selectedStatus,
+    this.idHistory,
+  });
 
   @override
   State<CustomStep> createState() => _CustomStepState();
@@ -28,26 +33,40 @@ class _CustomStepState extends State<CustomStep> {
 
     displayItems.clear(); // Clear the existing display items
 
-    final filteredHistory = widget.selectedDate != null
-        ? widget.historyModel.where((history) {
-            final tanggalPickup = (history.tanggalPickup.toString()).trim();
-            if (tanggalPickup.isNotEmpty) {
-              // Check if it's not empty
-              final historyDate = DateFormat('yyyy-MM-dd').parse(tanggalPickup);
-              final selectedDateString =
-                  DateFormat('yyyy-MM-dd').format(widget.selectedDate!);
-              return selectedDateString ==
-                  DateFormat('yyyy-MM-dd').format(historyDate);
-            }
-            return false;
-          }).toList()
-        : widget.historyModel;
+    List<HistoryModel> filteredHistory = widget.historyModel;
+
+    if (widget.selectedDate != null) {
+      filteredHistory = filteredHistory.where((history) {
+        final tanggalPickup = (history.tanggalPickup.toString()).trim();
+        if (tanggalPickup.isNotEmpty) {
+          final historyDate = DateFormat('yyyy-MM-dd').parse(tanggalPickup);
+          final selectedDateString =
+              DateFormat('yyyy-MM-dd').format(widget.selectedDate!);
+          return selectedDateString ==
+              DateFormat('yyyy-MM-dd').format(historyDate);
+        }
+        return false;
+      }).toList();
+    } else if (widget.selectedStatus != null &&
+        widget.selectedStatus != 'All') {
+      filteredHistory = filteredHistory.where((history) {
+        return (widget.selectedStatus == 'Distribute' &&
+                history.status == 'Distribute') ||
+            (widget.selectedStatus == 'Pickup' && history.status == 'Pickup');
+      }).toList();
+    } else if (widget.idHistory != null) {
+      filteredHistory = filteredHistory.where((history) {
+        return history.Id.toLowerCase()
+            .contains(widget.idHistory!.toLowerCase());
+      }).toList();
+    }
 
     print('Filtered History Count: ${filteredHistory.length}');
 
     for (int groupIndex = 0;
         groupIndex < filteredHistory.length;
         groupIndex++) {
+      //memisahkan order, time, nama toko, dan alamat karena pada database disatukan menjadi 1 dan dipisahkan hanya pake ","
       List<List<String>> indexOrder = [];
       List<List<String>> indexTime = [];
       List<List<String>> indexToko = [];
@@ -165,7 +184,10 @@ class _CustomStepState extends State<CustomStep> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => DetailHistory(),
+                              builder: (context) => DetailHistory(
+                                historyModel: [filteredHistory[groupIndex]],
+                                historyModel2: [widget.historyModel2[i]],
+                              ),
                             ),
                           )
                         },

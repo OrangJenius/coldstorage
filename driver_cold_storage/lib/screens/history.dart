@@ -16,11 +16,13 @@ class historyScreen extends StatefulWidget {
 }
 
 class _historyScreenState extends State<historyScreen> {
+  final TextEditingController searchIdController = TextEditingController();
   DateTime? pickedDate;
-
+  String? selectedStatus;
   late List<HistoryModel> historyData;
   late List<HistoryModel2> historyData2;
   List<Widget> steps = [];
+  String? idHistory;
 
   Future<void> getHistory() async {
     print('gethistory');
@@ -66,6 +68,8 @@ class _historyScreenState extends State<historyScreen> {
               historyModel: historyData,
               historyModel2: historyData2,
               selectedDate: pickedDate,
+              selectedStatus: selectedStatus,
+              idHistory: idHistory,
             ),
           );
         });
@@ -97,6 +101,9 @@ class _historyScreenState extends State<historyScreen> {
     );
     if (newDate != null) {
       setState(() {
+        selectedStatus = null;
+        idHistory = null;
+        searchIdController.text = "";
         pickedDate = newDate;
         getHistory();
       });
@@ -178,6 +185,13 @@ class _historyScreenState extends State<historyScreen> {
                     child: Padding(
                       padding: const EdgeInsets.all(4.0),
                       child: TextFormField(
+                        controller: searchIdController,
+                        onChanged: (value) => {
+                          pickedDate = null,
+                          selectedStatus = null,
+                          idHistory = value,
+                          getHistory(),
+                        },
                         decoration: InputDecoration(
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8.0),
@@ -196,7 +210,7 @@ class _historyScreenState extends State<historyScreen> {
                             color: Color(0xffaaaaaa),
                             fontFamily: 'Sora',
                           ),
-                          suffixIcon: Icon(Icons.bento),
+                          suffixIcon: Icon(Icons.search_outlined),
                           contentPadding:
                               EdgeInsets.symmetric(vertical: 4, horizontal: 8),
                         ),
@@ -228,7 +242,13 @@ class _historyScreenState extends State<historyScreen> {
                     PopupMenuButton<String>(
                       // Use PopupMenuButton
                       onSelected: (value) {
-                        setState(() {});
+                        setState(() {
+                          selectedStatus = value;
+                          searchIdController.text = "";
+                          idHistory = null;
+                          pickedDate = null;
+                          getHistory();
+                        });
                       },
                       itemBuilder: (BuildContext context) {
                         return <PopupMenuEntry<String>>[
