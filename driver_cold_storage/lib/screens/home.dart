@@ -856,35 +856,64 @@ class _homeScreenState extends State<homeScreen> {
                                                   Row(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment.end,
-                                                    children: quantitiesList
-                                                        // Skip the first item and get the rest of the items
-                                                        .map((item) {
-                                                      int index = quantitiesList
-                                                          .indexOf(item);
-                                                      print(index);
-                                                      print(quantitiesList);
-                                                      return Row(
-                                                        children: [
-                                                          Column(
-                                                            children: [
-                                                              Text(
-                                                                '${item} pcs',
-                                                                style:
-                                                                    TextStyle(
-                                                                  color: Colors
-                                                                      .red,
-                                                                  fontSize: 12,
-                                                                  fontFamily:
-                                                                      "Sora",
+                                                    children: [
+                                                      for (int index = 0;
+                                                          index <
+                                                              quantitiesList
+                                                                  .length;
+                                                          index++)
+                                                        Row(
+                                                          children: [
+                                                            Column(
+                                                              children: [
+                                                                Text(
+                                                                  '${quantitiesList[index]} pcs',
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color: Colors
+                                                                        .red,
+                                                                    fontSize:
+                                                                        12,
+                                                                    fontFamily:
+                                                                        "Sora",
+                                                                  ),
+                                                                  maxLines: 1,
+                                                                  overflow:
+                                                                      TextOverflow
+                                                                          .ellipsis,
+                                                                  softWrap:
+                                                                      true,
                                                                 ),
-                                                                maxLines: 1,
-                                                                overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis,
-                                                                softWrap: true,
-                                                              ),
-                                                              Text(
-                                                                "-----",
+                                                                Text(
+                                                                  "-----",
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color: Colors
+                                                                        .red,
+                                                                    fontSize:
+                                                                        15,
+                                                                    fontFamily:
+                                                                        "Sora",
+                                                                  ),
+                                                                  maxLines: 1,
+                                                                  overflow:
+                                                                      TextOverflow
+                                                                          .ellipsis,
+                                                                  softWrap:
+                                                                      true,
+                                                                ),
+                                                              ],
+                                                            ),
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .only(
+                                                                      left: 8,
+                                                                      top: 8,
+                                                                      right: 8),
+                                                              child: Text(
+                                                                NamaTokoList[
+                                                                    index],
                                                                 style:
                                                                     TextStyle(
                                                                   color: Colors
@@ -893,45 +922,19 @@ class _homeScreenState extends State<homeScreen> {
                                                                   fontFamily:
                                                                       "Sora",
                                                                 ),
-                                                                maxLines: 1,
                                                                 overflow:
                                                                     TextOverflow
                                                                         .ellipsis,
-                                                                softWrap:
-                                                                    true, // Izinkan peralihan baris
                                                               ),
-                                                            ],
-                                                          ),
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .only(
-                                                                    left: 8,
-                                                                    top: 8,
-                                                                    right: 8),
-                                                            child: Text(
-                                                              NamaTokoList[
-                                                                  index],
-                                                              style: TextStyle(
-                                                                color:
-                                                                    Colors.red,
-                                                                fontSize: 15,
-                                                                fontFamily:
-                                                                    "Sora",
-                                                              ),
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
                                                             ),
-                                                          ),
-                                                        ],
-                                                      );
-                                                    }).toList(),
+                                                          ],
+                                                        ),
+                                                    ],
                                                   ),
                                                   SizedBox(width: 8),
                                                 ],
                                               ),
-                                            ),
+                                            )
                                           ],
                                         ),
                                       ),
