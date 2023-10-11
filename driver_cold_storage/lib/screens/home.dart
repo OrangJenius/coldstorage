@@ -122,8 +122,6 @@ class _homeScreenState extends State<homeScreen> {
             sortedGroupedData[distributeId] = items!;
           });
 
-// Sekarang, sortedGroupedData berisi groupedData yang telah diurutkan
-
           print(sortedGroupedData);
         });
       } else {
@@ -863,6 +861,8 @@ class _homeScreenState extends State<homeScreen> {
                                                         .map((item) {
                                                       int index = quantitiesList
                                                           .indexOf(item);
+                                                      print(index);
+                                                      print(quantitiesList);
                                                       return Row(
                                                         children: [
                                                           Column(
@@ -949,7 +949,8 @@ class _homeScreenState extends State<homeScreen> {
                                             ..._buildDetailColumn("Weight",
                                                 totalBerat.toString()),
                                             SizedBox(height: 8),
-                                            ..._buildDetailColumn("Stops", "2"),
+                                            ..._buildDetailColumn("Stops",
+                                                NamaTokoList.length.toString()),
                                           ],
                                         ),
                                       ),

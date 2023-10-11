@@ -81,7 +81,7 @@ class _loginState extends State<Login> {
                 builder: (context) => homeScreen(userID: simpanData),
               ),
             );
-          } else if (roleValue == "staff  ") {
+          } else if (roleValue == "staff") {
             Navigator.push(
               context,
               MaterialPageRoute(

@@ -79,6 +79,10 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
             .toList()
         : [];
 
+    List<String> time = items.isNotEmpty
+        ? items.first.Time.split(',').map((time) => time.trim()).toList()
+        : [];
+
     List<String> totalNamaItem = [];
 
     for (PengantaranModel item in items) {
@@ -555,8 +559,7 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Text(
-                                  items[index].Time.toString().substring(0,
-                                      items[index].Time.toString().length - 3),
+                                  time[index].substring(0, 5).toString(),
                                   style: TextStyle(
                                       fontFamily: 'Sora',
                                       color: Color(0xFF6AD6F9),
