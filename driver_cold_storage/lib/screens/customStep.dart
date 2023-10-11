@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'linePainter.dart';
 import 'package:driver_cold_storage/models/historyModel.dart';
 
-class CustomStep extends StatelessWidget {
+class CustomStep extends StatefulWidget {
   final List<HistoryModel> historyModel;
   final List<HistoryModel2> historyModel2;
   final DateTime? selectedDate;
@@ -14,36 +14,40 @@ class CustomStep extends StatelessWidget {
       required this.historyModel2,
       this.selectedDate});
 
-  // ...
-  List<Widget> displayItems = []; // Create an empty list to hold display items
+  @override
+  State<CustomStep> createState() => _CustomStepState();
+}
 
+class _CustomStepState extends State<CustomStep> {
+  // ...
+  List<Widget> displayItems = [];
+  // Create an empty list to hold display items
   @override
   Widget build(BuildContext context) {
-    print('Selected Date: $selectedDate');
+    print('Selected Date: ${widget.selectedDate}');
 
     displayItems.clear(); // Clear the existing display items
 
-    final filteredHistory = selectedDate != null
-        ? historyModel.where((history) {
+    final filteredHistory = widget.selectedDate != null
+        ? widget.historyModel.where((history) {
             final tanggalPickup = (history.tanggalPickup.toString()).trim();
             if (tanggalPickup.isNotEmpty) {
               // Check if it's not empty
               final historyDate = DateFormat('yyyy-MM-dd').parse(tanggalPickup);
               final selectedDateString =
-                  DateFormat('yyyy-MM-dd').format(selectedDate!);
+                  DateFormat('yyyy-MM-dd').format(widget.selectedDate!);
               return selectedDateString ==
                   DateFormat('yyyy-MM-dd').format(historyDate);
             }
             return false;
           }).toList()
-        : historyModel;
+        : widget.historyModel;
 
     print('Filtered History Count: ${filteredHistory.length}');
 
     for (int groupIndex = 0;
         groupIndex < filteredHistory.length;
         groupIndex++) {
-      // Generate display items and add them directly to the displayItems list
       List<List<String>> indexOrder = [];
       List<List<String>> indexTime = [];
       List<List<String>> indexToko = [];
@@ -101,146 +105,169 @@ class CustomStep extends StatelessWidget {
               SizedBox(
                 height: 8,
               ),
-              for (int i = 0; i < indexOrder[groupIndex].length; i++)
-                Container(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Icon(
-                            Icons.circle,
-                            color: Color(0xFF6AD6F9),
-                          ),
-                          SizedBox(width: 8),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 8.0),
-                            child: Text(
-                              indexTime[groupIndex][i],
-                              style: TextStyle(
-                                fontFamily: 'Sora',
-                                fontWeight: FontWeight.w700,
-                                fontSize: 15,
-                                color: Color(0xFF6AD6F9),
-                              ),
+            ],
+          ),
+        ),
+      );
+
+      for (int i = 0; i < indexOrder[groupIndex].length; i++) {
+        List<String> penerima = [];
+
+        if (indexOrder[groupIndex].length > 1) {
+          for (int j = 0; j < indexOrder[groupIndex].length; j++) {
+            if (widget.historyModel2[j].Id == filteredHistory[groupIndex].Id) {
+              String temp = "";
+              temp = widget.historyModel2[j].namaClient;
+              penerima.add(temp);
+            }
+          }
+        } else {
+          for (int j = 0; j < widget.historyModel2.length; j++) {
+            if (widget.historyModel2[j].Id == filteredHistory[groupIndex].Id) {
+              String temp = "";
+              temp = widget.historyModel2[j].namaClient;
+              penerima.add(temp);
+              break; // Stop searching once a match is found
+            }
+          }
+        }
+        displayItems.add(
+          Container(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Icon(
+                      Icons.circle,
+                      color: Color(0xFF6AD6F9),
+                    ),
+                    SizedBox(width: 8),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: Text(
+                        indexTime[groupIndex][i],
+                        style: TextStyle(
+                          fontFamily: 'Sora',
+                          fontWeight: FontWeight.w700,
+                          fontSize: 15,
+                          color: Color(0xFF6AD6F9),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    Expanded(
+                      child: InkWell(
+                        onTap: () => {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => DetailHistory(),
                             ),
+                          )
+                        },
+                        child: Container(
+                          width: 240,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(
+                              width: 1,
+                              color: Colors.grey,
+                              style: BorderStyle.solid,
+                            ),
+                            borderRadius: BorderRadius.circular(8),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey,
+                                offset: Offset(2, 5),
+                                blurRadius: 6.0,
+                              ),
+                            ],
                           ),
-                          SizedBox(
-                            width: 8,
-                          ),
-                          Expanded(
-                            child: InkWell(
-                              onTap: () => {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => DetailHistory()),
-                                )
-                              },
-                              child: Container(
-                                width: 240,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  border: Border.all(
-                                    width: 1,
-                                    color: Colors.grey,
-                                    style: BorderStyle.solid,
-                                  ),
-                                  borderRadius: BorderRadius.circular(8),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey,
-                                      offset: Offset(2, 5),
-                                      blurRadius: 6.0,
+                          padding: EdgeInsets.all(8),
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(right: 8),
+                                child: Stack(
+                                  alignment: Alignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.circle,
+                                      color: Color(0xFF6AD6F9),
+                                      size: 45,
                                     ),
+                                    Image.asset("assets/Delivery Truck.png"),
                                   ],
                                 ),
-                                padding: EdgeInsets.all(8),
-                                child: Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(right: 8),
-                                      child: Stack(
-                                        alignment: Alignment.center,
-                                        children: [
-                                          Icon(
-                                            Icons.circle,
-                                            color: Color(0xFF6AD6F9),
-                                            size: 45,
-                                          ),
-                                          Image.asset(
-                                              "assets/Delivery Truck.png")
-                                        ],
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Container(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              indexToko[groupIndex][i],
-                                              style: TextStyle(
-                                                fontFamily: 'Sora',
-                                                color: Color(0xFF6AD6F9),
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.w700,
-                                              ),
-                                            ),
-                                            Text(
-                                              filteredHistory[
-                                                      filteredHistory.length -
-                                                          groupIndex -
-                                                          1]
-                                                  .namaClient,
-                                              style: TextStyle(
-                                                fontFamily: 'Sora',
-                                                color: Color(0xFF989898),
-                                                fontSize: 10,
-                                                fontWeight: FontWeight.w700,
-                                              ),
-                                            ),
-                                            Text(
-                                              indexAlamat[groupIndex][i],
-                                              style: TextStyle(
-                                                fontFamily: 'Sora',
-                                                color: Color(0xFF989898),
-                                                fontSize: 10,
-                                                fontWeight: FontWeight.w700,
-                                              ),
-                                            ),
-                                          ],
+                              ),
+                              Expanded(
+                                child: Container(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        indexToko[groupIndex][i],
+                                        style: TextStyle(
+                                          fontFamily: 'Sora',
+                                          color: Color(0xFF6AD6F9),
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w700,
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                      Text(
+                                        "penerima: ${penerima[i]}",
+                                        style: TextStyle(
+                                          fontFamily: 'Sora',
+                                          color: Color(0xFF989898),
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                      Text(
+                                        "Alamat: ${indexAlamat[groupIndex][i]}",
+                                        style: TextStyle(
+                                          fontFamily: 'Sora',
+                                          color: Color(0xFF989898),
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      if (i < indexOrder[groupIndex].length - 1)
-                        Container(
-                          padding: EdgeInsets.only(left: 11.5),
-                          child: CustomPaint(
-                            size: Size(0, 80),
-                            painter: LinePainter(),
+                            ],
                           ),
                         ),
-                    ],
+                      ),
+                    ),
+                  ],
+                ),
+                if (i < indexOrder[groupIndex].length - 1)
+                  Container(
+                    padding: EdgeInsets.only(left: 11.5),
+                    child: CustomPaint(
+                      size: Size(0, 80),
+                      painter: LinePainter(),
+                    ),
                   ),
-                ),
-              Padding(
-                padding: const EdgeInsets.only(top: 16),
-                child: Divider(
-                  height: 1,
-                  color: Colors.grey,
-                ),
-              ),
-            ],
+              ],
+            ),
+          ),
+        );
+      }
+
+      displayItems.add(
+        Padding(
+          padding: const EdgeInsets.only(top: 16),
+          child: Divider(
+            height: 1,
+            color: Colors.grey,
           ),
         ),
       );

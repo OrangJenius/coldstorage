@@ -22,90 +22,8 @@ class _historyScreenState extends State<historyScreen> {
   late List<HistoryModel2> historyData2;
   List<Widget> steps = [];
 
-  // Future<void> getHistory() async {
-  //   steps.clear();
-  //   final apiurl =
-  //       "http://116.68.252.201:1945/DataHistoryANDDistributeWithUSERID/${widget.id}";
-
-  //   final apiurl2 = "http://116.68.252.201:1945/HistoryDriver/${widget.id}";
-  //   try {
-  //     final response = await http.get(Uri.parse(apiurl));
-  //     final response2 = await http.get(Uri.parse(apiurl2));
-
-  //     if (response.statusCode == 200 && response2.statusCode == 200) {
-  //       final responseJson = jsonDecode(response.body);
-  //       final List<dynamic> apihistoryData = responseJson['data']['History'];
-
-  //       final responseJson2 = jsonDecode(response2.body);
-  //       final List<dynamic> apihistoryData2 = responseJson2['data']['History'];
-
-  //       // Merge data from both API responses
-  //       final mergedData = [...apihistoryData, ...apihistoryData2];
-
-  //       // Filter out duplicates based on the 'Id' field
-  //       final uniqueHistoryData = <String, dynamic>{};
-  //       mergedData.forEach((data) {
-  //         final id = data['Id'] as String;
-  //         if (!uniqueHistoryData.containsKey(id)) {
-  //           uniqueHistoryData[id] = data;
-  //         }
-  //       });
-
-  //       List<HistoryModel> historyModel = uniqueHistoryData.values
-  //           .map((data) => HistoryModel.fromJson(data))
-  //           .toList();
-
-  //       setState(() {
-  //         historyData = historyModel;
-  //         print('test');
-  //         print('historydata: ${historyData[0].userId}');
-  //         steps.add(
-  //           CustomStep(
-  //             historyModel: historyData,
-  //             selectedDate: pickedDate,
-  //           ),
-  //         );
-  //       });
-  //       for (var historyModelItem in historyData) {
-  //         print('Id: ${historyModelItem.Id}');
-  //         print('DistributeId: ${historyModelItem.distibuteId}');
-  //         print('NamaToko: ${historyModelItem.namaToko}');
-  //         print('Alamat: ${historyModelItem.alamat}');
-  //         print('Time: ${historyModelItem.time}');
-  //         print('TanggalPickup: ${historyModelItem.tanggalPickup}');
-  //         print('Status: ${historyModelItem.status}');
-  //         print('TitikAwal: ${historyModelItem.titikAwal}');
-  //         print('Destination: ${historyModelItem.destination}');
-  //         print('OrderId: ${historyModelItem.orderId}');
-  //         print('NamaItem: ${historyModelItem.namaItem}');
-  //         print('Jumlah: ${historyModelItem.jumlah}');
-  //         print('Berat: ${historyModelItem.berat}');
-  //         print('TanggalMasuk: ${historyModelItem.tanggalMasuk}');
-  //         print('Gedung: ${historyModelItem.gedung}');
-  //         print('Aisle: ${historyModelItem.aisle}');
-  //         print('Place: ${historyModelItem.place}');
-  //         print('ServiceType: ${historyModelItem.serviceType}');
-  //         print('RentDriver: ${historyModelItem.rentDriver}');
-  //         print('TanggalAmbil: ${historyModelItem.tanggalAmbil}');
-  //         print('Photo: ${historyModelItem.photo}');
-  //         print('Notes: ${historyModelItem.notes}');
-  //         print('KendaraanId: ${historyModelItem.kendaraanId}');
-  //         print('UserId: ${historyModelItem.userId}');
-  //         print('ClientId: ${historyModelItem.clientId}');
-  //         print('NamaClient: ${historyModelItem.namaClient}');
-  //         print('NamaUser: ${historyModelItem.namaUser}');
-  //       }
-  //     } else {
-  //       // API call failed or returned an error status code
-  //       print('API call failed with status code: ${response.statusCode}');
-  //     }
-  //   } catch (e) {
-  //     // Error occurred during API call
-  //     print('Error: $e');
-  //   }
-  // }
-
   Future<void> getHistory() async {
+    print('gethistory');
     steps.clear();
     final apiurl =
         "http://116.68.252.201:1945/DataHistoryANDDistributeWithUSERID/${widget.id}";
@@ -138,9 +56,11 @@ class _historyScreenState extends State<historyScreen> {
             .map((data) => HistoryModel.fromJson(data))
             .toList();
 
+        Map<String, List<HistoryModel2>> groupedHistoryModel2 = {};
+
         setState(() {
-          historyData2 = historyModel2;
           historyData = historyModel;
+          historyData2 = historyModel2;
           steps.add(
             CustomStep(
               historyModel: historyData,
@@ -149,65 +69,7 @@ class _historyScreenState extends State<historyScreen> {
             ),
           );
         });
-        for (var historyModelItem in historyData) {
-          print('Id: ${historyModelItem.Id}');
-          print('DistributeId: ${historyModelItem.distibuteId}');
-          print('NamaToko: ${historyModelItem.namaToko}');
-          print('Alamat: ${historyModelItem.alamat}');
-          print('Time: ${historyModelItem.time}');
-          print('TanggalPickup: ${historyModelItem.tanggalPickup}');
-          print('Status: ${historyModelItem.status}');
-          print('TitikAwal: ${historyModelItem.titikAwal}');
-          print('Destination: ${historyModelItem.destination}');
-          print('OrderId: ${historyModelItem.orderId}');
-          print('NamaItem: ${historyModelItem.namaItem}');
-          print('Jumlah: ${historyModelItem.jumlah}');
-          print('Berat: ${historyModelItem.berat}');
-          print('TanggalMasuk: ${historyModelItem.tanggalMasuk}');
-          print('Gedung: ${historyModelItem.gedung}');
-          print('Aisle: ${historyModelItem.aisle}');
-          print('Place: ${historyModelItem.place}');
-          print('ServiceType: ${historyModelItem.serviceType}');
-          print('RentDriver: ${historyModelItem.rentDriver}');
-          print('TanggalAmbil: ${historyModelItem.tanggalAmbil}');
-          print('Photo: ${historyModelItem.photo}');
-          print('Notes: ${historyModelItem.notes}');
-          print('KendaraanId: ${historyModelItem.kendaraanId}');
-          print('UserId: ${historyModelItem.userId}');
-          print('ClientId: ${historyModelItem.clientId}');
-          print('NamaClient: ${historyModelItem.namaClient}');
-          print('NamaUser: ${historyModelItem.namaUser}');
-        }
-        print("------------------------------------------");
-        for (var historyModelItem in historyData2) {
-          print('Id: ${historyModelItem.Id}');
-          print('DistributeId: ${historyModelItem.distibuteId}');
-          print('NamaToko: ${historyModelItem.namaToko}');
-          print('Alamat: ${historyModelItem.alamat}');
-          print('Time: ${historyModelItem.time}');
-          print('TanggalPickup: ${historyModelItem.tanggalPickup}');
-          print('Status: ${historyModelItem.status}');
-          print('TitikAwal: ${historyModelItem.titikAwal}');
-          print('Destination: ${historyModelItem.destination}');
-          print('OrderId: ${historyModelItem.orderId}');
-          print('NamaItem: ${historyModelItem.namaItem}');
-          print('Jumlah: ${historyModelItem.jumlah}');
-          print('Berat: ${historyModelItem.berat}');
-          print('TanggalMasuk: ${historyModelItem.tanggalMasuk}');
-          print('Gedung: ${historyModelItem.gedung}');
-          print('Aisle: ${historyModelItem.aisle}');
-          print('Place: ${historyModelItem.place}');
-          print('ServiceType: ${historyModelItem.serviceType}');
-          print('RentDriver: ${historyModelItem.rentDriver}');
-          print('TanggalAmbil: ${historyModelItem.tanggalAmbil}');
-          print('Photo: ${historyModelItem.photo}');
-          print('Notes: ${historyModelItem.notes}');
-          print('KendaraanId: ${historyModelItem.kendaraanId}');
-          print('UserId: ${historyModelItem.userId}');
-          print('ClientId: ${historyModelItem.clientId}');
-          print('NamaClient: ${historyModelItem.namaClient}');
-          print('NamaUser: ${historyModelItem.namaUser}');
-        }
+        print(groupedHistoryModel2);
       } else {
         // Handle API call failures or error status codes
         print('API call failed with status code: ${response.statusCode}');
