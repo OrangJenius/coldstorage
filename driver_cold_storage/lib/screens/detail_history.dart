@@ -14,9 +14,25 @@ class DetailHistory extends StatefulWidget {
 }
 
 class _DetailHistoryState extends State<DetailHistory> {
-  void test() {
-    print("historymodel1: ${widget.historyModel}");
-    print("historymodel2: ${widget.historyModel2}");
+  String getLabel(int index) {
+    final labels = [
+      'First',
+      'Second',
+      'Third',
+      'Fourth',
+      'Fifth',
+      'Sixth',
+      'Seventh',
+      'Eighth',
+      'Ninth',
+      'Tenth',
+      'Eleventh',
+      'Twelfth',
+    ];
+    if (index < labels.length) {
+      return labels[index];
+    }
+    return 'Item ${index + 1}';
   }
 
   late LatLng _destLoc = LatLng(37.411374, -122.071204);
@@ -32,8 +48,6 @@ class _DetailHistoryState extends State<DetailHistory> {
   @override
   void initState() {
     super.initState();
-
-    test();
   }
 
   List<Widget> displayItems = [];
@@ -77,9 +91,9 @@ class _DetailHistoryState extends State<DetailHistory> {
                     top: 16,
                   ),
                   child: Text(
-                    "ID :",
+                    getLabel(i),
                     style: TextStyle(
-                        color: Colors.black,
+                        color: Color(0xFF6AD6F9),
                         fontSize: 20,
                         fontWeight: FontWeight.w700,
                         fontFamily: "Sora"),
@@ -88,7 +102,7 @@ class _DetailHistoryState extends State<DetailHistory> {
                 Padding(
                   padding: const EdgeInsets.only(top: 16, left: 4),
                   child: Text(
-                    "BJE66565612KLOP",
+                    "Stop",
                     style: TextStyle(
                         color: Color(0xFF6AD6F9),
                         fontSize: 20,
