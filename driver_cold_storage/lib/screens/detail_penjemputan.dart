@@ -523,6 +523,9 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                     shrinkWrap: true,
                     itemCount: items.length,
                     itemBuilder: (context, index) {
+                      print("hahaaha");
+                      print(items.length);
+                      print(items);
                       return Container(
                         padding: EdgeInsets.only(
                           left: 16,
