@@ -156,7 +156,7 @@ class _homePengawasState extends State<HomePengawas> {
             Stack(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
+                  padding: const EdgeInsets.only(left: 16, right: 16, top: 24),
                   child: AnimatedContainer(
                     duration: Duration(milliseconds: 300),
                     width: 380,
@@ -309,7 +309,7 @@ class _homePengawasState extends State<HomePengawas> {
                   ),
                 ),
                 Positioned(
-                  right: 10, // Posisi dari kiri
+                  right: 5, // Posisi dari kiri
                   top: 0, // Posisi dari atas
                   child: Stack(
                     alignment: Alignment.center,

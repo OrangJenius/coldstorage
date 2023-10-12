@@ -5,8 +5,8 @@ import 'linePainter.dart';
 import 'package:driver_cold_storage/models/historyModel.dart';
 
 class CustomStep extends StatefulWidget {
-  final List<HistoryModel> historyModel;
-  final List<HistoryModel2> historyModel2;
+  final List<HistoryModel>? historyModel;
+  final List<HistoryModel2>? historyModel2;
   final DateTime? selectedDate;
   final String? selectedStatus;
   final String? idHistory;
@@ -33,7 +33,7 @@ class _CustomStepState extends State<CustomStep> {
 
     displayItems.clear(); // Clear the existing display items
 
-    List<HistoryModel> filteredHistory = widget.historyModel;
+    List<HistoryModel> filteredHistory = widget.historyModel!;
 
     if (widget.selectedDate != null) {
       filteredHistory = filteredHistory.where((history) {
@@ -47,6 +47,7 @@ class _CustomStepState extends State<CustomStep> {
         }
         return false;
       }).toList();
+      print(filteredHistory);
     } else if (widget.selectedStatus != null &&
         widget.selectedStatus != 'All') {
       filteredHistory = filteredHistory.where((history) {
@@ -54,14 +55,20 @@ class _CustomStepState extends State<CustomStep> {
                 history.status == 'Distribute') ||
             (widget.selectedStatus == 'Pickup' && history.status == 'Pickup');
       }).toList();
+      print(filteredHistory);
     } else if (widget.idHistory != null) {
       filteredHistory = filteredHistory.where((history) {
         return history.Id.toLowerCase()
             .contains(widget.idHistory!.toLowerCase());
       }).toList();
+      print(filteredHistory);
     }
 
     print('Filtered History Count: ${filteredHistory.length}');
+    // print(filteredHistory[0].Id);
+    // print(filteredHistory[0].orderId);
+    // print(filteredHistory[1].Id);
+    // print(filteredHistory[1].orderId);
 
     for (int groupIndex = 0;
         groupIndex < filteredHistory.length;
@@ -110,7 +117,7 @@ class _CustomStepState extends State<CustomStep> {
                     ),
                   ),
                   Text(
-                    '${filteredHistory[filteredHistory.length - groupIndex - 1].Id}', // Display the id for the group
+                    '${filteredHistory[groupIndex].Id}', // Display the id for the group
                     style: TextStyle(
                       fontSize: 18,
                       fontFamily: 'Sora',
@@ -130,67 +137,67 @@ class _CustomStepState extends State<CustomStep> {
       );
 
       for (int i = 0; i < indexOrder[groupIndex].length; i++) {
-        List<String> penerima = [];
+        List<HistoryModel2> penerima = [];
 
         if (indexOrder[groupIndex].length > 1) {
           for (int j = 0; j < indexOrder[groupIndex].length; j++) {
-            if (widget.historyModel2[j].Id == filteredHistory[groupIndex].Id) {
-              String temp = "";
-              temp = widget.historyModel2[j].namaClient;
+            if (widget.historyModel2![j].Id == filteredHistory[groupIndex].Id) {
+              HistoryModel2 temp;
+              temp = widget.historyModel2![j];
               penerima.add(temp);
             }
           }
         } else {
-          for (int j = 0; j < widget.historyModel2.length; j++) {
-            if (widget.historyModel2[j].Id == filteredHistory[groupIndex].Id) {
-              String temp = "";
-              temp = widget.historyModel2[j].namaClient;
+          for (int j = 0; j < widget.historyModel2!.length; j++) {
+            if (widget.historyModel2![j].Id == filteredHistory[groupIndex].Id) {
+              HistoryModel2 temp;
+              temp = widget.historyModel2![j];
               penerima.add(temp);
               break; // Stop searching once a match is found
             }
           }
         }
         displayItems.add(
-          Container(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Icon(
-                      Icons.circle,
-                      color: Color(0xFF6AD6F9),
-                    ),
-                    SizedBox(width: 8),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 8.0),
-                      child: Text(
-                        indexTime[groupIndex][i],
-                        style: TextStyle(
-                          fontFamily: 'Sora',
-                          fontWeight: FontWeight.w700,
-                          fontSize: 15,
-                          color: Color(0xFF6AD6F9),
+          InkWell(
+            onTap: () => {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => DetailHistory(
+                    historyModel: [filteredHistory[groupIndex]],
+                    historyModel2: penerima,
+                  ),
+                ),
+              )
+            },
+            child: Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Icon(
+                        Icons.circle,
+                        color: Color(0xFF6AD6F9),
+                      ),
+                      SizedBox(width: 8),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: Text(
+                          indexTime[groupIndex][i],
+                          style: TextStyle(
+                            fontFamily: 'Sora',
+                            fontWeight: FontWeight.w700,
+                            fontSize: 15,
+                            color: Color(0xFF6AD6F9),
+                          ),
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      width: 8,
-                    ),
-                    Expanded(
-                      child: InkWell(
-                        onTap: () => {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => DetailHistory(
-                                historyModel: [filteredHistory[groupIndex]],
-                                historyModel2: [widget.historyModel2[i]],
-                              ),
-                            ),
-                          )
-                        },
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Expanded(
                         child: Container(
                           width: 240,
                           decoration: BoxDecoration(
@@ -242,7 +249,7 @@ class _CustomStepState extends State<CustomStep> {
                                         ),
                                       ),
                                       Text(
-                                        "penerima: ${penerima[i]}",
+                                        "penerima: ${penerima[i].namaClient}",
                                         style: TextStyle(
                                           fontFamily: 'Sora',
                                           color: Color(0xFF989898),
@@ -267,18 +274,18 @@ class _CustomStepState extends State<CustomStep> {
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                if (i < indexOrder[groupIndex].length - 1)
-                  Container(
-                    padding: EdgeInsets.only(left: 11.5),
-                    child: CustomPaint(
-                      size: Size(0, 80),
-                      painter: LinePainter(),
-                    ),
+                    ],
                   ),
-              ],
+                  if (i < indexOrder[groupIndex].length - 1)
+                    Container(
+                      padding: EdgeInsets.only(left: 11.5),
+                      child: CustomPaint(
+                        size: Size(0, 80),
+                        painter: LinePainter(),
+                      ),
+                    ),
+                ],
+              ),
             ),
           ),
         );
@@ -286,9 +293,9 @@ class _CustomStepState extends State<CustomStep> {
 
       displayItems.add(
         Padding(
-          padding: const EdgeInsets.only(top: 16),
+          padding: const EdgeInsets.only(top: 24),
           child: Divider(
-            height: 1,
+            thickness: 1,
             color: Colors.grey,
           ),
         ),

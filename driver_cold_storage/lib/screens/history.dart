@@ -26,7 +26,6 @@ class _historyScreenState extends State<historyScreen> {
 
   Future<void> getHistory() async {
     print('gethistory');
-    steps.clear();
     final apiurl =
         "http://116.68.252.201:1945/DataHistoryANDDistributeWithUSERID/${widget.id}";
 
@@ -67,9 +66,6 @@ class _historyScreenState extends State<historyScreen> {
             CustomStep(
               historyModel: historyData,
               historyModel2: historyData2,
-              selectedDate: pickedDate,
-              selectedStatus: selectedStatus,
-              idHistory: idHistory,
             ),
           );
         });
@@ -83,6 +79,19 @@ class _historyScreenState extends State<historyScreen> {
       // Handle errors that occur during API calls
       print('Error: $e');
     }
+  }
+
+  void filterData() {
+    steps.clear();
+    steps.add(
+      CustomStep(
+        historyModel: historyData,
+        historyModel2: historyData2,
+        selectedDate: pickedDate,
+        selectedStatus: selectedStatus,
+        idHistory: idHistory,
+      ),
+    );
   }
 
   @override
@@ -105,7 +114,7 @@ class _historyScreenState extends State<historyScreen> {
         idHistory = null;
         searchIdController.text = "";
         pickedDate = newDate;
-        getHistory();
+        filterData();
       });
     }
   }
@@ -189,8 +198,8 @@ class _historyScreenState extends State<historyScreen> {
                         onChanged: (value) => {
                           pickedDate = null,
                           selectedStatus = null,
-                          idHistory = value,
-                          getHistory(),
+                          idHistory = value.toLowerCase(),
+                          filterData(),
                         },
                         decoration: InputDecoration(
                           focusedBorder: OutlineInputBorder(
@@ -247,7 +256,7 @@ class _historyScreenState extends State<historyScreen> {
                           searchIdController.text = "";
                           idHistory = null;
                           pickedDate = null;
-                          getHistory();
+                          filterData();
                         });
                       },
                       itemBuilder: (BuildContext context) {

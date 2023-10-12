@@ -14,6 +14,11 @@ class DetailHistory extends StatefulWidget {
 }
 
 class _DetailHistoryState extends State<DetailHistory> {
+  void test() {
+    print("historymodel1: ${widget.historyModel}");
+    print("historymodel2: ${widget.historyModel2}");
+  }
+
   late LatLng _destLoc = LatLng(37.411374, -122.071204);
   final List<String> image = [
     'assets/gambar.jpg',
@@ -23,8 +28,424 @@ class _DetailHistoryState extends State<DetailHistory> {
     'assets/gambar.jpg',
     'assets/gambar.jpg',
   ];
+
+  @override
+  void initState() {
+    super.initState();
+
+    test();
+  }
+
+  List<Widget> displayItems = [];
+
   @override
   Widget build(BuildContext context) {
+    displayItems.clear();
+
+    for (int i = 0; i < widget.historyModel2.length; i++) {
+      List<List<String>> locations = [];
+      for (int j = 0; j < widget.historyModel.length; j++) {
+        List<String> temp = (widget.historyModel[j].destination.contains(';')
+            ? widget.historyModel[j].destination.split(';')
+            : [widget.historyModel[j].destination]);
+
+        for (int k = 0; k < temp.length; k++) {
+          temp[k] = temp[k].replaceAll("(", "").replaceAll(")", "");
+        }
+
+        locations.add(temp);
+        print("Lokasi: ${locations[0][j]}");
+      }
+      List<String> lokasi = locations[0][i].split(',');
+
+      lokasi[0] = lokasi[0].replaceAll("(", "").replaceAll(")", "");
+      lokasi[1] = lokasi[1].replaceAll("(", "").replaceAll(")", "");
+
+      print("Lokasi ${lokasi[0]}");
+      print("Lokasi ${lokasi[1]}");
+      _destLoc = LatLng(double.parse(lokasi[0]), double.parse(lokasi[1]));
+
+      displayItems.add(
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 16,
+                    top: 16,
+                  ),
+                  child: Text(
+                    "ID :",
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                        fontFamily: "Sora"),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 16, left: 4),
+                  child: Text(
+                    "BJE66565612KLOP",
+                    style: TextStyle(
+                        color: Color(0xFF6AD6F9),
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                        fontFamily: "Sora"),
+                  ),
+                ),
+              ],
+            ),
+            Container(
+              padding: EdgeInsets.all(16),
+              height: 200,
+              child: GoogleMap(
+                zoomControlsEnabled: false,
+                initialCameraPosition: CameraPosition(
+                  zoom: 13.5,
+                  target: _destLoc,
+                ),
+                markers: {
+                  Marker(
+                    markerId: const MarkerId('destination'),
+                    position: _destLoc,
+                    infoWindow: const InfoWindow(title: 'Destination Location'),
+                  ),
+                },
+                onMapCreated: (GoogleMapController controller) {
+                  // Remove the setState call from this method
+                  // as it is not required
+                },
+              ),
+            ),
+            Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: 16),
+                  child: Text(
+                    "Customer",
+                    style: TextStyle(
+                      fontFamily: 'Sora',
+                      fontSize: 20,
+                      fontWeight: FontWeight.w400,
+                      color: Color(0xFF505050),
+                    ),
+                  ),
+                ),
+                Expanded(child: SizedBox()),
+                Padding(
+                  padding: EdgeInsets.only(right: 16),
+                  child: Text(
+                    widget.historyModel2[i].namaClient,
+                    style: TextStyle(
+                      fontFamily: 'Sora',
+                      fontSize: 18,
+                      fontWeight: FontWeight.w400,
+                      color: Color(0xFF505050),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 16,
+            ),
+            Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: 16),
+                  child: Text(
+                    "Service",
+                    style: TextStyle(
+                      fontFamily: 'Sora',
+                      fontSize: 20,
+                      fontWeight: FontWeight.w400,
+                      color: Color(0xFF505050),
+                    ),
+                  ),
+                ),
+                Expanded(child: SizedBox()),
+                Padding(
+                  padding: EdgeInsets.only(right: 16),
+                  child: Text(
+                    widget.historyModel2[i].serviceType,
+                    style: TextStyle(
+                      fontFamily: 'Sora',
+                      fontSize: 18,
+                      fontWeight: FontWeight.w400,
+                      color: Color(0xFF505050),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 16,
+            ),
+            Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: 16),
+                  child: Text(
+                    "Receiver",
+                    style: TextStyle(
+                      fontFamily: 'Sora',
+                      fontSize: 20,
+                      fontWeight: FontWeight.w400,
+                      color: Color(0xFF505050),
+                    ),
+                  ),
+                ),
+                Expanded(child: SizedBox()),
+                Padding(
+                  padding: EdgeInsets.only(right: 16),
+                  child: Text(
+                    widget.historyModel2[i].namaClient,
+                    style: TextStyle(
+                      fontFamily: 'Sora',
+                      fontSize: 18,
+                      fontWeight: FontWeight.w400,
+                      color: Color(0xFF505050),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 16,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 16.0),
+              child: Container(
+                width: 125,
+                height: 25,
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(
+                            8), // border radius sebesar 30
+                      ),
+                    ),
+                    elevation: MaterialStateProperty.all(5),
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.white),
+                  ),
+                  onPressed: () {
+                    showDialog(
+                        barrierDismissible: false,
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16)),
+                            scrollable: true,
+                            title: Text(
+                              "Details items",
+                              style: TextStyle(
+                                fontFamily: 'Sora',
+                                fontSize: 20,
+                                fontStyle: FontStyle.normal,
+                                fontWeight: FontWeight.w700,
+                                color: Color(0xff6ad6f9),
+                              ),
+                            ),
+                            content: Container(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Text(
+                                        "Quantities",
+                                        style: TextStyle(
+                                          fontFamily: 'Sora',
+                                          fontSize: 14,
+                                          fontStyle: FontStyle.normal,
+                                          fontWeight: FontWeight.w400,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                      Expanded(child: Row()),
+                                      Text(
+                                        widget.historyModel2[i].jumlah
+                                            .toString(),
+                                        style: TextStyle(
+                                          fontFamily: 'Sora',
+                                          fontSize: 14,
+                                          fontStyle: FontStyle.normal,
+                                          fontWeight: FontWeight.w400,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 8,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        "Weights",
+                                        style: TextStyle(
+                                          fontFamily: 'Sora',
+                                          fontSize: 14,
+                                          fontStyle: FontStyle.normal,
+                                          fontWeight: FontWeight.w400,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                      Expanded(child: Row()),
+                                      Text(
+                                        "${widget.historyModel2[i].berat.toString()} Kg",
+                                        style: TextStyle(
+                                          fontFamily: 'Sora',
+                                          fontSize: 14,
+                                          fontStyle: FontStyle.normal,
+                                          fontWeight: FontWeight.w400,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 32,
+                                  ),
+                                  Text(
+                                    widget.historyModel[0].status,
+                                    style: TextStyle(
+                                      fontFamily: 'Sora',
+                                      fontSize: 20,
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.w700,
+                                      color: Color(0xff6ad6f9),
+                                    ),
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        widget.historyModel2[i].namaItem,
+                                        style: TextStyle(
+                                          fontFamily: 'Sora',
+                                          fontSize: 14,
+                                          fontStyle: FontStyle.normal,
+                                          fontWeight: FontWeight.w400,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                      Expanded(child: SizedBox()),
+                                      Text(
+                                        widget.historyModel2[i].jumlah
+                                            .toString(),
+                                        style: TextStyle(
+                                          fontFamily: 'Sora',
+                                          fontSize: 14,
+                                          fontStyle: FontStyle.normal,
+                                          fontWeight: FontWeight.w400,
+                                          color: Colors.black,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                            actions: [
+                              Center(
+                                child: ElevatedButton(
+                                    style: ButtonStyle(
+                                      shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                            side: BorderSide(
+                                                color: Color(0xff6AD6F9))),
+                                      ),
+                                      elevation: MaterialStateProperty.all(5),
+                                      backgroundColor:
+                                          MaterialStateProperty.all<Color>(
+                                              Colors.white),
+                                    ),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text(
+                                      "Go back",
+                                      style: TextStyle(
+                                        fontFamily: 'Sora',
+                                        fontSize: 14,
+                                        fontStyle: FontStyle.normal,
+                                        fontWeight: FontWeight.w400,
+                                        color: Color(0xff6AD6F9),
+                                      ),
+                                    )),
+                              )
+                            ],
+                          );
+                        });
+                  },
+                  child: Text(
+                    "Details items",
+                    style: TextStyle(
+                      fontFamily: 'Sora',
+                      fontSize: 14,
+                      fontStyle: FontStyle.normal,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xff6ad6f9),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 16,
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 16),
+              child: Text(
+                "Bukti Foto",
+                style: TextStyle(
+                  fontFamily: 'Sora',
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF505050),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                height: 100,
+                child: ListView.builder(
+                  itemCount: image.length,
+                  scrollDirection: Axis.horizontal,
+                  itemExtent: 100,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.only(left: 8, top: 8, right: 8),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Image.asset(
+                          image[index],
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+            Divider(
+              thickness: 1,
+            )
+          ],
+        ),
+      );
+    }
+
     return Scaffold(
       body: SafeArea(
           child: Scrollbar(
@@ -48,370 +469,8 @@ class _DetailHistoryState extends State<DetailHistory> {
                       fontFamily: "Sora"),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: Divider(
-                  height: 1, // Atur tinggi garis sesuai kebutuhan
-                  color: Colors.grey, // Atur warna garis sesuai kebutuhan
-                ),
-              ),
-              ListView.builder(
-                shrinkWrap: true,
-                itemCount: 2,
-                scrollDirection: Axis.vertical,
-                itemBuilder: (context, index) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              left: 16,
-                              top: 16,
-                            ),
-                            child: Text(
-                              "ID :",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w700,
-                                  fontFamily: "Sora"),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 16, left: 4),
-                            child: Text(
-                              "BJE66565612KLOP",
-                              style: TextStyle(
-                                  color: Color(0xFF6AD6F9),
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w700,
-                                  fontFamily: "Sora"),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Container(
-                        padding: EdgeInsets.all(16),
-                        height: 200,
-                        child: Expanded(
-                          child: GoogleMap(
-                            zoomControlsEnabled: false,
-                            initialCameraPosition: CameraPosition(
-                              zoom: 13.5,
-                              target: _destLoc,
-                            ),
-                            markers: {
-                              Marker(
-                                markerId: const MarkerId('destination'),
-                                position: _destLoc,
-                                infoWindow: const InfoWindow(
-                                    title: 'Destination Location'),
-                              ),
-                            },
-                            onMapCreated: (GoogleMapController controller) {
-                              // Remove the setState call from this method
-                              // as it is not required
-                            },
-                          ),
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(left: 16),
-                            child: Text(
-                              "Customer",
-                              style: TextStyle(
-                                fontFamily: 'Sora',
-                                fontSize: 20,
-                                fontWeight: FontWeight.w400,
-                                color: Color(0xFF505050),
-                              ),
-                            ),
-                          ),
-                          Expanded(child: Container()),
-                          Padding(
-                            padding: EdgeInsets.only(right: 16),
-                            child: Text(
-                              "Budianto",
-                              style: TextStyle(
-                                fontFamily: 'Sora',
-                                fontSize: 18,
-                                fontWeight: FontWeight.w400,
-                                color: Color(0xFF505050),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      Row(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(left: 16),
-                            child: Text(
-                              "Service",
-                              style: TextStyle(
-                                fontFamily: 'Sora',
-                                fontSize: 20,
-                                fontWeight: FontWeight.w400,
-                                color: Color(0xFF505050),
-                              ),
-                            ),
-                          ),
-                          Expanded(child: Container()),
-                          Padding(
-                            padding: EdgeInsets.only(right: 16),
-                            child: Text(
-                              "Door to port",
-                              style: TextStyle(
-                                fontFamily: 'Sora',
-                                fontSize: 18,
-                                fontWeight: FontWeight.w400,
-                                color: Color(0xFF505050),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      Row(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(left: 16),
-                            child: Text(
-                              "Jenis",
-                              style: TextStyle(
-                                fontFamily: 'Sora',
-                                fontSize: 20,
-                                fontWeight: FontWeight.w400,
-                                color: Color(0xFF505050),
-                              ),
-                            ),
-                          ),
-                          Expanded(child: Container()),
-                          Padding(
-                            padding: EdgeInsets.only(right: 16),
-                            child: Text(
-                              "Daging Ayam",
-                              style: TextStyle(
-                                fontFamily: 'Sora',
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xFF505050),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      Row(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(left: 16),
-                            child: Text(
-                              "Items",
-                              style: TextStyle(
-                                fontFamily: 'Sora',
-                                fontSize: 20,
-                                fontWeight: FontWeight.w400,
-                                color: Color(0xFF505050),
-                              ),
-                            ),
-                          ),
-                          Expanded(child: Container()),
-                          Padding(
-                            padding: EdgeInsets.only(right: 16),
-                            child: Text(
-                              "20",
-                              style: TextStyle(
-                                fontFamily: 'Sora',
-                                fontSize: 18,
-                                fontWeight: FontWeight.w400,
-                                color: Color(0xFF505050),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      Row(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(left: 16),
-                            child: Text(
-                              "Weights",
-                              style: TextStyle(
-                                fontFamily: 'Sora',
-                                fontSize: 20,
-                                fontWeight: FontWeight.w400,
-                                color: Color(0xFF505050),
-                              ),
-                            ),
-                          ),
-                          Expanded(child: Container()),
-                          Padding(
-                            padding: EdgeInsets.only(right: 16),
-                            child: Text(
-                              "10 Kg",
-                              style: TextStyle(
-                                fontFamily: 'Sora',
-                                fontSize: 18,
-                                fontWeight: FontWeight.w400,
-                                color: Color(0xFF505050),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      Row(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(left: 16),
-                            child: Text(
-                              "Receiver",
-                              style: TextStyle(
-                                fontFamily: 'Sora',
-                                fontSize: 20,
-                                fontWeight: FontWeight.w400,
-                                color: Color(0xFF505050),
-                              ),
-                            ),
-                          ),
-                          Expanded(child: Container()),
-                          Padding(
-                            padding: EdgeInsets.only(right: 16),
-                            child: Text(
-                              "Budianto",
-                              style: TextStyle(
-                                fontFamily: 'Sora',
-                                fontSize: 18,
-                                fontWeight: FontWeight.w400,
-                                color: Color(0xFF505050),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      Row(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(left: 16),
-                            child: Text(
-                              "Tanggal Pengiriman",
-                              style: TextStyle(
-                                fontFamily: 'Sora',
-                                fontSize: 20,
-                                fontWeight: FontWeight.w400,
-                                color: Color(0xFF505050),
-                              ),
-                            ),
-                          ),
-                          Expanded(child: Container()),
-                          Padding(
-                            padding: EdgeInsets.only(right: 16),
-                            child: Text(
-                              "20-06-2023",
-                              style: TextStyle(
-                                fontFamily: 'Sora',
-                                fontSize: 18,
-                                fontWeight: FontWeight.w400,
-                                color: Color(0xFF505050),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      Row(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(left: 16),
-                            child: Text(
-                              "Tanggal Sampai",
-                              style: TextStyle(
-                                fontFamily: 'Sora',
-                                fontSize: 20,
-                                fontWeight: FontWeight.w400,
-                                color: Color(0xFF505050),
-                              ),
-                            ),
-                          ),
-                          Expanded(child: Container()),
-                          Padding(
-                            padding: EdgeInsets.only(right: 16),
-                            child: Text(
-                              "30-06-2023",
-                              style: TextStyle(
-                                fontFamily: 'Sora',
-                                fontSize: 18,
-                                fontWeight: FontWeight.w400,
-                                color: Color(0xFF505050),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 16),
-                        child: Text(
-                          "Bukti Foto",
-                          style: TextStyle(
-                            fontFamily: 'Sora',
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF505050),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          height: 100,
-                          child: ListView.builder(
-                            itemCount: image.length,
-                            scrollDirection: Axis.horizontal,
-                            itemExtent: 100,
-                            itemBuilder: (context, index) {
-                              return Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 8, top: 8, right: 8),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(8),
-                                  child: Image.asset(
-                                    image[index],
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                      ),
-                    ],
-                  );
-                },
+              Column(
+                children: displayItems,
               ),
               Padding(
                 padding: EdgeInsets.symmetric(

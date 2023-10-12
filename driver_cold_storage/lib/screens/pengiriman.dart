@@ -112,7 +112,7 @@ class _pengirimanScreenState extends State<pengirimanScreen> {
                   ),
           ),
           Container(
-            height: 350,
+            height: 450,
             decoration: BoxDecoration(
               color: Color(0xff6ad6f9),
               borderRadius: BorderRadius.only(
