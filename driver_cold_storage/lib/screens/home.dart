@@ -71,6 +71,7 @@ class _homeScreenState extends State<homeScreen> {
             groupedData[item.Distribute_Id]!.add(item);
           }
         }
+        print(groupedData);
 
         countDistribute = 0; // Reset countDistribute menjadi 0
         countPickup = 0; // Reset countPickup menjadi 0
@@ -654,6 +655,7 @@ class _homeScreenState extends State<homeScreen> {
                           index); // Ambil Distribute_Id berdasarkan indeks
                       List<PengantaranModel>? items =
                           sortedGroupedData[distributeId];
+
                       final pengantaranItem = items![0];
 
                       String timeString = pengantaranItem.Time
@@ -678,10 +680,6 @@ class _homeScreenState extends State<homeScreen> {
                           .map((item) => item.Berat)
                           .reduce((a, b) => a + b);
 
-                      final totalJumlah = items
-                          .map((item) => item.Jumlah)
-                          .reduce((a, b) => a + b);
-
                       String itemDate = DateFormat('dd')
                           .format(pengantaranItem.Tanggal_PickUp.toLocal());
 
@@ -698,6 +696,12 @@ class _homeScreenState extends State<homeScreen> {
                               .map((quantity) => quantity.trim())
                               .toList()
                           : [];
+
+                      int totalJumlah = 0;
+
+                      for (String angka in quantitiesList) {
+                        totalJumlah += int.parse(angka);
+                      }
 
                       if (itemDate == tanggal[selectedIndex ?? 0]) {
                         return Column(
@@ -859,7 +863,7 @@ class _homeScreenState extends State<homeScreen> {
                                                     children: [
                                                       for (int index = 0;
                                                           index <
-                                                              quantitiesList
+                                                              NamaTokoList
                                                                   .length;
                                                           index++)
                                                         Row(

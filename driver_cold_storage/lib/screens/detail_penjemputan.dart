@@ -55,8 +55,11 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
 
     final totalBerat = items.map((item) => item.Berat).reduce((a, b) => a + b);
 
-    final totalJumlah =
-        items.map((item) => item.Jumlah).reduce((a, b) => a + b);
+    int totalJumlah = 0;
+
+    for (String angka in quantitiesList) {
+      totalJumlah += int.parse(angka);
+    }
 
     List<String> NamaTokoList = items.isNotEmpty
         ? items.first.Nama_Toko
@@ -211,24 +214,31 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                 ],
               ),
               Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.end,
-                children: items
-                    .sublist(
-                        1) // Skip the first item and get the rest of the items
-                    .map((item) {
-                  return Padding(
-                    padding: EdgeInsets.only(right: 16),
-                    child: Text(
-                      item.Client,
-                      style: TextStyle(
-                        fontFamily: 'Sora',
-                        fontSize: 18,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xFF505050),
-                      ),
-                    ),
-                  );
-                }).toList(),
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: items
+                        .sublist(
+                            1) // Skip the first item and get the rest of the items
+                        .map((item) {
+                      return Padding(
+                        padding: EdgeInsets.only(right: 16),
+                        child: Text(
+                          item.Client,
+                          style: TextStyle(
+                            fontFamily: 'Sora',
+                            fontSize: 18,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xFF505050),
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ],
               ),
               SizedBox(
                 height: 16,
@@ -262,24 +272,30 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                 ],
               ),
               Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.end,
-                children: items
-                    .sublist(
-                        1) // Skip the first item and get the rest of the items
-                    .map((item) {
-                  return Padding(
-                    padding: EdgeInsets.only(right: 16),
-                    child: Text(
-                      item.Service_Type,
-                      style: TextStyle(
-                        fontFamily: 'Sora',
-                        fontSize: 18,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xFF505050),
-                      ),
-                    ),
-                  );
-                }).toList(),
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: items
+                        .sublist(
+                            1) // Skip the first item and get the rest of the items
+                        .map((item) {
+                      return Padding(
+                        padding: EdgeInsets.only(right: 16),
+                        child: Text(
+                          item.Service_Type,
+                          style: TextStyle(
+                            fontFamily: 'Sora',
+                            fontSize: 18,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xFF505050),
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ],
               ),
               SizedBox(
                 height: 16,
