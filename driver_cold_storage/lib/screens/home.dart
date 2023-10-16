@@ -71,6 +71,7 @@ class _homeScreenState extends State<homeScreen> {
             groupedData[item.Distribute_Id]!.add(item);
           }
         }
+        print(groupedData);
 
         countDistribute = 0; // Reset countDistribute menjadi 0
         countPickup = 0; // Reset countPickup menjadi 0
@@ -654,6 +655,7 @@ class _homeScreenState extends State<homeScreen> {
                           index); // Ambil Distribute_Id berdasarkan indeks
                       List<PengantaranModel>? items =
                           sortedGroupedData[distributeId];
+
                       final pengantaranItem = items![0];
 
                       String timeString = pengantaranItem.Time
@@ -678,10 +680,6 @@ class _homeScreenState extends State<homeScreen> {
                           .map((item) => item.Berat)
                           .reduce((a, b) => a + b);
 
-                      final totalJumlah = items
-                          .map((item) => item.Jumlah)
-                          .reduce((a, b) => a + b);
-
                       String itemDate = DateFormat('dd')
                           .format(pengantaranItem.Tanggal_PickUp.toLocal());
 
@@ -698,6 +696,33 @@ class _homeScreenState extends State<homeScreen> {
                               .map((quantity) => quantity.trim())
                               .toList()
                           : [];
+
+                      int totalJumlah = 0;
+
+                      for (String angka in quantitiesList) {
+                        totalJumlah += int.parse(angka);
+                      }
+                      Map<String, List<int>> groupedQuantities = {};
+
+                      for (int i = 0; i < NamaTokoList.length; i++) {
+                        String namaToko = NamaTokoList[i];
+                        int quantity = int.parse(quantitiesList[i]);
+
+                        if (groupedQuantities.containsKey(namaToko)) {
+                          // If the store name already exists in the map, add the quantity to the existing list
+                          groupedQuantities[namaToko]!.add(quantity);
+                        } else {
+                          // If the store name is encountered for the first time, create a new list in the map
+                          groupedQuantities[namaToko] = [quantity];
+                        }
+                      }
+
+// Extract unique store names and merged quantities
+                      List<String> uniqueStoreNames =
+                          groupedQuantities.keys.toList();
+                      List<List<int>> mergedQuantitiesList = uniqueStoreNames
+                          .map((namaToko) => groupedQuantities[namaToko]!)
+                          .toList();
 
                       if (itemDate == tanggal[selectedIndex ?? 0]) {
                         return Column(
@@ -859,7 +884,7 @@ class _homeScreenState extends State<homeScreen> {
                                                     children: [
                                                       for (int index = 0;
                                                           index <
-                                                              quantitiesList
+                                                              uniqueStoreNames
                                                                   .length;
                                                           index++)
                                                         Row(
@@ -867,7 +892,7 @@ class _homeScreenState extends State<homeScreen> {
                                                             Column(
                                                               children: [
                                                                 Text(
-                                                                  '${quantitiesList[index]} pcs',
+                                                                  '${mergedQuantitiesList[index].join(', ')} pcs',
                                                                   style:
                                                                       TextStyle(
                                                                     color: Colors
@@ -912,7 +937,7 @@ class _homeScreenState extends State<homeScreen> {
                                                                       top: 8,
                                                                       right: 8),
                                                               child: Text(
-                                                                NamaTokoList[
+                                                                uniqueStoreNames[
                                                                     index],
                                                                 style:
                                                                     TextStyle(
@@ -952,8 +977,10 @@ class _homeScreenState extends State<homeScreen> {
                                             ..._buildDetailColumn("Weight",
                                                 totalBerat.toString()),
                                             SizedBox(height: 8),
-                                            ..._buildDetailColumn("Stops",
-                                                NamaTokoList.length.toString()),
+                                            ..._buildDetailColumn(
+                                                "Stops",
+                                                uniqueStoreNames.length
+                                                    .toString()),
                                           ],
                                         ),
                                       ),
