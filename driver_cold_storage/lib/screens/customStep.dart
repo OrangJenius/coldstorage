@@ -12,8 +12,8 @@ class CustomStep extends StatefulWidget {
   final String? idHistory;
 
   CustomStep({
-    required this.historyModel,
-    required this.historyModel2,
+    this.historyModel,
+    this.historyModel2,
     this.selectedDate,
     this.selectedStatus,
     this.idHistory,
@@ -24,6 +24,11 @@ class CustomStep extends StatefulWidget {
 }
 
 class _CustomStepState extends State<CustomStep> {
+  @override
+  void test() {
+    print("Filtering by ID4: ${widget.idHistory}");
+  }
+
   // ...
   List<Widget> displayItems = [];
   // Create an empty list to hold display items
@@ -36,6 +41,7 @@ class _CustomStepState extends State<CustomStep> {
     List<HistoryModel> filteredHistory = widget.historyModel!;
 
     if (widget.selectedDate != null) {
+      print("Filtering by ID2: ${widget.selectedDate}");
       filteredHistory = filteredHistory.where((history) {
         final tanggalPickup = (history.tanggalPickup.toString()).trim();
         if (tanggalPickup.isNotEmpty) {
@@ -50,6 +56,7 @@ class _CustomStepState extends State<CustomStep> {
       print(filteredHistory);
     } else if (widget.selectedStatus != null &&
         widget.selectedStatus != 'All') {
+      print("Filtering by ID3: ${widget.selectedStatus}");
       filteredHistory = filteredHistory.where((history) {
         return (widget.selectedStatus == 'Distribute' &&
                 history.status == 'Distribute') ||
@@ -57,11 +64,13 @@ class _CustomStepState extends State<CustomStep> {
       }).toList();
       print(filteredHistory);
     } else if (widget.idHistory != null) {
+      print("Filtering by ID: ${widget.idHistory}");
       filteredHistory = filteredHistory.where((history) {
         return history.Id.toLowerCase()
             .contains(widget.idHistory!.toLowerCase());
       }).toList();
-      print(filteredHistory);
+      print("Filtered History Count: ${filteredHistory.length}");
+      print(filteredHistory.map((history) => history.Id).toList());
     }
 
     print('Filtered History Count: ${filteredHistory.length}');
@@ -73,6 +82,7 @@ class _CustomStepState extends State<CustomStep> {
     for (int groupIndex = 0;
         groupIndex < filteredHistory.length;
         groupIndex++) {
+      test();
       //memisahkan order, time, nama toko, dan alamat karena pada database disatukan menjadi 1 dan dipisahkan hanya pake ","
       List<List<String>> indexOrder = [];
       List<List<String>> indexTime = [];

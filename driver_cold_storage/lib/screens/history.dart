@@ -62,6 +62,7 @@ class _historyScreenState extends State<historyScreen> {
         setState(() {
           historyData = historyModel;
           historyData2 = historyModel2;
+          steps.clear();
           steps.add(
             CustomStep(
               historyModel: historyData,
@@ -82,16 +83,25 @@ class _historyScreenState extends State<historyScreen> {
   }
 
   void filterData() {
-    steps.clear();
-    steps.add(
-      CustomStep(
-        historyModel: historyData,
-        historyModel2: historyData2,
-        selectedDate: pickedDate,
-        selectedStatus: selectedStatus,
-        idHistory: idHistory,
-      ),
-    );
+    print("Filtering data...");
+    print("pickedDate: $pickedDate");
+    print("selectedStatus: $selectedStatus");
+    print("idHistory: $idHistory");
+    idHistory = idHistory?.trim();
+    setState(() {
+      steps.clear();
+      steps.add(
+        CustomStep(
+          historyModel: historyData,
+          historyModel2: historyData2,
+          selectedDate: pickedDate,
+          selectedStatus: selectedStatus,
+          idHistory: idHistory,
+        ),
+      );
+    });
+
+    print("idHistory2: $idHistory");
   }
 
   @override
@@ -198,7 +208,7 @@ class _historyScreenState extends State<historyScreen> {
                         onChanged: (value) => {
                           pickedDate = null,
                           selectedStatus = null,
-                          idHistory = value.toLowerCase(),
+                          idHistory = value,
                           filterData(),
                         },
                         decoration: InputDecoration(
