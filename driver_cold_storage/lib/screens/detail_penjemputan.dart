@@ -168,6 +168,12 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
 
     List<String> phone = mergedPhoneList.expand((list) => list).toList();
     List<String> address = mergedAddressItem.expand((list) => list).toList();
+
+    List<String> client2 = mergedClientItem
+        .expand((list) => list)
+        .toSet() // Menghapus duplikat dengan Set
+        .toList(); // Kembali ke List
+
     print(uniqueStoreNames);
     print(times);
     print(client);
@@ -284,7 +290,7 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                   Padding(
                     padding: EdgeInsets.only(right: 16),
                     child: Text(
-                      client[0],
+                      client2[0],
                       style: TextStyle(
                         fontFamily: 'Sora',
                         fontSize: 18,
@@ -301,7 +307,7 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                   Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.end,
-                    children: client
+                    children: client2
                         .sublist(
                             1) // Skip the first item and get the rest of the items
                         .map((item) {
@@ -342,7 +348,7 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                   Padding(
                     padding: EdgeInsets.only(right: 16),
                     child: Text(
-                      service[0],
+                      pengantaranItem.Status,
                       style: TextStyle(
                         fontFamily: 'Sora',
                         fontSize: 18,
@@ -352,32 +358,32 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                   ),
                 ],
               ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: service
-                        .sublist(
-                            1) // Skip the first item and get the rest of the items
-                        .map((item) {
-                      return Padding(
-                        padding: EdgeInsets.only(right: 16),
-                        child: Text(
-                          item,
-                          style: TextStyle(
-                            fontFamily: 'Sora',
-                            fontSize: 18,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xFF505050),
-                          ),
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                ],
-              ),
+              // Row(
+              //   crossAxisAlignment: CrossAxisAlignment.end,
+              //   mainAxisAlignment: MainAxisAlignment.end,
+              //   children: [
+              //     Column(
+              //       mainAxisAlignment: MainAxisAlignment.end,
+              //       children: service
+              //           .sublist(
+              //               1) // Skip the first item and get the rest of the items
+              //           .map((item) {
+              //         return Padding(
+              //           padding: EdgeInsets.only(right: 16),
+              //           child: Text(
+              //             item,
+              //             style: TextStyle(
+              //               fontFamily: 'Sora',
+              //               fontSize: 18,
+              //               fontWeight: FontWeight.w400,
+              //               color: Color(0xFF505050),
+              //             ),
+              //           ),
+              //         );
+              //       }).toList(),
+              //     ),
+              //   ],
+              // ),
               SizedBox(
                 height: 16,
               ),
