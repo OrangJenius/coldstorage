@@ -27,9 +27,9 @@ class _historyScreenState extends State<historyScreen> {
   Future<void> getHistory() async {
     print('gethistory');
     final apiurl =
-        "http://116.68.252.201:1945/DataHistoryANDDistributeWithUSERID/${widget.id}";
+        "http://116.68.252.201:1945/DataHistoryANDDistributeWithUSERIDBaru/${widget.id}";
 
-    final apiurl2 = "http://116.68.252.201:1945/HistoryDriver/${widget.id}";
+    final apiurl2 = "http://116.68.252.201:1945/HistoryDriverBaru/${widget.id}";
     try {
       final response = await http.get(Uri.parse(apiurl));
       final response2 = await http.get(Uri.parse(apiurl2));

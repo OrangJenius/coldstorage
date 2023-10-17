@@ -5,15 +5,15 @@ import 'linePainter.dart';
 import 'package:driver_cold_storage/models/historyModel.dart';
 
 class CustomStep extends StatefulWidget {
-  final List<HistoryModel>? historyModel;
-  final List<HistoryModel2>? historyModel2;
+  final List<HistoryModel> historyModel;
+  final List<HistoryModel2> historyModel2;
   final DateTime? selectedDate;
   final String? selectedStatus;
   final String? idHistory;
 
   CustomStep({
-    this.historyModel,
-    this.historyModel2,
+    required this.historyModel,
+    required this.historyModel2,
     this.selectedDate,
     this.selectedStatus,
     this.idHistory,
@@ -35,6 +35,8 @@ class _CustomStepState extends State<CustomStep> {
   @override
   Widget build(BuildContext context) {
     print('Selected Date: ${widget.selectedDate}');
+    print("panjang data 1: ${widget.historyModel.length}");
+    print("panjang data 2: ${widget.historyModel2.length}");
 
     displayItems.clear(); // Clear the existing display items
 
@@ -53,7 +55,6 @@ class _CustomStepState extends State<CustomStep> {
         }
         return false;
       }).toList();
-      print(filteredHistory);
     } else if (widget.selectedStatus != null &&
         widget.selectedStatus != 'All') {
       print("Filtering by ID3: ${widget.selectedStatus}");
@@ -149,24 +150,28 @@ class _CustomStepState extends State<CustomStep> {
       for (int i = 0; i < indexOrder[groupIndex].length; i++) {
         List<HistoryModel2> penerima = [];
 
+        print("masuk group ${groupIndex}");
+        print("index order ${indexOrder[groupIndex].length}");
+
         if (indexOrder[groupIndex].length > 1) {
-          for (int j = 0; j < indexOrder[groupIndex].length; j++) {
-            if (widget.historyModel2![j].Id == filteredHistory[groupIndex].Id) {
+          for (int j = 0; j < widget.historyModel2.length; j++) {
+            if (widget.historyModel2[j].Id == filteredHistory[groupIndex].Id) {
               HistoryModel2 temp;
-              temp = widget.historyModel2![j];
+              temp = widget.historyModel2[j];
               penerima.add(temp);
             }
           }
         } else {
-          for (int j = 0; j < widget.historyModel2!.length; j++) {
-            if (widget.historyModel2![j].Id == filteredHistory[groupIndex].Id) {
+          for (int j = 0; j < widget.historyModel2.length; j++) {
+            if (widget.historyModel2[j].Id == filteredHistory[groupIndex].Id) {
               HistoryModel2 temp;
-              temp = widget.historyModel2![j];
+              temp = widget.historyModel2[j];
               penerima.add(temp);
               break; // Stop searching once a match is found
             }
           }
         }
+        print("penerima${i}:  ${penerima[i].namaClient}");
         displayItems.add(
           InkWell(
             onTap: () => {

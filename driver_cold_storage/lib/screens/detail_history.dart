@@ -57,6 +57,8 @@ class _DetailHistoryState extends State<DetailHistory> {
     displayItems.clear();
 
     for (int i = 0; i < widget.historyModel2.length; i++) {
+      print("panjang 2: ${widget.historyModel2.length}");
+      print("panjang 1: ${widget.historyModel.length}");
       List<List<String>> locations = [];
       for (int j = 0; j < widget.historyModel.length; j++) {
         List<String> temp = (widget.historyModel[j].destination.contains(';')
@@ -70,6 +72,10 @@ class _DetailHistoryState extends State<DetailHistory> {
         locations.add(temp);
         print("Lokasi: ${locations[0][j]}");
       }
+      print("loop ${i}");
+      print("test[i] ${locations[0][i]}");
+      print("panjang locations ${locations[0].length}");
+      print("panjang locations 2 ${locations.length}");
       List<String> lokasi = locations[0][i].split(',');
 
       lokasi[0] = lokasi[0].replaceAll("(", "").replaceAll(")", "");
