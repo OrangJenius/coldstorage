@@ -3,6 +3,7 @@ import 'package:driver_cold_storage/screens/formInputPengawas.dart';
 import 'package:driver_cold_storage/screens/home.dart';
 import 'package:driver_cold_storage/screens/homePengawas.dart';
 import 'package:driver_cold_storage/screens/login.dart';
+import 'package:driver_cold_storage/screens/pengiriman.dart';
 import 'package:flutter/material.dart';
 import 'detail_penjemputan.dart';
 import 'forgot_pass.dart';
@@ -26,8 +27,8 @@ class _SplashScreenState extends State<SplashScreen> {
     await Future.delayed(Duration(seconds: 2));
 
     // Navigate to the main screen
-    Navigator.of(context)
-        .pushReplacement(MaterialPageRoute(builder: (context) => Login()));
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => pengirimanScreen()));
   }
 
   @override

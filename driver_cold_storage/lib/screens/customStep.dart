@@ -128,7 +128,7 @@ class _CustomStepState extends State<CustomStep> {
                     ),
                   ),
                   Text(
-                    '${filteredHistory[groupIndex].Id}', // Display the id for the group
+                    '${filteredHistory[groupIndex].orderId}', // Display the id for the group
                     style: TextStyle(
                       fontSize: 18,
                       fontFamily: 'Sora',

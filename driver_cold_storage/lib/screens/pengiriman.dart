@@ -3,8 +3,11 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'linePainter.dart';
+import 'package:camera/camera.dart';
+import 'camerapage.dart';
 
 class pengirimanScreen extends StatefulWidget {
+  const pengirimanScreen({super.key});
   @override
   _pengirimanScreenState createState() => _pengirimanScreenState();
 }
@@ -349,7 +352,16 @@ class _pengirimanScreenState extends State<pengirimanScreen> {
                             color: Colors.white,
                             strokeCap: StrokeCap.round,
                             child: InkWell(
-                              onTap: () => {},
+                              onTap: () async => {
+                                print("tes"),
+                                await availableCameras().then(
+                                  (value) => Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (_) =>
+                                              CameraPage(cameras: value))),
+                                ),
+                              },
                               child: Container(
                                 decoration: BoxDecoration(
                                   color: Color(0xffe0e0e0),
@@ -456,6 +468,9 @@ class _pengirimanScreenState extends State<pengirimanScreen> {
                             ),
                           ],
                         ),
+                        SizedBox(
+                          height: 16,
+                        )
                       ],
                     );
                   }),
