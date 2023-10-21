@@ -22,6 +22,7 @@ class _homeScreenState extends State<homeScreen> {
   List<String> tanggal = [];
   int countDistribute = 0;
   int countPickup = 0;
+  Map<String, List<String>> groupedAttributes = {};
   @override
   void initState() {
     super.initState();
@@ -48,7 +49,7 @@ class _homeScreenState extends State<homeScreen> {
 
   Future<void> fetchPengantaranData() async {
     final apiUrl =
-        'http://116.68.252.201:1945/DataDistributeANDOrderWithUSERID/${widget.userID}';
+        'http://116.68.252.201:1945/DataDistributeWithUSERID/${widget.userID}';
 
     try {
       final response = await http.get(Uri.parse(apiUrl));
@@ -62,16 +63,29 @@ class _homeScreenState extends State<homeScreen> {
             .map((data) => PengantaranModel.fromJson(data))
             .toList();
 
+        // for (PengantaranModel item in pengantaranModel) {
+        //   print(item.Id);
+        //   print(item.Order_Id);
+        //   print(item.Item);
+        //   print(item.Address);
+        //   print(item.Tanggal_PickUp);
+        //   print(item.Time);
+        //   print(item.Quantities);
+        //   print(item.Phone_Number);
+        //   print(item.Status);
+        //   print(item.Titik_Awal);
+        //   print(item.Destination);
+        // }
+
         groupedData.clear();
 
         for (var item in pengantaranModel) {
-          if (!groupedData.containsKey(item.Distribute_Id)) {
-            groupedData[item.Distribute_Id] = [item];
+          if (!groupedData.containsKey(item.Id)) {
+            groupedData[item.Id] = [item];
           } else {
-            groupedData[item.Distribute_Id]!.add(item);
+            groupedData[item.Id]!.add(item);
           }
         }
-        print(groupedData);
 
         countDistribute = 0; // Reset countDistribute menjadi 0
         countPickup = 0; // Reset countPickup menjadi 0
@@ -80,8 +94,7 @@ class _homeScreenState extends State<homeScreen> {
           List<PengantaranModel> items = groupedData[distributeId]!;
 
           for (PengantaranModel item in items) {
-            String itemDate =
-                DateFormat('dd').format(item.Tanggal_PickUp.toLocal());
+            String itemDate = item.Tanggal_PickUp;
 
             // Di sini Anda dapat mengakses dan melakukan operasi pada setiap item
             if (itemDate == tanggal[selectedIndex ?? 0]) {
@@ -122,9 +135,61 @@ class _homeScreenState extends State<homeScreen> {
             final items = groupedData[distributeId];
             sortedGroupedData[distributeId] = items!;
           });
-
-          print(sortedGroupedData);
         });
+
+// Iterasi melalui sortedGroupedData
+        sortedGroupedData.forEach((key, pengantaranModels) {
+          // Ambil atribut yang memiliki keys yang sama dan tambahkan ke dalam list yang sesuai
+          pengantaranModels.forEach((pengantaranModel) {
+            groupedAttributes
+                .putIfAbsent('Id', () => [])
+                .add(pengantaranModel.Id);
+            groupedAttributes
+                .putIfAbsent('Order_Id', () => [])
+                .add(pengantaranModel.Order_Id);
+            groupedAttributes
+                .putIfAbsent('Item', () => [])
+                .add(pengantaranModel.Item);
+            groupedAttributes
+                .putIfAbsent('Address', () => [])
+                .add(pengantaranModel.Address);
+            groupedAttributes
+                .putIfAbsent('Tanggal_PickUp', () => [])
+                .add(pengantaranModel.Tanggal_PickUp);
+            groupedAttributes
+                .putIfAbsent('Time', () => [])
+                .add(pengantaranModel.Time);
+            groupedAttributes
+                .putIfAbsent('Quantities', () => [])
+                .add(pengantaranModel.Quantities);
+            groupedAttributes
+                .putIfAbsent('Phone_Number', () => [])
+                .add(pengantaranModel.Phone_Number);
+            groupedAttributes
+                .putIfAbsent('Status', () => [])
+                .add(pengantaranModel.Status);
+            groupedAttributes
+                .putIfAbsent('Titik_Awal', () => [])
+                .add(pengantaranModel.Titik_Awal);
+            groupedAttributes
+                .putIfAbsent('Destination', () => [])
+                .add(pengantaranModel.Destination);
+            groupedAttributes
+                .putIfAbsent('Nama_Toko', () => [])
+                .add(pengantaranModel.Nama_Toko);
+            groupedAttributes
+                .putIfAbsent('Berat', () => [])
+                .add(pengantaranModel.Berat);
+            groupedAttributes
+                .putIfAbsent('Jumlah', () => [])
+                .add(pengantaranModel.Jumlah);
+            groupedAttributes
+                .putIfAbsent('Nama_Client', () => [])
+                .add(pengantaranModel.Nama_Client);
+          });
+        });
+
+// Hasil groupedAttributes akan berisi nilai-nilai yang digabungkan sesuai dengan keys yang sama
       } else {
         // API call failed or returned an error status code
         print('API call failed with status code: ${response.statusCode}');
@@ -235,14 +300,16 @@ class _homeScreenState extends State<homeScreen> {
                                           0; // Reset countPickup menjadi 0
 
                                       for (String distributeId
-                                          in groupedData.keys) {
+                                          in sortedGroupedData.keys) {
                                         List<PengantaranModel> items =
-                                            groupedData[distributeId]!;
+                                            sortedGroupedData[distributeId]!;
 
                                         for (PengantaranModel item in items) {
-                                          String itemDate = DateFormat('dd')
-                                              .format(item.Tanggal_PickUp
-                                                  .toLocal());
+                                          String itemDate =
+                                              item.Tanggal_PickUp.substring(8);
+
+                                          print(itemDate);
+                                          print(tanggal[selectedIndex ?? 0]);
 
                                           // Di sini Anda dapat mengakses dan melakukan operasi pada setiap item
                                           if (itemDate ==
@@ -671,58 +738,13 @@ class _homeScreenState extends State<homeScreen> {
                       // Now you have the hour and minute separately
                       String formattedTime = "$hour:$minute"; // "hh:mm" format
 
-                      final namaItem = items.map((item) {
-                        return item
-                            .Nama_Item; // Ganti dengan properti yang ingin Anda tampilkan
-                      }).join(', ');
+                      String itemDate =
+                          pengantaranItem.Tanggal_PickUp.substring(8);
+                      print('test1');
+                      print(sortedGroupedData);
+                      print("hahahahha");
 
-                      final totalBerat = items
-                          .map((item) => item.Berat)
-                          .reduce((a, b) => a + b);
-
-                      String itemDate = DateFormat('dd')
-                          .format(pengantaranItem.Tanggal_PickUp.toLocal());
-
-                      List<String> NamaTokoList = items.isNotEmpty
-                          ? items.first.Nama_Toko
-                              .split(',')
-                              .map((namaToko) => namaToko.trim())
-                              .toList()
-                          : [];
-
-                      List<String> quantitiesList = items.isNotEmpty
-                          ? items.first.Quantities
-                              .split(',')
-                              .map((quantity) => quantity.trim())
-                              .toList()
-                          : [];
-
-                      int totalJumlah = 0;
-
-                      for (String angka in quantitiesList) {
-                        totalJumlah += int.parse(angka);
-                      }
-                      Map<String, List<int>> groupedQuantities = {};
-
-                      for (int i = 0; i < NamaTokoList.length; i++) {
-                        String namaToko = NamaTokoList[i];
-                        int quantity = int.parse(quantitiesList[i]);
-
-                        if (groupedQuantities.containsKey(namaToko)) {
-                          // If the store name already exists in the map, add the quantity to the existing list
-                          groupedQuantities[namaToko]!.add(quantity);
-                        } else {
-                          // If the store name is encountered for the first time, create a new list in the map
-                          groupedQuantities[namaToko] = [quantity];
-                        }
-                      }
-
-// Extract unique store names and merged quantities
-                      List<String> uniqueStoreNames =
-                          groupedQuantities.keys.toList();
-                      List<List<int>> mergedQuantitiesList = uniqueStoreNames
-                          .map((namaToko) => groupedQuantities[namaToko]!)
-                          .toList();
+                      print(groupedAttributes);
 
                       if (itemDate == tanggal[selectedIndex ?? 0]) {
                         return Column(
@@ -755,7 +777,7 @@ class _homeScreenState extends State<homeScreen> {
                             ),
                             InkWell(
                               onTap: () {
-                                // Navigasi ke halaman DetailDistribusi
+                                //   Navigasi ke halaman DetailDistribusi
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
                                     builder: (context) => detail_Penjemputan(
@@ -825,7 +847,7 @@ class _homeScreenState extends State<homeScreen> {
                                                 padding: const EdgeInsets.only(
                                                     left: 8, top: 4),
                                                 child: Text(
-                                                  '${DateFormat('yyyy-MM-dd').format(pengantaranItem.Tanggal_PickUp.toLocal())} | ${formattedTime}',
+                                                  '${pengantaranItem.Tanggal_PickUp} | ${formattedTime}',
                                                   style: TextStyle(
                                                     color: Colors.black,
                                                     fontSize: 14,
@@ -836,7 +858,7 @@ class _homeScreenState extends State<homeScreen> {
                                               padding: const EdgeInsets.only(
                                                   left: 8, top: 4),
                                               child: Text(
-                                                namaItem,
+                                                pengantaranItem.Item,
                                                 style: TextStyle(
                                                   color: Colors.black,
                                                   fontSize: 16,
@@ -882,63 +904,28 @@ class _homeScreenState extends State<homeScreen> {
                                                     mainAxisAlignment:
                                                         MainAxisAlignment.end,
                                                     children: [
-                                                      for (int index = 0;
-                                                          index <
-                                                              uniqueStoreNames
-                                                                  .length;
-                                                          index++)
-                                                        Row(
-                                                          children: [
-                                                            Column(
-                                                              children: [
-                                                                Text(
-                                                                  '${mergedQuantitiesList[index].join(', ')} pcs',
-                                                                  style:
-                                                                      TextStyle(
-                                                                    color: Colors
-                                                                        .red,
-                                                                    fontSize:
-                                                                        12,
-                                                                    fontFamily:
-                                                                        "Sora",
-                                                                  ),
-                                                                  maxLines: 1,
-                                                                  overflow:
-                                                                      TextOverflow
-                                                                          .ellipsis,
-                                                                  softWrap:
-                                                                      true,
+                                                      Row(
+                                                        children: [
+                                                          Column(
+                                                            children: [
+                                                              Text(
+                                                                '${pengantaranItem.Quantities} pcs',
+                                                                style:
+                                                                    TextStyle(
+                                                                  color: Colors
+                                                                      .red,
+                                                                  fontSize: 12,
+                                                                  fontFamily:
+                                                                      "Sora",
                                                                 ),
-                                                                Text(
-                                                                  "-----",
-                                                                  style:
-                                                                      TextStyle(
-                                                                    color: Colors
-                                                                        .red,
-                                                                    fontSize:
-                                                                        15,
-                                                                    fontFamily:
-                                                                        "Sora",
-                                                                  ),
-                                                                  maxLines: 1,
-                                                                  overflow:
-                                                                      TextOverflow
-                                                                          .ellipsis,
-                                                                  softWrap:
-                                                                      true,
-                                                                ),
-                                                              ],
-                                                            ),
-                                                            Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .only(
-                                                                      left: 8,
-                                                                      top: 8,
-                                                                      right: 8),
-                                                              child: Text(
-                                                                uniqueStoreNames[
-                                                                    index],
+                                                                maxLines: 1,
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis,
+                                                                softWrap: true,
+                                                              ),
+                                                              Text(
+                                                                "-----",
                                                                 style:
                                                                     TextStyle(
                                                                   color: Colors
@@ -947,13 +934,37 @@ class _homeScreenState extends State<homeScreen> {
                                                                   fontFamily:
                                                                       "Sora",
                                                                 ),
+                                                                maxLines: 1,
                                                                 overflow:
                                                                     TextOverflow
                                                                         .ellipsis,
+                                                                softWrap: true,
                                                               ),
+                                                            ],
+                                                          ),
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .only(
+                                                                    left: 8,
+                                                                    top: 8,
+                                                                    right: 8),
+                                                            child: Text(
+                                                              "Toko wendy",
+                                                              style: TextStyle(
+                                                                color:
+                                                                    Colors.red,
+                                                                fontSize: 15,
+                                                                fontFamily:
+                                                                    "Sora",
+                                                              ),
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
                                                             ),
-                                                          ],
-                                                        ),
+                                                          ),
+                                                        ],
+                                                      ),
                                                     ],
                                                   ),
                                                   SizedBox(width: 8),
@@ -971,16 +982,13 @@ class _homeScreenState extends State<homeScreen> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.center,
                                           children: [
-                                            ..._buildDetailColumn("Items",
-                                                totalJumlah.toString()),
-                                            SizedBox(height: 8),
-                                            ..._buildDetailColumn("Weight",
-                                                totalBerat.toString()),
+                                            ..._buildDetailColumn(
+                                                "Items", "10"),
                                             SizedBox(height: 8),
                                             ..._buildDetailColumn(
-                                                "Stops",
-                                                uniqueStoreNames.length
-                                                    .toString()),
+                                                "Weight", "10kg"),
+                                            SizedBox(height: 8),
+                                            ..._buildDetailColumn("Stops", "2"),
                                           ],
                                         ),
                                       ),

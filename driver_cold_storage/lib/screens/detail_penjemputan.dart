@@ -53,20 +53,11 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
             .toList()
         : [];
 
-    final totalBerat = items.map((item) => item.Berat).reduce((a, b) => a + b);
-
     int totalJumlah = 0;
 
     for (String angka in quantitiesList) {
       totalJumlah += int.parse(angka);
     }
-
-    List<String> NamaTokoList = items.isNotEmpty
-        ? items.first.Nama_Toko
-            .split(',')
-            .map((namaToko) => namaToko.trim())
-            .toList()
-        : [];
 
     List<String> addressList = items.isNotEmpty
         ? items.first.Address
@@ -89,15 +80,9 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
     List<String> totalNamaItem = [];
     List<String> clientItem = [];
     List<String> serviceItem = [];
-    for (PengantaranModel item in items) {
-      totalNamaItem.add(item.Nama_Item);
-      clientItem.add(item.Client);
-      serviceItem.add(item.Service_Type);
-    }
 
     print(time);
     print(totalNamaItem);
-    print(NamaTokoList);
 
     Map<String, List<int>> groupedQuantities = {};
     Map<String, List<String>> groupedTime = {};
@@ -106,40 +91,6 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
     Map<String, List<String>> groupedAddress = {};
     Map<String, List<String>> groupedClient = {};
     Map<String, List<String>> groupedService = {};
-
-    for (int i = 0; i < NamaTokoList.length; i++) {
-      String namaToko = NamaTokoList[i];
-      int quantity = int.parse(quantitiesList[i]);
-      String times = time[i];
-      String namaItem = totalNamaItem[i];
-      String phone = noHPlist[i];
-      String address = addressList[i];
-      String client = clientItem[i];
-      String service = serviceItem[i];
-
-      if (groupedQuantities.containsKey(namaToko)) {
-        // If the store name already exists in the map, add the quantity to the existing list
-        groupedQuantities[namaToko]!.add(quantity);
-        groupedNamaItem[namaToko]!.add(namaItem);
-        // Check if times for this store name has already been added, and if not, add it
-        if (!groupedTime[namaToko]!.contains(times)) {
-          groupedTime[namaToko]!.add(times);
-          groupedPhone[namaToko]!.add(phone);
-          groupedAddress[namaToko]!.add(address);
-          groupedAddress[namaToko]!.add(client);
-          groupedService[namaToko]!.add(service);
-        }
-      } else {
-        // If the store name is encountered for the first time, create a new list in the map
-        groupedQuantities[namaToko] = [quantity];
-        groupedTime[namaToko] = [times];
-        groupedNamaItem[namaToko] = [namaItem];
-        groupedPhone[namaToko] = [phone];
-        groupedAddress[namaToko] = [address];
-        groupedClient[namaToko] = [client];
-        groupedService[namaToko] = [service];
-      }
-    }
 
 // Extract unique store names and merged quantities
     List<String> uniqueStoreNames = groupedQuantities.keys.toList();
@@ -243,7 +194,7 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                         Padding(
                           padding: const EdgeInsets.only(left: 16, top: 8),
                           child: Text(
-                            '${DateFormat('yyyy-MM-dd').format(pengantaranItem.Tanggal_PickUp.toLocal())} | ${formattedTime}',
+                            '${pengantaranItem.Tanggal_PickUp} | ${formattedTime}',
                             style: TextStyle(
                               fontFamily: 'Sora',
                               fontWeight: FontWeight.w400,
@@ -581,7 +532,7 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                   Padding(
                     padding: EdgeInsets.only(right: 16),
                     child: Text(
-                      '${totalBerat.toString()} kg',
+                      '10 kg',
                       style: TextStyle(
                         fontFamily: 'Sora',
                         fontSize: 18,

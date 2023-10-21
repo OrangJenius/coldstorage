@@ -1,127 +1,75 @@
 class PengantaranModel {
-  final String Distribute_Id;
+  final String Id;
   final String Order_Id;
-  final DateTime Tanggal_PickUp;
-  final String Time;
-  final String Customer;
-  final String Quantities;
-  final int Weight;
+  final String Item;
   final String Address;
+  final String Tanggal_PickUp;
+  final String Time;
+  final String Quantities;
   final String Phone_Number;
   final String Status;
   final String Titik_Awal;
   final String Destination;
-  final String Nama_Item;
-  final int Jumlah;
-  final int Berat;
-  final DateTime Tanggal_Masuk;
-  final String Gedung;
-  final String Aisle;
-  final String Place;
-  final String Service_Type;
-  final String Rent_Driver;
-  final DateTime Tanggal_Ambil;
-  final String Foto;
-  final String Notes;
-  final String kendaraan;
-  final String User;
-  final String Client;
   final String Nama_Toko;
+  final String Berat;
+  final String Jumlah;
+  final String Nama_Client;
 
   PengantaranModel({
-    required this.Distribute_Id,
+    required this.Id,
     required this.Order_Id,
+    required this.Item,
+    required this.Address,
     required this.Tanggal_PickUp,
     required this.Time,
-    required this.Customer,
     required this.Quantities,
-    required this.Weight,
-    required this.Address,
     required this.Phone_Number,
     required this.Status,
     required this.Titik_Awal,
     required this.Destination,
-    required this.Nama_Item,
-    required this.Jumlah,
-    required this.Berat,
-    required this.Tanggal_Masuk,
-    required this.Gedung,
-    required this.Aisle,
-    required this.Place,
-    required this.Service_Type,
-    required this.Rent_Driver,
-    required this.Tanggal_Ambil,
-    required this.Foto,
-    required this.Notes,
-    required this.kendaraan,
-    required this.User,
-    required this.Client,
     required this.Nama_Toko,
+    required this.Berat,
+    required this.Jumlah,
+    required this.Nama_Client,
   });
 
   Map<String, dynamic> toJson() {
     return {
-      'Distribute_Id': Distribute_Id,
+      'Id': Id,
       'Order_Id': Order_Id,
-      'Tanggal_PickUp': Tanggal_PickUp.toIso8601String(),
-      'Time': Time,
-      'Customer': Customer,
-      'Quantities': Quantities,
-      'Weight': Weight,
+      'Item': Item,
       'Address': Address,
+      'Tanggal_PickUp': Tanggal_PickUp,
+      'Time': Time,
+      'Quantities': Quantities,
       'Phone_Number': Phone_Number,
       'Status': Status,
       'Titik_Awal': Titik_Awal,
       'Destination': Destination,
-      'Nama_Item': Nama_Item,
-      'Jumlah': Jumlah,
-      'Berat': Berat,
-      'Tanggal_Masuk': Tanggal_Masuk.toIso8601String(),
-      'Gedung': Gedung,
-      'Aisle': Aisle,
-      'Place': Place,
-      'Service_Type': Service_Type,
-      'Rent_Driver': Rent_Driver,
-      'Tanggal_Ambil': Tanggal_Ambil.toIso8601String(),
-      'Notes': Notes,
-      'kendaraan': kendaraan,
-      'User': User,
-      'Client': Client,
       'Nama_Toko': Nama_Toko,
+      'Berat': Berat,
+      'Jumlah': Jumlah,
+      'Nama_Client': Nama_Client,
     };
   }
 
   factory PengantaranModel.fromJson(Map<String, dynamic> json) {
     return PengantaranModel(
-      Distribute_Id:
-          json['Distribute_Id'] ?? '', // Assuming ekspedisi_Id is of type int
+      Id: json['Id'] ?? '', // Assuming ekspedisi_Id is of type int
       Order_Id: json['Order_Id'] ?? '',
-      Tanggal_PickUp: DateTime.parse(json['Tanggal_PickUp'] ?? ''),
-      Time: json['Time'] ?? '',
-      Customer: json['Customer'] ?? '',
-      Quantities: json['Quantities'] ?? '',
-      Weight: json['Weight'] ?? 0,
+      Item: json['Item'] ?? '',
       Address: json['Address'] ?? '',
+      Tanggal_PickUp: json['Tanggal_PickUp'] ?? '',
+      Time: json['Time'] ?? '',
+      Quantities: json['Quantities'] ?? 0,
       Phone_Number: json['Phone_Number'] ?? '',
-      Status: json['Status'],
+      Status: json['Status'] ?? '',
       Titik_Awal: json['Titik_Awal'],
-      Destination: json['Destination'] ?? '',
-      Nama_Item: json['Nama_Item'] ?? '',
-      Jumlah: json['Jumlah'] ?? 0,
-      Berat: json['Berat'] ?? 0,
-      Tanggal_Masuk: DateTime.parse(json['Tanggal_Masuk'] ?? ''),
-      Gedung: json['Gedung'] ?? '',
-      Aisle: json['Aisle'] ?? '',
-      Place: json['Place'] ?? '',
-      Service_Type: json['Service_Type'] ?? '',
-      Rent_Driver: json['Rent_Driver'] ?? '',
-      Tanggal_Ambil: DateTime.parse(json['Tanggal_Ambil'] ?? ''),
-      Foto: json['Foto'] ?? '',
-      Notes: json['Notes'] ?? '',
-      kendaraan: json['kendaraan'] ?? '',
-      User: json['User'] ?? '',
-      Client: json['Client'] ?? '',
-      Nama_Toko: json['Nama_Toko'] ?? '',
+      Destination: json['Destination'],
+      Nama_Toko: json['Nama_Toko'],
+      Berat: json['Berat'],
+      Jumlah: json['Jumlah'],
+      Nama_Client: json['Nama_Client'],
     );
   }
 }
