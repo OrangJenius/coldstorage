@@ -88,8 +88,8 @@ class _CameraPageState extends State<CameraPage> {
                   iconSize: 30,
                   icon: Icon(
                       _isRearCameraSelected
-                          ? Icons.cameraswitch_outlined
-                          : Icons.cameraswitch,
+                          ? CupertinoIcons.switch_camera
+                          : CupertinoIcons.switch_camera_solid,
                       color: Colors.white),
                   onPressed: () {
                     setState(
