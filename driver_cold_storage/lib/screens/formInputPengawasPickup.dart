@@ -134,7 +134,7 @@ class _FormInputPengawasState extends State<FormInputPengawas> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 16, left: 8),
+                    padding: const EdgeInsets.only(top: 8, left: 8),
                     child: Text(
                       "sda213271321",
                       style: TextStyle(
@@ -147,6 +147,7 @@ class _FormInputPengawasState extends State<FormInputPengawas> {
                   ),
                 ],
               ),
+
               Padding(
                 padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
                 child: Container(
@@ -176,6 +177,7 @@ class _FormInputPengawasState extends State<FormInputPengawas> {
                   ),
                 ),
               ),
+
               SizedBox(
                 height: 8,
               ),
@@ -342,6 +344,152 @@ class _FormInputPengawasState extends State<FormInputPengawas> {
                   top: 16,
                 ),
                 child: Text(
+                  "Storage",
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 21,
+                      fontFamily: "Sora",
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(
+                  left: 24.0,
+                  top: 16,
+                ),
+                child: Text(
+                  "Building",
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontFamily: "Sora",
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 24, right: 24, top: 16),
+                child: Container(
+                  padding: EdgeInsets.all(4),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: DropdownButtonFormField<String>(
+                    value: selectedBuilding,
+                    items: [
+                      DropdownMenuItem(
+                          value: "Building 1", child: Text("Building 1")),
+                      DropdownMenuItem(
+                          value: "Building 2", child: Text("Building 2")),
+                      DropdownMenuItem(
+                          value: "Building 3", child: Text("Building 3")),
+                    ],
+                    onChanged: (value) {
+                      setState(() {
+                        selectedBuilding = value ?? '';
+                      });
+                    },
+                    decoration: InputDecoration(
+                      contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                      border: InputBorder.none,
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(
+                  left: 24.0,
+                  top: 16,
+                ),
+                child: Text(
+                  "Aisle",
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontFamily: "Sora",
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 24, right: 24, top: 16),
+                child: Container(
+                  padding: EdgeInsets.all(4),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: DropdownButtonFormField<String>(
+                    value: selectedAisle,
+                    items: [
+                      DropdownMenuItem(
+                          value: "Aisle 1", child: Text("Aisle 1")),
+                      DropdownMenuItem(
+                          value: "Aisle 2", child: Text("Aisle 2")),
+                      DropdownMenuItem(
+                          value: "Aisle 3", child: Text("Aisle 3")),
+                    ],
+                    onChanged: (value) {
+                      setState(() {
+                        selectedAisle = value ?? '';
+                      });
+                    },
+                    decoration: InputDecoration(
+                      contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                      border: InputBorder.none,
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(
+                  left: 24.0,
+                  top: 16,
+                ),
+                child: Text(
+                  "Place",
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontFamily: "Sora",
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 24, right: 24, top: 16),
+                child: Container(
+                  padding: EdgeInsets.all(4),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: DropdownButtonFormField<String>(
+                    value: selectedPlace,
+                    items: [
+                      DropdownMenuItem(
+                          value: "Place 1", child: Text("Place 1")),
+                      DropdownMenuItem(
+                          value: "Place 2", child: Text("Place 2")),
+                      DropdownMenuItem(
+                          value: "Place 3", child: Text("Place 3")),
+                    ],
+                    onChanged: (value) {
+                      setState(() {
+                        selectedPlace = value ?? '';
+                      });
+                    },
+                    decoration: InputDecoration(
+                      contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                      border: InputBorder.none,
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(
+                  left: 24.0,
+                  top: 16,
+                ),
+                child: Text(
                   "Temperatur",
                   style: TextStyle(
                       color: Colors.black,
@@ -443,6 +591,20 @@ class _FormInputPengawasState extends State<FormInputPengawas> {
                   ),
                 ),
               ),
+              // Expanded(
+              //   child: Container(
+              //     width: 100,
+              //     height: 75,
+              //     child: ListView.builder(
+              //       itemCount: photos.length,
+              //       itemBuilder: (context, index) {
+              //         return ListTile(
+              //           title: Image.file(File(photos[index])),
+              //         );
+              //       },
+              //     ),
+              //   ),
+              // ),
               Padding(
                 padding: EdgeInsets.only(
                   left: 24.0,
@@ -457,6 +619,7 @@ class _FormInputPengawasState extends State<FormInputPengawas> {
                       fontWeight: FontWeight.bold),
                 ),
               ),
+
               Padding(
                   padding: EdgeInsets.only(left: 24.0, top: 16, right: 24),
                   child: Container(
@@ -475,6 +638,7 @@ class _FormInputPengawasState extends State<FormInputPengawas> {
                       ),
                     ),
                   )),
+
               SizedBox(
                 height: 50,
               )

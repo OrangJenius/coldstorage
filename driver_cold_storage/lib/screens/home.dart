@@ -738,13 +738,45 @@ class _homeScreenState extends State<homeScreen> {
                       // Now you have the hour and minute separately
                       String formattedTime = "$hour:$minute"; // "hh:mm" format
 
+                      List<String> NamaTokoList = items.isNotEmpty
+                          ? items.first.Nama_Toko
+                              .split(',')
+                              .map((namaToko) => namaToko.trim())
+                              .toList()
+                          : [];
+
+                      List<String> quantitiesList = items.isNotEmpty
+                          ? items.first.Quantities
+                              .split(',')
+                              .map((quantity) => quantity.trim())
+                              .toList()
+                          : [];
+
+                      List<String> berat = items.isNotEmpty
+                          ? items.first.Berat
+                              .split(',')
+                              .map((Berat) => Berat.trim())
+                              .toList()
+                          : [];
+
+                      print(NamaTokoList);
+                      print(quantitiesList);
+
+                      int totalJumlah = 0;
+                      int totalBerat = 0;
+
+                      for (String angka in quantitiesList) {
+                        totalJumlah += int.parse(angka);
+                      }
+
+                      for (String angka in berat) {
+                        totalBerat += int.parse(angka);
+                      }
+
                       String itemDate =
                           pengantaranItem.Tanggal_PickUp.substring(8);
-                      print('test1');
-                      print(sortedGroupedData);
-                      print("hahahahha");
 
-                      print(groupedAttributes);
+                      //    print(groupedAttributes);
 
                       if (itemDate == tanggal[selectedIndex ?? 0]) {
                         return Column(
@@ -904,28 +936,63 @@ class _homeScreenState extends State<homeScreen> {
                                                     mainAxisAlignment:
                                                         MainAxisAlignment.end,
                                                     children: [
-                                                      Row(
-                                                        children: [
-                                                          Column(
-                                                            children: [
-                                                              Text(
-                                                                '${pengantaranItem.Quantities} pcs',
-                                                                style:
-                                                                    TextStyle(
-                                                                  color: Colors
-                                                                      .red,
-                                                                  fontSize: 12,
-                                                                  fontFamily:
-                                                                      "Sora",
+                                                      for (int index = 0;
+                                                          index <
+                                                              NamaTokoList
+                                                                  .length;
+                                                          index++)
+                                                        Row(
+                                                          children: [
+                                                            Column(
+                                                              children: [
+                                                                Text(
+                                                                  '${quantitiesList[index]} pcs',
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color: Colors
+                                                                        .red,
+                                                                    fontSize:
+                                                                        12,
+                                                                    fontFamily:
+                                                                        "Sora",
+                                                                  ),
+                                                                  maxLines: 1,
+                                                                  overflow:
+                                                                      TextOverflow
+                                                                          .ellipsis,
+                                                                  softWrap:
+                                                                      true,
                                                                 ),
-                                                                maxLines: 1,
-                                                                overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis,
-                                                                softWrap: true,
-                                                              ),
-                                                              Text(
-                                                                "-----",
+                                                                Text(
+                                                                  "-----",
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color: Colors
+                                                                        .red,
+                                                                    fontSize:
+                                                                        15,
+                                                                    fontFamily:
+                                                                        "Sora",
+                                                                  ),
+                                                                  maxLines: 1,
+                                                                  overflow:
+                                                                      TextOverflow
+                                                                          .ellipsis,
+                                                                  softWrap:
+                                                                      true,
+                                                                ),
+                                                              ],
+                                                            ),
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .only(
+                                                                      left: 8,
+                                                                      top: 8,
+                                                                      right: 8),
+                                                              child: Text(
+                                                                NamaTokoList[
+                                                                    index],
                                                                 style:
                                                                     TextStyle(
                                                                   color: Colors
@@ -934,37 +1001,13 @@ class _homeScreenState extends State<homeScreen> {
                                                                   fontFamily:
                                                                       "Sora",
                                                                 ),
-                                                                maxLines: 1,
                                                                 overflow:
                                                                     TextOverflow
                                                                         .ellipsis,
-                                                                softWrap: true,
                                                               ),
-                                                            ],
-                                                          ),
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .only(
-                                                                    left: 8,
-                                                                    top: 8,
-                                                                    right: 8),
-                                                            child: Text(
-                                                              "Toko wendy",
-                                                              style: TextStyle(
-                                                                color:
-                                                                    Colors.red,
-                                                                fontSize: 15,
-                                                                fontFamily:
-                                                                    "Sora",
-                                                              ),
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
                                                             ),
-                                                          ),
-                                                        ],
-                                                      ),
+                                                          ],
+                                                        ),
                                                     ],
                                                   ),
                                                   SizedBox(width: 8),
@@ -982,13 +1025,14 @@ class _homeScreenState extends State<homeScreen> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.center,
                                           children: [
-                                            ..._buildDetailColumn(
-                                                "Items", "10"),
+                                            ..._buildDetailColumn("Items",
+                                                totalJumlah.toString()),
                                             SizedBox(height: 8),
-                                            ..._buildDetailColumn(
-                                                "Weight", "10kg"),
+                                            ..._buildDetailColumn("Weight",
+                                                totalBerat.toString()),
                                             SizedBox(height: 8),
-                                            ..._buildDetailColumn("Stops", "2"),
+                                            ..._buildDetailColumn("Stops",
+                                                NamaTokoList.length.toString()),
                                           ],
                                         ),
                                       ),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'linePainter.dart';
 import 'sliderButton.dart';
 import 'package:driver_cold_storage/models/pengantaranModel.dart';
@@ -59,6 +58,13 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
       totalJumlah += int.parse(angka);
     }
 
+    List<String> NamaTokoList = items.isNotEmpty
+        ? items.first.Nama_Toko
+            .split(',')
+            .map((namaToko) => namaToko.trim())
+            .toList()
+        : [];
+
     List<String> addressList = items.isNotEmpty
         ? items.first.Address
             .split(',')
@@ -77,60 +83,12 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
         ? items.first.Time.split(',').map((time) => time.trim()).toList()
         : [];
 
-    List<String> totalNamaItem = [];
-    List<String> clientItem = [];
-    List<String> serviceItem = [];
-
-    print(time);
-    print(totalNamaItem);
-
-    Map<String, List<int>> groupedQuantities = {};
-    Map<String, List<String>> groupedTime = {};
-    Map<String, List<String>> groupedNamaItem = {};
-    Map<String, List<String>> groupedPhone = {};
-    Map<String, List<String>> groupedAddress = {};
-    Map<String, List<String>> groupedClient = {};
-    Map<String, List<String>> groupedService = {};
-
-// Extract unique store names and merged quantities
-    List<String> uniqueStoreNames = groupedQuantities.keys.toList();
-    List<List<int>> mergedQuantitiesList = uniqueStoreNames
-        .map((namaToko) => groupedQuantities[namaToko]!)
-        .toList();
-    List<List<String>> mergedNamaItem =
-        uniqueStoreNames.map((namaToko) => groupedNamaItem[namaToko]!).toList();
-
-    List<List<String>> mergedTimesList =
-        uniqueStoreNames.map((namaToko) => groupedTime[namaToko]!).toList();
-
-    List<List<String>> mergedPhoneList =
-        uniqueStoreNames.map((namaToko) => groupedPhone[namaToko]!).toList();
-    List<List<String>> mergedAddressItem =
-        uniqueStoreNames.map((namaToko) => groupedAddress[namaToko]!).toList();
-
-    List<List<String>> mergedClientItem =
-        uniqueStoreNames.map((namaToko) => groupedClient[namaToko]!).toList();
-
-    List<List<String>> mergeService =
-        uniqueStoreNames.map((namaToko) => groupedService[namaToko]!).toList();
-    List<String> times = mergedTimesList.expand((list) => list).toList();
-    List<String> client = mergedClientItem.expand((list) => list).toList();
-    List<String> service = mergeService.expand((list) => list).toList();
-
-    List<String> phone = mergedPhoneList.expand((list) => list).toList();
-    List<String> address = mergedAddressItem.expand((list) => list).toList();
-
-    List<String> client2 = mergedClientItem
-        .expand((list) => list)
-        .toSet() // Menghapus duplikat dengan Set
-        .toList(); // Kembali ke List
-
-    print(uniqueStoreNames);
-    print(times);
-    print(client);
-    print(phone);
-    print(address);
-    print(mergedNamaItem);
+    List<String> totalNamaItem = items.isNotEmpty
+        ? items.first.Item
+            .split(',')
+            .map((namaItem) => namaItem.trim())
+            .toList()
+        : [];
 
     return Scaffold(
       body: SafeArea(
@@ -241,7 +199,7 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                   Padding(
                     padding: EdgeInsets.only(right: 16),
                     child: Text(
-                      client2[0],
+                      pengantaranItem.Nama_Client,
                       style: TextStyle(
                         fontFamily: 'Sora',
                         fontSize: 18,
@@ -251,33 +209,7 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                   ),
                 ],
               ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: client2
-                        .sublist(
-                            1) // Skip the first item and get the rest of the items
-                        .map((item) {
-                      return Padding(
-                        padding: EdgeInsets.only(right: 16),
-                        child: Text(
-                          item,
-                          style: TextStyle(
-                            fontFamily: 'Sora',
-                            fontSize: 18,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xFF505050),
-                          ),
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                ],
-              ),
+
               SizedBox(
                 height: 16,
               ),
@@ -564,7 +496,7 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                   Padding(
                     padding: EdgeInsets.only(right: 16),
                     child: Text(
-                      uniqueStoreNames.length.toString(),
+                      NamaTokoList.length.toString(),
                       style: TextStyle(
                         fontFamily: 'Sora',
                         fontSize: 18,
@@ -586,7 +518,7 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                   child: ListView.builder(
                     controller: _listViewController,
                     shrinkWrap: true,
-                    itemCount: times.length,
+                    itemCount: time.length,
                     itemBuilder: (context, index) {
                       return Container(
                         padding: EdgeInsets.only(
@@ -606,7 +538,7 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                                 SizedBox(
                                   height: 4,
                                 ),
-                                if (index < times.length - 1)
+                                if (index < time.length - 1)
                                   CustomPaint(
                                     size: Size(3, 145),
                                     painter: DottedLinePainter(
@@ -624,7 +556,7 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Text(
-                                  times[index].substring(0, 5).toString(),
+                                  time[index].substring(0, 5).toString(),
                                   style: TextStyle(
                                       fontFamily: 'Sora',
                                       color: Color(0xFF6AD6F9),
@@ -632,7 +564,7 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                                       fontSize: 18),
                                 ),
                                 Text(
-                                  uniqueStoreNames[index],
+                                  NamaTokoList[index],
                                   style: TextStyle(
                                       fontFamily: 'Sora',
                                       color: Colors.black,
@@ -641,13 +573,14 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                                 Padding(
                                   padding:
                                       const EdgeInsets.only(top: 8, bottom: 8),
-                                  child: Text("Client: ${client[index]}"),
+                                  child: Text(
+                                      "Client: ${pengantaranItem.Nama_Client}"),
                                 ),
-                                Text("Address: ${address[index]}"),
+                                Text("Address: ${addressList[index]}"),
                                 Padding(
                                   padding:
                                       const EdgeInsets.only(top: 8, bottom: 8),
-                                  child: Text("No Hp: ${phone[index]}"),
+                                  child: Text("No Hp: ${noHPlist[index]}"),
                                 ),
                                 Padding(
                                   padding:
@@ -688,54 +621,46 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                                                           _listViewController3,
                                                       shrinkWrap: true,
                                                       children: [
-                                                        for (int i = 0;
-                                                            i <
-                                                                mergedNamaItem[
-                                                                        index]
-                                                                    .length;
-                                                            i++)
-                                                          Row(
-                                                            children: [
-                                                              Text(
-                                                                mergedNamaItem[
-                                                                    index][i],
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontFamily:
-                                                                      'Sora',
-                                                                  fontSize: 18,
-                                                                  fontStyle:
-                                                                      FontStyle
-                                                                          .normal,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400,
-                                                                  color: Colors
-                                                                      .black,
-                                                                ),
+                                                        Row(
+                                                          children: [
+                                                            Text(
+                                                              totalNamaItem[
+                                                                  index],
+                                                              style: TextStyle(
+                                                                fontFamily:
+                                                                    'Sora',
+                                                                fontSize: 18,
+                                                                fontStyle:
+                                                                    FontStyle
+                                                                        .normal,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400,
+                                                                color: Colors
+                                                                    .black,
                                                               ),
-                                                              Expanded(
-                                                                  child:
-                                                                      Container()),
-                                                              Text(
-                                                                '${mergedQuantitiesList[index][i]} pcs',
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontFamily:
-                                                                      'Sora',
-                                                                  fontSize: 18,
-                                                                  fontStyle:
-                                                                      FontStyle
-                                                                          .normal,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400,
-                                                                  color: Colors
-                                                                      .black,
-                                                                ),
+                                                            ),
+                                                            Expanded(
+                                                                child:
+                                                                    Container()),
+                                                            Text(
+                                                              '${quantitiesList[index]} pcs',
+                                                              style: TextStyle(
+                                                                fontFamily:
+                                                                    'Sora',
+                                                                fontSize: 18,
+                                                                fontStyle:
+                                                                    FontStyle
+                                                                        .normal,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400,
+                                                                color: Colors
+                                                                    .black,
                                                               ),
-                                                            ],
-                                                          ),
+                                                            ),
+                                                          ],
+                                                        ),
                                                       ],
                                                     )
                                                   ],
