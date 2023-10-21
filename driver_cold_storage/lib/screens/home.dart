@@ -102,7 +102,7 @@ class _homeScreenState extends State<homeScreen> {
 
 // Iterasi melalui sortedGroupedData
 
-        for (String distributeId in groupedData.keys) {
+        for (String distributeId in sortedGroupedData.keys) {
           List<PengantaranModel> items = sortedGroupedData[distributeId]!;
 
           for (PengantaranModel item in items) {
