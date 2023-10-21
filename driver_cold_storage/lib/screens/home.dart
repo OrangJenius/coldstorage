@@ -22,7 +22,7 @@ class _homeScreenState extends State<homeScreen> {
   List<String> tanggal = [];
   int countDistribute = 0;
   int countPickup = 0;
-  Map<String, List<String>> groupedAttributes = {};
+
   @override
   void initState() {
     super.initState();
@@ -63,20 +63,6 @@ class _homeScreenState extends State<homeScreen> {
             .map((data) => PengantaranModel.fromJson(data))
             .toList();
 
-        // for (PengantaranModel item in pengantaranModel) {
-        //   print(item.Id);
-        //   print(item.Order_Id);
-        //   print(item.Item);
-        //   print(item.Address);
-        //   print(item.Tanggal_PickUp);
-        //   print(item.Time);
-        //   print(item.Quantities);
-        //   print(item.Phone_Number);
-        //   print(item.Status);
-        //   print(item.Titik_Awal);
-        //   print(item.Destination);
-        // }
-
         groupedData.clear();
 
         for (var item in pengantaranModel) {
@@ -84,29 +70,6 @@ class _homeScreenState extends State<homeScreen> {
             groupedData[item.Id] = [item];
           } else {
             groupedData[item.Id]!.add(item);
-          }
-        }
-
-        countDistribute = 0; // Reset countDistribute menjadi 0
-        countPickup = 0; // Reset countPickup menjadi 0
-
-        for (String distributeId in groupedData.keys) {
-          List<PengantaranModel> items = groupedData[distributeId]!;
-
-          for (PengantaranModel item in items) {
-            String itemDate = item.Tanggal_PickUp;
-
-            // Di sini Anda dapat mengakses dan melakukan operasi pada setiap item
-            if (itemDate == tanggal[selectedIndex ?? 0]) {
-              // Periksa status item
-              if (item.Status == "Distribute") {
-                countDistribute++; // Jika status "Distribute", tambahkan ke hitung Distribute
-                break;
-              } else if (item.Status == "Pick-Up") {
-                countPickup++; // Jika status "Pick-Up", tambahkan ke hitung Pickup
-                break;
-              }
-            }
           }
         }
 
@@ -138,56 +101,26 @@ class _homeScreenState extends State<homeScreen> {
         });
 
 // Iterasi melalui sortedGroupedData
-        sortedGroupedData.forEach((key, pengantaranModels) {
-          // Ambil atribut yang memiliki keys yang sama dan tambahkan ke dalam list yang sesuai
-          pengantaranModels.forEach((pengantaranModel) {
-            groupedAttributes
-                .putIfAbsent('Id', () => [])
-                .add(pengantaranModel.Id);
-            groupedAttributes
-                .putIfAbsent('Order_Id', () => [])
-                .add(pengantaranModel.Order_Id);
-            groupedAttributes
-                .putIfAbsent('Item', () => [])
-                .add(pengantaranModel.Item);
-            groupedAttributes
-                .putIfAbsent('Address', () => [])
-                .add(pengantaranModel.Address);
-            groupedAttributes
-                .putIfAbsent('Tanggal_PickUp', () => [])
-                .add(pengantaranModel.Tanggal_PickUp);
-            groupedAttributes
-                .putIfAbsent('Time', () => [])
-                .add(pengantaranModel.Time);
-            groupedAttributes
-                .putIfAbsent('Quantities', () => [])
-                .add(pengantaranModel.Quantities);
-            groupedAttributes
-                .putIfAbsent('Phone_Number', () => [])
-                .add(pengantaranModel.Phone_Number);
-            groupedAttributes
-                .putIfAbsent('Status', () => [])
-                .add(pengantaranModel.Status);
-            groupedAttributes
-                .putIfAbsent('Titik_Awal', () => [])
-                .add(pengantaranModel.Titik_Awal);
-            groupedAttributes
-                .putIfAbsent('Destination', () => [])
-                .add(pengantaranModel.Destination);
-            groupedAttributes
-                .putIfAbsent('Nama_Toko', () => [])
-                .add(pengantaranModel.Nama_Toko);
-            groupedAttributes
-                .putIfAbsent('Berat', () => [])
-                .add(pengantaranModel.Berat);
-            groupedAttributes
-                .putIfAbsent('Jumlah', () => [])
-                .add(pengantaranModel.Jumlah);
-            groupedAttributes
-                .putIfAbsent('Nama_Client', () => [])
-                .add(pengantaranModel.Nama_Client);
-          });
-        });
+
+        for (String distributeId in groupedData.keys) {
+          List<PengantaranModel> items = sortedGroupedData[distributeId]!;
+
+          for (PengantaranModel item in items) {
+            String itemDate = item.Tanggal_PickUp;
+
+            // Di sini Anda dapat mengakses dan melakukan operasi pada setiap item
+            if (itemDate == tanggal[selectedIndex ?? 0]) {
+              // Periksa status item
+              if (item.Status == "Distribute") {
+                countDistribute++; // Jika status "Distribute", tambahkan ke hitung Distribute
+                break;
+              } else if (item.Status == "Pick-Up") {
+                countPickup++; // Jika status "Pick-Up", tambahkan ke hitung Pickup
+                break;
+              }
+            }
+          }
+        }
 
 // Hasil groupedAttributes akan berisi nilai-nilai yang digabungkan sesuai dengan keys yang sama
       } else {
