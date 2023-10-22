@@ -2,33 +2,17 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
+
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 
-class FormInputPengawas extends StatefulWidget {
+class FormInputPengawasPickup extends StatefulWidget {
   @override
-  _FormInputPengawasState createState() => _FormInputPengawasState();
+  _FormInputPengawasPickupState createState() =>
+      _FormInputPengawasPickupState();
 }
 
-class _FormInputPengawasState extends State<FormInputPengawas> {
-  DateTime? pickedDate = DateTime.now();
-  int counter = 1;
-
-  void increaseCounter() {
-    setState(() {
-      counter++;
-    });
-  }
-
-  void decreaseCounter() {
-    setState(() {
-      if (counter > 0) {
-        counter--;
-      }
-    });
-  }
-
+class _FormInputPengawasPickupState extends State<FormInputPengawasPickup> {
   List<String> photos = [];
 
   Future<void> uploadPhoto(File imageFile) async {
@@ -62,38 +46,10 @@ class _FormInputPengawasState extends State<FormInputPengawas> {
     }
   }
 
-  Future<void> _selectDate(BuildContext context) async {
-    final newDate = await showDatePicker(
-      context: context,
-      initialDate: pickedDate ?? DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
-    );
-    if (newDate != null) {
-      setState(() {
-        pickedDate = newDate;
-      });
-    }
-  }
-
   String selectedService = 'Service 1';
   String selectedBuilding = 'Building 1';
   String selectedAisle = 'Aisle 1';
   String selectedPlace = 'Place 1';
-
-  TimeOfDay _selectedTime = TimeOfDay.now();
-
-  Future<void> _selectTime(BuildContext context) async {
-    final TimeOfDay? picked = await showTimePicker(
-      context: context,
-      initialTime: _selectedTime,
-    );
-    if (picked != null && picked != _selectedTime) {
-      setState(() {
-        _selectedTime = picked;
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -127,7 +83,7 @@ class _FormInputPengawasState extends State<FormInputPengawas> {
                       "ID:",
                       style: TextStyle(
                         color: Colors.black,
-                        fontSize: 22,
+                        fontSize: 24,
                         fontWeight: FontWeight.w700,
                         fontFamily: "Sora",
                       ),
@@ -139,7 +95,7 @@ class _FormInputPengawasState extends State<FormInputPengawas> {
                       "sda213271321",
                       style: TextStyle(
                         color: Color(0xFF6AD6F9),
-                        fontSize: 22,
+                        fontSize: 24,
                         fontFamily: "Sora",
                         decoration: TextDecoration.underline,
                       ),
@@ -367,32 +323,28 @@ class _FormInputPengawasState extends State<FormInputPengawas> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 24, right: 24, top: 16),
+                padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
                 child: Container(
-                  padding: EdgeInsets.all(4),
+                  padding: EdgeInsets.all(12),
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.black),
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: DropdownButtonFormField<String>(
-                    value: selectedBuilding,
-                    items: [
-                      DropdownMenuItem(
-                          value: "Building 1", child: Text("Building 1")),
-                      DropdownMenuItem(
-                          value: "Building 2", child: Text("Building 2")),
-                      DropdownMenuItem(
-                          value: "Building 3", child: Text("Building 3")),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Building A",
+                        style: TextStyle(
+                          fontFamily: 'Sora',
+                          fontSize: 15,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xFF747474),
+                          fontStyle: FontStyle.normal,
+                        ),
+                      ),
+                      SizedBox(width: 8),
                     ],
-                    onChanged: (value) {
-                      setState(() {
-                        selectedBuilding = value ?? '';
-                      });
-                    },
-                    decoration: InputDecoration(
-                      contentPadding: EdgeInsets.symmetric(horizontal: 16),
-                      border: InputBorder.none,
-                    ),
                   ),
                 ),
               ),
@@ -411,32 +363,28 @@ class _FormInputPengawasState extends State<FormInputPengawas> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 24, right: 24, top: 16),
+                padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
                 child: Container(
-                  padding: EdgeInsets.all(4),
+                  padding: EdgeInsets.all(12),
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.black),
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: DropdownButtonFormField<String>(
-                    value: selectedAisle,
-                    items: [
-                      DropdownMenuItem(
-                          value: "Aisle 1", child: Text("Aisle 1")),
-                      DropdownMenuItem(
-                          value: "Aisle 2", child: Text("Aisle 2")),
-                      DropdownMenuItem(
-                          value: "Aisle 3", child: Text("Aisle 3")),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Aisle B",
+                        style: TextStyle(
+                          fontFamily: 'Sora',
+                          fontSize: 15,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xFF747474),
+                          fontStyle: FontStyle.normal,
+                        ),
+                      ),
+                      SizedBox(width: 8),
                     ],
-                    onChanged: (value) {
-                      setState(() {
-                        selectedAisle = value ?? '';
-                      });
-                    },
-                    decoration: InputDecoration(
-                      contentPadding: EdgeInsets.symmetric(horizontal: 16),
-                      border: InputBorder.none,
-                    ),
                   ),
                 ),
               ),
@@ -455,32 +403,28 @@ class _FormInputPengawasState extends State<FormInputPengawas> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 24, right: 24, top: 16),
+                padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
                 child: Container(
-                  padding: EdgeInsets.all(4),
+                  padding: EdgeInsets.all(12),
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.black),
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: DropdownButtonFormField<String>(
-                    value: selectedPlace,
-                    items: [
-                      DropdownMenuItem(
-                          value: "Place 1", child: Text("Place 1")),
-                      DropdownMenuItem(
-                          value: "Place 2", child: Text("Place 2")),
-                      DropdownMenuItem(
-                          value: "Place 3", child: Text("Place 3")),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Place c",
+                        style: TextStyle(
+                          fontFamily: 'Sora',
+                          fontSize: 15,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xFF747474),
+                          fontStyle: FontStyle.normal,
+                        ),
+                      ),
+                      SizedBox(width: 8),
                     ],
-                    onChanged: (value) {
-                      setState(() {
-                        selectedPlace = value ?? '';
-                      });
-                    },
-                    decoration: InputDecoration(
-                      contentPadding: EdgeInsets.symmetric(horizontal: 16),
-                      border: InputBorder.none,
-                    ),
                   ),
                 ),
               ),
@@ -640,7 +584,78 @@ class _FormInputPengawasState extends State<FormInputPengawas> {
                   )),
 
               SizedBox(
-                height: 50,
+                height: 16,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: 32,
+                    vertical: 8), // Padding horizontal 32 dan vertikal 24
+                child: Container(
+                  width: double
+                      .infinity, // Ini akan membuat Container mengambil lebar maksimal yang tersedia.
+                  height:
+                      50, // Anda bisa mengatur tinggi tombol sesuai kebutuhan Anda.
+
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(
+                              30), // border radius sebesar 30
+                          side: BorderSide(
+                            color: Color(0xFF6AD6F9), // Warna border
+                            width:
+                                1.0, // Lebar border (sesuaikan dengan kebutuhan Anda)
+                          ),
+                        ),
+                      ),
+                      elevation: MaterialStateProperty.all(5),
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.white),
+                    ),
+                    onPressed: () {},
+                    child: Text('HomePage',
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: "Sora",
+                            color: Color(0xFF6AD6F9))),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: 32,
+                    vertical: 8), // Padding horizontal 32 dan vertikal 24
+                child: Container(
+                  width: double
+                      .infinity, // Ini akan membuat Container mengambil lebar maksimal yang tersedia.
+                  height:
+                      50, // Anda bisa mengatur tinggi tombol sesuai kebutuhan Anda.
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(
+                              30), // border radius sebesar 30
+                        ),
+                      ),
+                      elevation: MaterialStateProperty.all(5),
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Color(0xFF6AD6F9)),
+                    ),
+                    onPressed: () {},
+                    child: Text('Save',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: "Sora",
+                        )),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 16,
               )
             ],
           ),

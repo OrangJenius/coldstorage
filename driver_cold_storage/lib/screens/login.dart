@@ -220,12 +220,6 @@ class _loginState extends State<Login> {
                               fontWeight: FontWeight.bold,
                               fontFamily: "Sora",
                             )),
-                    // child: Text('Login',
-                    //     style: TextStyle(
-                    //       fontSize: 20,
-                    //       fontWeight: FontWeight.bold,
-                    //       fontFamily: "Sora",
-                    //     )), // Anda juga bisa mengatur style dari teks jika diperlukan.
                   ),
                 ),
               )
