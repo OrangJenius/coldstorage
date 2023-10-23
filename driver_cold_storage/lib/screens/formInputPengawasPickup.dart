@@ -66,7 +66,7 @@ class _FormInputPengawasPickupState extends State<FormInputPengawasPickup> {
                   top: 16,
                 ),
                 child: Text(
-                  "Distribute",
+                  "Pickup",
                   style: TextStyle(
                     color: Color(0xFF6AD6F9),
                     fontSize: 36,

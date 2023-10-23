@@ -1,3 +1,5 @@
+import 'package:driver_cold_storage/screens/formInputPengawas.dart';
+import 'package:driver_cold_storage/screens/formInputPengawasPickup.dart';
 import 'package:driver_cold_storage/screens/profile.dart';
 import 'package:flutter/material.dart';
 
@@ -11,6 +13,8 @@ class HomePengawas extends StatefulWidget {
 class _homePengawasState extends State<HomePengawas> {
   double containerHeight = 150.0; // Tinggi awal kontainer
   bool isExpanded = false;
+  int? selectedIndex;
+  List<String> button = ["distribute", "pickup"];
 
   void toggleContainerSize() {
     setState(() {
@@ -21,6 +25,13 @@ class _homePengawasState extends State<HomePengawas> {
       }
       isExpanded = !isExpanded;
     });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    selectedIndex = 0;
+    super.initState();
   }
 
   @override
@@ -140,306 +151,659 @@ class _homePengawasState extends State<HomePengawas> {
                   color: Colors.grey, // Atur warna garis sesuai kebutuhan
                 ),
               ),
-              Stack(
-                children: [
-                  Padding(
-                    padding:
-                        const EdgeInsets.only(left: 16, right: 16, top: 24),
-                    child: AnimatedContainer(
-                      duration: Duration(milliseconds: 300),
-                      width: 380,
-                      height: containerHeight,
-                      decoration: BoxDecoration(
-                        border: Border.all(width: 1, color: Colors.grey),
-                        borderRadius: BorderRadius.circular(8),
-                        color: Colors.white,
-                      ),
-                      child: Row(
+              ListView.builder(
+                  itemCount: 1,
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    if (selectedIndex == 0) {
+                      return Stack(
                         children: [
-                          // Left Side Content
-                          Flexible(
-                            // <-- Tambahkan ini
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                // ID Section
-                                Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 8.0, left: 8),
-                                      child: Text(
-                                        "ID:",
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 22,
-                                          fontWeight: FontWeight.w700,
-                                          fontFamily: "Sora",
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                left: 16, right: 16, top: 24),
+                            child: AnimatedContainer(
+                              duration: Duration(milliseconds: 300),
+                              width: 380,
+                              height: containerHeight,
+                              decoration: BoxDecoration(
+                                border:
+                                    Border.all(width: 1, color: Colors.grey),
+                                borderRadius: BorderRadius.circular(8),
+                                color: Colors.white,
+                              ),
+                              child: Row(
+                                children: [
+                                  // Left Side Content
+                                  Flexible(
+                                    // <-- Tambahkan ini
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        // ID Section
+                                        Row(
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 8.0, left: 8),
+                                              child: Text(
+                                                "ID:",
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 22,
+                                                  fontWeight: FontWeight.w700,
+                                                  fontFamily: "Sora",
+                                                ),
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                  top: 8,
+                                                  left: 8,
+                                                ),
+                                                child: Text(
+                                                  "BJE454879BJEP",
+                                                  style: TextStyle(
+                                                    color: Color(0xFF6AD6F9),
+                                                    fontSize: 22,
+                                                    fontFamily: "Sora",
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                          top: 8,
-                                          left: 8,
-                                        ),
-                                        child: Text(
-                                          "BJE454879BJEP",
-                                          style: TextStyle(
-                                            color: Color(0xFF6AD6F9),
-                                            fontSize: 22,
-                                            fontFamily: "Sora",
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 8, top: 4),
+                                          child: Text(
+                                            "7 Juli 2023 | 10:00",
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 14,
+                                              fontFamily: "Sora",
+                                            ),
                                           ),
                                         ),
-                                      ),
+
+                                        Row(
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 8, top: 1),
+                                              child: Text(
+                                                "Note :",
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 13,
+                                                  fontFamily: "Sora",
+                                                ),
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 8, top: 1),
+                                                child: Text(
+                                                  "pakai bubble wrap",
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 13,
+                                                    fontFamily: "Sora",
+                                                  ),
+                                                  maxLines: 2,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 8,
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              top: 8, left: 8),
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  ..._buildDetailColumn(
+                                                      "Items", "20"),
+                                                ],
+                                              ),
+                                              SizedBox(
+                                                width: 16,
+                                              ),
+                                              Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  ..._buildDetailColumn(
+                                                      "Weight", "20kg"),
+                                                ],
+                                              ),
+                                              SizedBox(
+                                                width: 16,
+                                              ),
+                                              Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  ..._buildDetailColumn(
+                                                      "Location", "Gedung A"),
+                                                ],
+                                              ),
+                                              Expanded(
+                                                child: Container(),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  ],
-                                ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.only(left: 8, top: 4),
-                                  child: Text(
-                                    "7 Juli 2023 | 10:00",
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 14,
-                                      fontFamily: "Sora",
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            right: 5, // Posisi dari kiri
+                            top: 5, // Posisi dari atas
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                Container(
+                                  width: 60,
+                                  height: 60,
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Color(0xFF6AD6F9)),
+                                  child: Center(
+                                    child: Text(
+                                      "Distribute",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 10,
+                                          fontFamily: "Sora",
+                                          fontWeight: FontWeight.bold),
                                     ),
                                   ),
                                 ),
-
-                                Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 8, top: 1),
-                                      child: Text(
-                                        "Note :",
+                              ],
+                            ),
+                          ),
+                          AnimatedPositioned(
+                            right: 20, // Posisi dari kiri
+                            bottom: isExpanded
+                                ? containerHeight - 290
+                                : 10, // Posisi dari atas
+                            duration: Duration(milliseconds: 300),
+                            child: GestureDetector(
+                              onTap:
+                                  toggleContainerSize, // Panggil fungsi ketika ikon ditekan
+                              child: Icon(
+                                isExpanded
+                                    ? Icons.keyboard_arrow_up
+                                    : Icons.keyboard_arrow_down,
+                                size: 50,
+                              ),
+                            ),
+                          ),
+                          Visibility(
+                            visible:
+                                isExpanded, // Tampilkan widget ini hanya jika kontainer diperluas
+                            child: Positioned(
+                              left: 24,
+                              top: 160, // Atur posisi sesuai kebutuhan Anda
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 16),
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          "Item 1",
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 15,
+                                            fontFamily: "Sora",
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 150,
+                                        ),
+                                        InkWell(
+                                          onTap: () {
+                                            Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      FormInputPengawas()),
+                                            );
+                                          },
+                                          child: Container(
+                                            width: 100,
+                                            height: 30,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(8.0),
+                                              border: Border.all(
+                                                  width: 2,
+                                                  color: Color(0xFF6AD6F9)),
+                                            ),
+                                            child: Center(
+                                              child: Text(
+                                                "Check Items",
+                                                style: TextStyle(
+                                                  fontFamily: 'Sora',
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Color(0xFF6AD6F9),
+                                                  fontSize: 12,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 16,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        "Item 2",
                                         style: TextStyle(
                                           color: Colors.black,
-                                          fontSize: 13,
+                                          fontSize: 15,
                                           fontFamily: "Sora",
                                         ),
                                       ),
-                                    ),
-                                    Expanded(
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 8, top: 1),
-                                        child: Text(
-                                          "jhjsahd jsahdjas sad asdsa hjdhzf ",
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 13,
-                                            fontFamily: "Sora",
+                                      SizedBox(
+                                        width: 147,
+                                      ),
+                                      InkWell(
+                                        onTap: () {
+                                          Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    FormInputPengawas()),
+                                          );
+                                        },
+                                        child: Container(
+                                          width: 100,
+                                          height: 30,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                            border: Border.all(
+                                                width: 2,
+                                                color: Color(0xFF6AD6F9)),
                                           ),
-                                          maxLines: 2,
+                                          child: Center(
+                                            child: Text(
+                                              "Check Items",
+                                              style: TextStyle(
+                                                fontFamily: 'Sora',
+                                                fontWeight: FontWeight.bold,
+                                                color: Color(0xFF6AD6F9),
+                                                fontSize: 12,
+                                              ),
+                                            ),
+                                          ),
                                         ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 8,
-                                ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.only(top: 8, left: 8),
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          ..._buildDetailColumn("Items", "20"),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        width: 16,
-                                      ),
-                                      Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          ..._buildDetailColumn(
-                                              "Weight", "20kg"),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        width: 16,
-                                      ),
-                                      Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          ..._buildDetailColumn(
-                                              "Location", "Gedung A"),
-                                        ],
-                                      ),
-                                      Expanded(
-                                        child: Container(),
                                       ),
                                     ],
                                   ),
-                                ),
-                              ],
+                                ],
+                              ), // Gantilah dengan widget tambahan yang ingin Anda tambahkan
                             ),
                           ),
                         ],
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    right: 5, // Posisi dari kiri
-                    top: 0, // Posisi dari atas
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        Container(
-                          width: 60,
-                          height: 60,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle, color: Color(0xFF6AD6F9)),
-                          child: Center(
-                            child: Text(
-                              "Distribute",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 10,
-                                  fontFamily: "Sora",
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  AnimatedPositioned(
-                    right: 20, // Posisi dari kiri
-                    bottom: isExpanded
-                        ? containerHeight - 290
-                        : 10, // Posisi dari atas
-                    duration: Duration(milliseconds: 300),
-                    child: GestureDetector(
-                      onTap:
-                          toggleContainerSize, // Panggil fungsi ketika ikon ditekan
-                      child: Icon(
-                        isExpanded
-                            ? Icons.keyboard_arrow_up
-                            : Icons.keyboard_arrow_down,
-                        size: 50,
-                      ),
-                    ),
-                  ),
-                  Visibility(
-                    visible:
-                        isExpanded, // Tampilkan widget ini hanya jika kontainer diperluas
-                    child: Positioned(
-                      left: 24,
-                      top: 160, // Atur posisi sesuai kebutuhan Anda
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      );
+                    } else if (selectedIndex == 1) {
+                      return Stack(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(top: 16),
-                            child: Row(
-                              children: [
-                                Text(
-                                  "Item 1",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 15,
-                                    fontFamily: "Sora",
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 150,
-                                ),
-                                InkWell(
-                                  onTap: () {},
-                                  child: Container(
-                                    width: 100,
-                                    height: 30,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(8.0),
-                                      border: Border.all(
-                                          width: 2, color: Color(0xFF6AD6F9)),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        "Check Items",
-                                        style: TextStyle(
-                                          fontFamily: 'Sora',
-                                          fontWeight: FontWeight.bold,
-                                          color: Color(0xFF6AD6F9),
-                                          fontSize: 12,
+                            padding: const EdgeInsets.only(
+                                left: 16, right: 16, top: 24),
+                            child: AnimatedContainer(
+                              duration: Duration(milliseconds: 300),
+                              width: 380,
+                              height: containerHeight,
+                              decoration: BoxDecoration(
+                                border:
+                                    Border.all(width: 1, color: Colors.grey),
+                                borderRadius: BorderRadius.circular(8),
+                                color: Colors.white,
+                              ),
+                              child: Row(
+                                children: [
+                                  // Left Side Content
+                                  Flexible(
+                                    // <-- Tambahkan ini
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        // ID Section
+                                        Row(
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 8.0, left: 8),
+                                              child: Text(
+                                                "ID:",
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 22,
+                                                  fontWeight: FontWeight.w700,
+                                                  fontFamily: "Sora",
+                                                ),
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                  top: 8,
+                                                  left: 8,
+                                                ),
+                                                child: Text(
+                                                  "BJE7658332BAP",
+                                                  style: TextStyle(
+                                                    color: Color(0xFF6AD6F9),
+                                                    fontSize: 22,
+                                                    fontFamily: "Sora",
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                      ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 8, top: 4),
+                                          child: Text(
+                                            "8 Juli 2023 | 11:00",
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 14,
+                                              fontFamily: "Sora",
+                                            ),
+                                          ),
+                                        ),
+
+                                        Row(
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 8, top: 1),
+                                              child: Text(
+                                                "Note :",
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 13,
+                                                  fontFamily: "Sora",
+                                                ),
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 8, top: 1),
+                                                child: Text(
+                                                  "Jangan lupa dibawah 5 derajat celcius ",
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 13,
+                                                    fontFamily: "Sora",
+                                                  ),
+                                                  maxLines: 2,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 8,
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              top: 8, left: 8),
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  ..._buildDetailColumn(
+                                                      "Items", "30"),
+                                                ],
+                                              ),
+                                              SizedBox(
+                                                width: 16,
+                                              ),
+                                              Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  ..._buildDetailColumn(
+                                                      "Weight", "30kg"),
+                                                ],
+                                              ),
+                                              SizedBox(
+                                                width: 16,
+                                              ),
+                                              Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  ..._buildDetailColumn(
+                                                      "Location", "Gedung B"),
+                                                ],
+                                              ),
+                                              Expanded(
+                                                child: Container(),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            right: 5, // Posisi dari kiri
+                            top: 5, // Posisi dari atas
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                Container(
+                                  width: 60,
+                                  height: 60,
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Color(0xFF6AD6F9)),
+                                  child: Center(
+                                    child: Text(
+                                      "Pickup",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 10,
+                                          fontFamily: "Sora",
+                                          fontWeight: FontWeight.bold),
                                     ),
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                          SizedBox(
-                            height: 16,
+                          AnimatedPositioned(
+                            right: 20, // Posisi dari kiri
+                            bottom: isExpanded
+                                ? containerHeight - 290
+                                : 10, // Posisi dari atas
+                            duration: Duration(milliseconds: 300),
+                            child: GestureDetector(
+                              onTap:
+                                  toggleContainerSize, // Panggil fungsi ketika ikon ditekan
+                              child: Icon(
+                                isExpanded
+                                    ? Icons.keyboard_arrow_up
+                                    : Icons.keyboard_arrow_down,
+                                size: 50,
+                              ),
+                            ),
                           ),
-                          Row(
-                            children: [
-                              Text(
-                                "Item 2",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 15,
-                                  fontFamily: "Sora",
-                                ),
-                              ),
-                              SizedBox(
-                                width: 147,
-                              ),
-                              InkWell(
-                                onTap: () {},
-                                child: Container(
-                                  width: 100,
-                                  height: 30,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8.0),
-                                    border: Border.all(
-                                        width: 2, color: Color(0xFF6AD6F9)),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      "Check Items",
-                                      style: TextStyle(
-                                        fontFamily: 'Sora',
-                                        fontWeight: FontWeight.bold,
-                                        color: Color(0xFF6AD6F9),
-                                        fontSize: 12,
-                                      ),
+                          Visibility(
+                            visible:
+                                isExpanded, // Tampilkan widget ini hanya jika kontainer diperluas
+                            child: Positioned(
+                              left: 24,
+                              top: 160, // Atur posisi sesuai kebutuhan Anda
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 16),
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          "Item 1",
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 15,
+                                            fontFamily: "Sora",
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 150,
+                                        ),
+                                        InkWell(
+                                          onTap: () {
+                                            Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      FormInputPengawasPickup()),
+                                            );
+                                          },
+                                          child: Container(
+                                            width: 100,
+                                            height: 30,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(8.0),
+                                              border: Border.all(
+                                                  width: 2,
+                                                  color: Color(0xFF6AD6F9)),
+                                            ),
+                                            child: Center(
+                                              child: Text(
+                                                "Check Items",
+                                                style: TextStyle(
+                                                  fontFamily: 'Sora',
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Color(0xFF6AD6F9),
+                                                  fontSize: 12,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                ),
-                              ),
-                            ],
+                                  SizedBox(
+                                    height: 16,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        "Item 2",
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 15,
+                                          fontFamily: "Sora",
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 147,
+                                      ),
+                                      InkWell(
+                                        onTap: () {
+                                          Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    FormInputPengawasPickup()),
+                                          );
+                                        },
+                                        child: Container(
+                                          width: 100,
+                                          height: 30,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                            border: Border.all(
+                                                width: 2,
+                                                color: Color(0xFF6AD6F9)),
+                                          ),
+                                          child: Center(
+                                            child: Text(
+                                              "Check Items",
+                                              style: TextStyle(
+                                                fontFamily: 'Sora',
+                                                fontWeight: FontWeight.bold,
+                                                color: Color(0xFF6AD6F9),
+                                                fontSize: 12,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ), // Gantilah dengan widget tambahan yang ingin Anda tambahkan
+                            ),
                           ),
                         ],
-                      ), // Gantilah dengan widget tambahan yang ingin Anda tambahkan
-                    ),
-                  ),
-                ],
-              ),
+                      );
+                    }
+                  }),
             ],
           ),
         ),
@@ -455,25 +819,57 @@ class _homePengawasState extends State<HomePengawas> {
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image.asset(
-                        'assets/Delivery Truck.png',
-                        fit: BoxFit.cover,
-                        color: Colors.black,
-                        scale: 0.8,
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            selectedIndex = 0;
+                            print(selectedIndex);
+                          });
+                        },
+                        child: Image.asset(
+                          'assets/Delivery Truck.png',
+                          fit: BoxFit.cover,
+                          color: 0 == selectedIndex
+                              ? Color(0xFF6AD6F9)
+                              : Colors.black,
+                          scale: 0.8,
+                        ),
                       ),
-                      Text("Distribute")
+                      Text(
+                        "Distribute",
+                        style: TextStyle(
+                          color: 0 == selectedIndex
+                              ? Color(0xFF6AD6F9)
+                              : Colors.black,
+                        ),
+                      ),
                     ],
                   ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image.asset(
-                        'assets/Boxes.png',
-                        fit: BoxFit.cover,
-                        color: Colors.black,
-                        scale: 1.2,
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            selectedIndex = 1;
+                            print(selectedIndex);
+                          });
+                        },
+                        child: Image.asset(
+                          'assets/Boxes.png',
+                          fit: BoxFit.cover,
+                          color: 1 == selectedIndex
+                              ? Color(0xFF6AD6F9)
+                              : Colors.black,
+                          scale: 1.2,
+                        ),
                       ),
-                      Text("Pickup")
+                      Text("Pickup",
+                          style: TextStyle(
+                            color: 1 == selectedIndex
+                                ? Color(0xFF6AD6F9)
+                                : Colors.black,
+                          ))
                     ],
                   ),
                 ],
