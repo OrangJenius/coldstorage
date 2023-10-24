@@ -2,10 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:slide_action/slide_action.dart';
 import 'pengiriman.dart';
+import 'package:driver_cold_storage/models/pengantaranModel.dart';
 
 class SlideActionBtn extends StatelessWidget {
+  final List<PengantaranModel> pengantaran;
   const SlideActionBtn({
     Key? key,
+    required this.pengantaran,
   }) : super(key: key);
 
   @override
@@ -83,7 +86,10 @@ class SlideActionBtn extends StatelessWidget {
             const Duration(milliseconds: 50),
             () => Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => pengirimanScreen()),
+              MaterialPageRoute(
+                  builder: (context) => pengirimanScreen(
+                        pengantaran: pengantaran,
+                      )),
             ),
           );
         },

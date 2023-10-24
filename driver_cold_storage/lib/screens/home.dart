@@ -919,7 +919,7 @@ class _homeScreenState extends State<homeScreen> {
                                                             Padding(
                                                               padding:
                                                                   const EdgeInsets
-                                                                      .only(
+                                                                          .only(
                                                                       left: 8,
                                                                       top: 8,
                                                                       right: 8),

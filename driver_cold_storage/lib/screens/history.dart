@@ -57,8 +57,6 @@ class _historyScreenState extends State<historyScreen> {
             .map((data) => HistoryModel.fromJson(data))
             .toList();
 
-        Map<String, List<HistoryModel2>> groupedHistoryModel2 = {};
-
         setState(() {
           historyData = historyModel;
           historyData2 = historyModel2;
@@ -70,7 +68,6 @@ class _historyScreenState extends State<historyScreen> {
             ),
           );
         });
-        print(groupedHistoryModel2);
       } else {
         // Handle API call failures or error status codes
         print('API call failed with status code: ${response.statusCode}');
