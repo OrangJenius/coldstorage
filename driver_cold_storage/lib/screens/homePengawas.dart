@@ -21,6 +21,9 @@ class _homePengawasState extends State<HomePengawas> {
   List<String> button = ["distribute", "pickup"];
   Map<String, Map<String, List<PengawasModel>>> groupedData = {};
 
+  Map<String, Map<String, List<PengawasModel>>> groupDistribute = {};
+  Map<String, Map<String, List<PengawasModel>>> groupPickup = {};
+
   void toggleContainerSize() {
     setState(() {
       if (isExpanded) {
@@ -70,8 +73,35 @@ class _homePengawasState extends State<HomePengawas> {
 
           groupedData[id]![idDistribute]!.add(item);
         }
+        setState(() {
+          selectedIndex = 0;
+        });
 
         print(groupedData);
+
+        groupedData.forEach((idOrder, dataByIdOrder) {
+          dataByIdOrder.forEach((idDistribute, items) {
+            for (var item in items) {
+              if (item.Status_Distribute == 'Distribute') {
+                if (!groupDistribute.containsKey(idOrder)) {
+                  groupDistribute[idOrder] = {};
+                }
+                if (!groupDistribute[idOrder]!.containsKey(idDistribute)) {
+                  groupDistribute[idOrder]![idDistribute] = [];
+                }
+                groupDistribute[idOrder]![idDistribute]!.add(item);
+              } else if (item.Status_Distribute == 'Pick-Up') {
+                if (!groupPickup.containsKey(idOrder)) {
+                  groupPickup[idOrder] = {};
+                }
+                if (!groupPickup[idOrder]!.containsKey(idDistribute)) {
+                  groupPickup[idOrder]![idDistribute] = [];
+                }
+                groupPickup[idOrder]![idDistribute]!.add(item);
+              }
+            }
+          });
+        });
 
 // Hasil groupedAttributes akan berisi nilai-nilai yang digabungkan sesuai dengan keys yang sama
       } else {
@@ -207,12 +237,9 @@ class _homePengawasState extends State<HomePengawas> {
                   physics: NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
                     String idOrder = groupedData.keys.elementAt(index);
-                    final dataByIdOrder = groupedData[idOrder];
-                    String idDistribute = dataByIdOrder!.keys.elementAt(index);
+                    // final dataByIdOrder = groupedData[idOrder];
+                    //   String idDistribute = dataByIdOrder!.keys.elementAt(index);
 
-                    print(idOrder);
-                    print(dataByIdOrder);
-                    print(idDistribute);
                     if (selectedIndex == 0) {
                       return Stack(
                         children: [
@@ -860,6 +887,7 @@ class _homePengawasState extends State<HomePengawas> {
                         ],
                       );
                     }
+                    return null;
                   }),
             ],
           ),
