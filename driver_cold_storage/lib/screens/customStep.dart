@@ -25,9 +25,9 @@ class CustomStep extends StatefulWidget {
 
 class _CustomStepState extends State<CustomStep> {
   @override
-  // void test() {
-  //   print("Filtering by ID4: ${widget.idHistory}");
-  // }
+  void test() {
+    print("Filtering by ID4: ${widget.idHistory}");
+  }
 
   // ...
   List<Widget> displayItems = [];
@@ -83,6 +83,7 @@ class _CustomStepState extends State<CustomStep> {
     for (int groupIndex = 0;
         groupIndex < filteredHistory.length;
         groupIndex++) {
+      test();
       //memisahkan order, time, nama toko, dan alamat karena pada database disatukan menjadi 1 dan dipisahkan hanya pake ","
       List<List<String>> indexOrder = [];
       List<List<String>> indexTime = [];

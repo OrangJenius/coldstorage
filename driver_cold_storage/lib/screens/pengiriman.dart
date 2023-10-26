@@ -1,85 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'linePainter.dart';
 import 'package:camera/camera.dart';
 import 'camerapage.dart';
-import 'package:driver_cold_storage/models/pengantaranModel.dart';
 
 class pengirimanScreen extends StatefulWidget {
-  final List<PengantaranModel> pengantaran;
-  const pengirimanScreen({super.key, required this.pengantaran});
+  const pengirimanScreen({super.key});
   @override
   _pengirimanScreenState createState() => _pengirimanScreenState();
 }
 
 class _pengirimanScreenState extends State<pengirimanScreen> {
   Position? _currentLocation;
-  LatLng? posisiAwal;
-  // late LatLng _srcLoc = LatLng(37.422131, -122.084801);
-  // late LatLng _destLoc = LatLng(37.411374, -122.071204);
-
-  TextEditingController mytext = TextEditingController();
-
-  List<String> namaTokoPisah = [];
-  List<String> namaItems = [];
-  List<String> quantities = [];
-  List<String> nomorTelfon = [];
-  List<String> longlat = [];
-  List<String> longlat2 = [];
-  List<String> longLatAwal = [];
-
-  void _showSnackbar() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text("Phone Number Copied"),
-        // backgroundColor: Colors.green, // Use a success color
-      ),
-    );
-  }
+  late LatLng _srcLoc = LatLng(37.422131, -122.084801);
+  late LatLng _destLoc = LatLng(37.411374, -122.071204);
 
   @override
   void initState() {
     super.initState();
-    print("Test: ${widget.pengantaran}");
-    print("Test: ${widget.pengantaran.length}");
-    String namaToko = widget.pengantaran[0].Nama_Toko;
-    if (namaToko.contains(',')) {
-      namaTokoPisah = namaToko.split(',');
-    } else {
-      namaTokoPisah.add(namaToko);
-    }
-    String namaItem = widget.pengantaran[0].Item;
-    if (namaItem.contains(',')) {
-      namaItems = namaItem.split(',');
-    } else {
-      namaItems.add(namaItem);
-    }
-    String quantity = widget.pengantaran[0].Quantities;
-    if (quantity.contains(',')) {
-      quantities = quantity.split(',');
-    } else {
-      quantities.add(quantity);
-    }
-    String nomor = widget.pengantaran[0].Phone_Number;
-    if (nomor.contains(',')) {
-      nomorTelfon = nomor.split(',');
-    } else {
-      nomorTelfon.add(nomor);
-    }
-    String lokasi = widget.pengantaran[0].Destination;
-    if (lokasi.contains(';')) {
-      longlat = lokasi.split(';');
-    } else {
-      longlat.add(lokasi);
-    }
-    longLatAwal = widget.pengantaran[0].Titik_Awal.split(',');
-
     _currentLocation = Position(
-      longitude: double.parse(longLatAwal[1]),
-      latitude: double.parse(longLatAwal[0]),
+      longitude: _srcLoc.longitude,
+      latitude: _srcLoc.latitude,
       accuracy: 0.0,
       altitude: 0.0,
       heading: 0.0,
@@ -87,83 +30,7 @@ class _pengirimanScreenState extends State<pengirimanScreen> {
       speedAccuracy: 0.0,
       timestamp: DateTime.now(),
     );
-    posisiAwal =
-        LatLng(double.parse(longLatAwal[0]), double.parse(longLatAwal[1]));
     _startLocationUpdates();
-  }
-
-  Set<Marker> generateMarkers() {
-    Set<Marker> markers = Set<Marker>();
-    print("test1");
-
-    for (int i = 0; i < longlat.length; i++) {
-      longlat[i].replaceAll("(", "").replaceAll(")", "");
-      longlat2 = longlat[i].split(',');
-
-      for (int k = 0; k < longlat2.length; k++) {
-        longlat2[k].replaceAll("(", "").replaceAll(")", "");
-      }
-
-      for (int j = 0; j < longlat2.length; j += 2) {
-        // Remove parentheses and then split by comma
-        String cleanedCoordinate =
-            longlat2[j].replaceAll("(", "").replaceAll(")", "");
-        String cleanedCoordinate2 =
-            longlat2[j + 1].replaceAll("(", "").replaceAll(")", "");
-        print(
-            "latitude: ${double.parse(cleanedCoordinate)} longitude: ${double.parse(cleanedCoordinate2)}");
-        double latitude = double.parse(cleanedCoordinate);
-        double longitude = double.parse(cleanedCoordinate2);
-        markers.add(
-          Marker(
-            markerId: MarkerId("Pemberhentian ${i + 1}"),
-            position: LatLng(latitude, longitude),
-            infoWindow: InfoWindow(title: 'stops ${i + 1}'),
-          ),
-        );
-      }
-    }
-    return markers;
-  }
-
-  Widget isiDetails() {
-    return Column(
-      children: [
-        for (int i = 0; i < namaItems.length; i++)
-          Row(
-            children: [
-              Expanded(
-                child: Text(
-                  namaItems[i],
-                  style: TextStyle(
-                    fontFamily: 'Sora',
-                    fontSize: 14,
-                    fontStyle: FontStyle.normal,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.black,
-                  ),
-                ),
-              ),
-              Expanded(child: Row()),
-              Expanded(
-                child: Text(
-                  "(${quantities[i]} pcs)",
-                  style: TextStyle(
-                    fontFamily: 'Sora',
-                    fontSize: 14,
-                    fontStyle: FontStyle.normal,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.black,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        SizedBox(
-          height: 8,
-        ),
-      ],
-    );
   }
 
   void _startLocationUpdates() async {
@@ -223,58 +90,31 @@ class _pengirimanScreenState extends State<pengirimanScreen> {
                         ),
                         zoom: 13.5,
                       ),
-                      markers: generateMarkers()
-                        ..add(
-                          Marker(
-                            markerId: const MarkerId('source'),
-                            position: posisiAwal!,
-                            infoWindow: const InfoWindow(title: 'Lokasi Awal'),
+                      markers: {
+                        Marker(
+                          markerId: const MarkerId('currentLocation'),
+                          position: LatLng(
+                            _currentLocation!.latitude,
+                            _currentLocation!.longitude,
                           ),
-                        )
-                        ..add(
-                          Marker(
-                            markerId: const MarkerId('current'),
-                            position: LatLng(_currentLocation!.latitude,
-                                _currentLocation!.longitude),
-                            infoWindow: const InfoWindow(title: 'Lokasi live'),
-                          ),
+                          infoWindow:
+                              const InfoWindow(title: 'Current Location'),
                         ),
+                        Marker(
+                          markerId: const MarkerId('source'),
+                          position: _srcLoc,
+                          infoWindow:
+                              const InfoWindow(title: 'Source Location'),
+                        ),
+                        Marker(
+                          markerId: const MarkerId('destination'),
+                          position: _destLoc,
+                          infoWindow:
+                              const InfoWindow(title: 'Destination Location'),
+                        ),
+                      },
                       onMapCreated: (GoogleMapController controller) {},
                     ),
-              // : GoogleMap(
-              //     zoomControlsEnabled: false,
-              //     initialCameraPosition: CameraPosition(
-              //       target: LatLng(
-              //         _currentLocation!.latitude,
-              //         _currentLocation!.longitude,
-              //       ),
-              //       zoom: 13.5,
-              //     ),
-              //     markers: {
-              //       Marker(
-              //         markerId: const MarkerId('currentLocation'),
-              //         position: LatLng(
-              //           _currentLocation!.latitude,
-              //           _currentLocation!.longitude,
-              //         ),
-              //         infoWindow:
-              //             const InfoWindow(title: 'Current Location'),
-              //       ),
-              //       Marker(
-              //         markerId: const MarkerId('source'),
-              //         position: _srcLoc,
-              //         infoWindow:
-              //             const InfoWindow(title: 'Source Location'),
-              //       ),
-              //       Marker(
-              //         markerId: const MarkerId('destination'),
-              //         position: _destLoc,
-              //         infoWindow:
-              //             const InfoWindow(title: 'Destination Location'),
-              //       ),
-              //     },
-              //     onMapCreated: (GoogleMapController controller) {},
-              //   ),
             ),
             Container(
               height: 450,
@@ -286,7 +126,7 @@ class _pengirimanScreenState extends State<pengirimanScreen> {
               ),
               child: ListView.builder(
                   shrinkWrap: true,
-                  itemCount: namaTokoPisah.length,
+                  itemCount: 2,
                   itemBuilder: (context, index) {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -327,18 +167,16 @@ class _pengirimanScreenState extends State<pengirimanScreen> {
                                   ),
                                 ],
                               ),
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 16),
-                                  child: Text(
-                                    namaTokoPisah[index],
-                                    style: TextStyle(
-                                      fontFamily: 'Sora',
-                                      fontSize: 20,
-                                      fontStyle: FontStyle.normal,
-                                      fontWeight: FontWeight.w700,
-                                      color: Colors.white,
-                                    ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 16),
+                                child: Text(
+                                  "Store A",
+                                  style: TextStyle(
+                                    fontFamily: 'Sora',
+                                    fontSize: 20,
+                                    fontStyle: FontStyle.normal,
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.white,
                                   ),
                                 ),
                               ),
@@ -384,7 +222,71 @@ class _pengirimanScreenState extends State<pengirimanScreen> {
                                           ),
                                         ),
                                         content: Container(
-                                          child: isiDetails(),
+                                          child: Column(
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                    "Ayam goyeng",
+                                                    style: TextStyle(
+                                                      fontFamily: 'Sora',
+                                                      fontSize: 14,
+                                                      fontStyle:
+                                                          FontStyle.normal,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      color: Colors.black,
+                                                    ),
+                                                  ),
+                                                  Expanded(child: Row()),
+                                                  Text(
+                                                    "(5 pcs)",
+                                                    style: TextStyle(
+                                                      fontFamily: 'Sora',
+                                                      fontSize: 14,
+                                                      fontStyle:
+                                                          FontStyle.normal,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      color: Colors.black,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              SizedBox(
+                                                height: 8,
+                                              ),
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                    "Es Batu",
+                                                    style: TextStyle(
+                                                      fontFamily: 'Sora',
+                                                      fontSize: 14,
+                                                      fontStyle:
+                                                          FontStyle.normal,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      color: Colors.black,
+                                                    ),
+                                                  ),
+                                                  Expanded(child: Row()),
+                                                  Text(
+                                                    "(5 pcs)",
+                                                    style: TextStyle(
+                                                      fontFamily: 'Sora',
+                                                      fontSize: 14,
+                                                      fontStyle:
+                                                          FontStyle.normal,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      color: Colors.black,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                         actions: [
                                           Center(
@@ -518,81 +420,6 @@ class _pengirimanScreenState extends State<pengirimanScreen> {
                         SizedBox(
                           height: 8,
                         ),
-                        Container(
-                          padding:
-                              EdgeInsets.only(left: 16, right: 16, bottom: 8),
-                          child: Row(
-                            children: [
-                              Text(
-                                "Cust Name",
-                                style: TextStyle(
-                                  fontFamily: 'Sora',
-                                  fontSize: 20,
-                                  fontStyle: FontStyle.normal,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              Expanded(child: Row()),
-                              Text(
-                                widget.pengantaran[0].Nama_Client,
-                                style: TextStyle(
-                                  fontFamily: 'Sora',
-                                  fontSize: 20,
-                                  fontStyle: FontStyle.normal,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: 8,
-                        ),
-                        Container(
-                          padding:
-                              EdgeInsets.only(left: 16, right: 16, bottom: 8),
-                          child: Row(
-                            children: [
-                              Text(
-                                "Mobile Phone",
-                                style: TextStyle(
-                                  fontFamily: 'Sora',
-                                  fontSize: 20,
-                                  fontStyle: FontStyle.normal,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              Expanded(child: Row()),
-                              GestureDetector(
-                                onTap: () => {
-                                  Clipboard.setData(
-                                      ClipboardData(text: nomorTelfon[index])),
-                                  _showSnackbar(),
-                                },
-                                child: Icon(
-                                  Icons.copy_outlined,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              Text(
-                                nomorTelfon[index],
-                                style: TextStyle(
-                                  fontFamily: 'Sora',
-                                  fontSize: 20,
-                                  fontStyle: FontStyle.normal,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: 8,
-                        ),
                         Center(
                           child: Container(
                             width: 200,
@@ -625,8 +452,6 @@ class _pengirimanScreenState extends State<pengirimanScreen> {
                             ),
                           ),
                         ),
-                        // if (index - 1 > 0)
-                        //   {
                         SizedBox(
                           height: 24,
                         ),
@@ -645,8 +470,7 @@ class _pengirimanScreenState extends State<pengirimanScreen> {
                         ),
                         SizedBox(
                           height: 16,
-                        ),
-                        //},
+                        )
                       ],
                     );
                   }),
