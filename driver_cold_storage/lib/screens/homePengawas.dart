@@ -1,11 +1,7 @@
-import 'dart:convert';
-
-import 'package:driver_cold_storage/models/pengawasModel.dart';
 import 'package:driver_cold_storage/screens/formInputPengawas.dart';
 import 'package:driver_cold_storage/screens/formInputPengawasPickup.dart';
 import 'package:driver_cold_storage/screens/profile.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 class HomePengawas extends StatefulWidget {
   final String userID;
@@ -19,7 +15,6 @@ class _homePengawasState extends State<HomePengawas> {
   bool isExpanded = false;
   int? selectedIndex;
   List<String> button = ["distribute", "pickup"];
-  Map<String, Map<String, List<PengawasModel>>> groupedData = {};
 
   void toggleContainerSize() {
     setState(() {
@@ -36,52 +31,7 @@ class _homePengawasState extends State<HomePengawas> {
   void initState() {
     // TODO: implement initState
     selectedIndex = 0;
-    fetchPengantaranData();
     super.initState();
-  }
-
-  Future<void> fetchPengantaranData() async {
-    final apiUrl =
-        'http://116.68.252.201:1945/DetailOnGoingOrderPengawas/${widget.userID}';
-
-    try {
-      final response = await http.get(Uri.parse(apiUrl));
-
-      if (response.statusCode == 200) {
-        // Successfully fetched data from the API
-        final responseJson = jsonDecode(response.body);
-        final List<dynamic> apiPengantaranData = responseJson['data'];
-
-        List<PengawasModel> pengawasModel = apiPengantaranData
-            .map((data) => PengawasModel.fromJson(data))
-            .toList();
-
-        for (var item in pengawasModel) {
-          final id = item.Id;
-          final idDistribute = item.Id_Distribute;
-
-          if (!groupedData.containsKey(id)) {
-            groupedData[id] = {};
-          }
-
-          if (!groupedData[id]!.containsKey(idDistribute)) {
-            groupedData[id]![idDistribute] = [];
-          }
-
-          groupedData[id]![idDistribute]!.add(item);
-        }
-
-        print(groupedData);
-
-// Hasil groupedAttributes akan berisi nilai-nilai yang digabungkan sesuai dengan keys yang sama
-      } else {
-        // API call failed or returned an error status code
-        print('API call failed with status code: ${response.statusCode}');
-      }
-    } catch (e) {
-      // Error occurred during API call
-      print('Error: $e');
-    }
   }
 
   @override
@@ -202,17 +152,10 @@ class _homePengawasState extends State<HomePengawas> {
                 ),
               ),
               ListView.builder(
-                  itemCount: groupedData.length,
+                  itemCount: 1,
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
-                    String idOrder = groupedData.keys.elementAt(index);
-                    final dataByIdOrder = groupedData[idOrder];
-                    String idDistribute = dataByIdOrder!.keys.elementAt(index);
-
-                    print(idOrder);
-                    print(dataByIdOrder);
-                    print(idDistribute);
                     if (selectedIndex == 0) {
                       return Stack(
                         children: [
@@ -263,7 +206,7 @@ class _homePengawasState extends State<HomePengawas> {
                                                   left: 8,
                                                 ),
                                                 child: Text(
-                                                  idOrder,
+                                                  "BJE454879BJEP",
                                                   style: TextStyle(
                                                     color: Color(0xFF6AD6F9),
                                                     fontSize: 22,
