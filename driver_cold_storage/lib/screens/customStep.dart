@@ -86,6 +86,7 @@ class _CustomStepState extends State<CustomStep> {
       test();
       //memisahkan order, time, nama toko, dan alamat karena pada database disatukan menjadi 1 dan dipisahkan hanya pake ","
       List<List<String>> indexOrder = [];
+      List<List<String>> indexTanggal = [];
       List<List<String>> indexTime = [];
       List<List<String>> indexToko = [];
       List<List<String>> indexAlamat = [];
