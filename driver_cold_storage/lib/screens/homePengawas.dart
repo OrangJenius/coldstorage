@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:driver_cold_storage/models/pengawasModel.dart';
 import 'package:driver_cold_storage/screens/formInputPengawas.dart';
+import 'package:driver_cold_storage/screens/formInputPengawasPickup.dart';
+import 'package:driver_cold_storage/screens/homePengawas2.dart';
 
 import 'package:driver_cold_storage/screens/item.dart';
 import 'package:driver_cold_storage/screens/profile.dart';
@@ -25,17 +27,6 @@ class _homePengawasState extends State<HomePengawas> {
   Map<String, Map<String, List<PengawasModel>>> groupDistribute = {};
   Map<String, Map<String, List<PengawasModel>>> groupPickup = {};
 
-  void toggleContainerSize() {
-    setState(() {
-      if (isExpanded) {
-        containerHeight = 150.0;
-      } else {
-        containerHeight = 300.0;
-      }
-      isExpanded = !isExpanded;
-    });
-  }
-
   @override
   void initState() {
     // TODO: implement initState
@@ -46,8 +37,40 @@ class _homePengawasState extends State<HomePengawas> {
 
   List<Item> generateItems(int numberOfItems) {
     return List<Item>.generate(numberOfItems, (int index) {
-      String idOrder = groupedData.keys.elementAt(index);
-      final dataByIdOrder = groupedData[idOrder];
+      String idOrder = groupDistribute.keys.elementAt(index);
+      final dataByIdOrder = groupDistribute[idOrder];
+      print(dataByIdOrder);
+      List<String> idDistributeList = dataByIdOrder!.keys.toList();
+
+      String expandedValue = '';
+      String tanggalMasuk = '';
+
+      for (int i = 0; i < idDistributeList.length; i++) {
+        String idDistribute = idDistributeList[i];
+        expandedValue += '$idDistribute';
+
+        final items = dataByIdOrder[idDistribute];
+        for (var item in items!) {
+          tanggalMasuk = item.Tanggal_Masuk;
+        }
+
+        if (i < idDistributeList.length - 1) {
+          expandedValue += ', ';
+        }
+      }
+      print(tanggalMasuk);
+      return Item(
+          id: index,
+          headerValue: '$idOrder',
+          expandedValue: '$expandedValue',
+          tanggal: '$tanggalMasuk');
+    });
+  }
+
+  List<Item> generateItems2(int numberOfItems) {
+    return List<Item>.generate(numberOfItems, (int index) {
+      String idOrder = groupPickup.keys.elementAt(index);
+      final dataByIdOrder = groupPickup[idOrder];
       print(dataByIdOrder);
       List<String> idDistributeList = dataByIdOrder!.keys.toList();
 
@@ -145,7 +168,8 @@ class _homePengawasState extends State<HomePengawas> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Item> _data = generateItems(groupedData.length);
+    final List<Item> _data = generateItems(groupDistribute.length);
+    final List<Item> _data2 = generateItems2(groupPickup.length);
     return Scaffold(
       body: SafeArea(
           child: Stack(children: [
@@ -261,7 +285,8 @@ class _homePengawasState extends State<HomePengawas> {
               ),
               ExpansionPanelList.radio(
                 initialOpenPanelValue: 2,
-                children: _data.map<ExpansionPanelRadio>((Item item) {
+                children: (selectedIndex == 0 ? _data : _data2)
+                    .map<ExpansionPanelRadio>((Item item) {
                   return ExpansionPanelRadio(
                       value: item.id,
                       headerBuilder: (BuildContext context, bool isExpanded) {
@@ -343,15 +368,28 @@ class _homePengawasState extends State<HomePengawas> {
                           trailing: const Icon(Icons.keyboard_arrow_right),
                           onTap: () {
                             setState(() {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => FormInputPengawas(
-                                    groupDistribute: groupDistribute,
-                                    distributeId: item.expandedValue,
-                                    userId: widget.userID,
+                              if (selectedIndex == 0) {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => FormInputPengawas(
+                                      groupDistribute: groupDistribute,
+                                      distributeId: item.expandedValue,
+                                      userId: widget.userID,
+                                    ),
                                   ),
-                                ),
-                              );
+                                );
+                              } else if (selectedIndex == 1) {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        FormInputPengawasPickup(
+                                      groupPicktup: groupPickup,
+                                      distributeId: item.expandedValue,
+                                      userId: widget.userID,
+                                    ),
+                                  ),
+                                );
+                              }
                             });
                           }));
                 }).toList(),
@@ -376,6 +414,13 @@ class _homePengawasState extends State<HomePengawas> {
                           setState(() {
                             selectedIndex = 0;
                             print(selectedIndex);
+                            // Navigator.of(context).push(
+                            //   MaterialPageRoute(
+                            //     builder: (context) => HomePengawas(
+                            //       userID: widget.userID,
+                            //     ),
+                            //   ),
+                            // );
                           });
                         },
                         child: Image.asset(
@@ -405,6 +450,13 @@ class _homePengawasState extends State<HomePengawas> {
                           setState(() {
                             selectedIndex = 1;
                             print(selectedIndex);
+                            // Navigator.of(context).push(
+                            //   MaterialPageRoute(
+                            //     builder: (context) => HomePengawas2(
+                            //       userID: widget.userID,
+                            //     ),
+                            //   ),
+                            // );
                           });
                         },
                         child: Image.asset(

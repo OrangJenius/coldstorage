@@ -8,14 +8,14 @@
 // import 'package:flutter/material.dart';
 // import 'package:http/http.dart' as http;
 
-// class HomePengawas extends StatefulWidget {
+// class HomePengawas2 extends StatefulWidget {
 //   final String userID;
-//   HomePengawas({required this.userID});
+//   HomePengawas2({required this.userID});
 //   @override
-//   _homePengawasState createState() => _homePengawasState();
+//   _homePengawas2State createState() => _homePengawas2State();
 // }
 
-// class _homePengawasState extends State<HomePengawas> {
+// class _homePengawas2State extends State<HomePengawas2> {
 //   double containerHeight = 150.0; // Tinggi awal kontainer
 //   bool isExpanded = false;
 //   int? selectedIndex;
@@ -24,17 +24,6 @@
 
 //   Map<String, Map<String, List<PengawasModel>>> groupDistribute = {};
 //   Map<String, Map<String, List<PengawasModel>>> groupPickup = {};
-//   List<Item> _data = []; // Item data list
-//   void toggleContainerSize() {
-//     setState(() {
-//       if (isExpanded) {
-//         containerHeight = 150.0;
-//       } else {
-//         containerHeight = 300.0;
-//       }
-//       isExpanded = !isExpanded;
-//     });
-//   }
 
 //   @override
 //   void initState() {
@@ -46,8 +35,8 @@
 
 //   List<Item> generateItems(int numberOfItems) {
 //     return List<Item>.generate(numberOfItems, (int index) {
-//       String idOrder = groupedData.keys.elementAt(index);
-//       final dataByIdOrder = groupedData[idOrder];
+//       String idOrder = groupPickup.keys.elementAt(index);
+//       final dataByIdOrder = groupPickup[idOrder];
 //       print(dataByIdOrder);
 //       List<String> idDistributeList = dataByIdOrder!.keys.toList();
 
@@ -74,28 +63,6 @@
 //           expandedValue: '$expandedValue',
 //           tanggal: '$tanggalMasuk');
 //     });
-//   }
-
-//   void _handleDistributeCheck(Item item) {
-//     // Toggle the isChecked property for the clicked item
-//     setState(() {
-//       item.isChecked = !item.isChecked;
-//     });
-//   }
-
-//   void _handleSubmit(int idOrder) {
-//     // Logic to submit an idOrder (if all its idDistribute items are checked)
-//     bool allChecked = _data
-//         .where((item) => item.headerValue == idOrder.toString())
-//         .every((item) => item.isChecked);
-
-//     if (allChecked) {
-//       setState(() {
-//         Item idOrderItem =
-//             _data.firstWhere((item) => item.headerValue == idOrder.toString());
-//         idOrderItem.isSubmitted = true;
-//       });
-//     }
 //   }
 
 //   Future<void> fetchPengantaranData() async {

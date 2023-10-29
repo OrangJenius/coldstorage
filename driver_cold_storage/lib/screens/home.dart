@@ -647,29 +647,22 @@ class _homeScreenState extends State<homeScreen> {
                   ListView.builder(
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
-                    itemCount: sortedGroupedData
-                        .length, // Replace 'itemCount' with the number of items you have
-
+                    itemCount: sortedGroupedData.length,
                     itemBuilder: (BuildContext context, int index) {
-                      String distributeId = sortedGroupedData.keys.elementAt(
-                          index); // Ambil Distribute_Id berdasarkan indeks
+                      String distributeId =
+                          sortedGroupedData.keys.elementAt(index);
                       List<PengantaranModel>? items =
                           sortedGroupedData[distributeId];
 
                       final pengantaranItem = items![0];
 
-                      String timeString = pengantaranItem.Time
-                          .toString(); // Replace with your time string
-
-                      // Split the time string using the ':' delimiter
+                      String timeString = pengantaranItem.Time.toString();
                       List<String> timeParts = timeString.split(':');
 
-                      // Get the hour and minute parts
                       String hour = timeParts[0];
                       String minute = timeParts[1];
 
-                      // Now you have the hour and minute separately
-                      String formattedTime = "$hour:$minute"; // "hh:mm" format
+                      String formattedTime = "$hour:$minute";
 
                       List<String> NamaTokoList = items.isNotEmpty
                           ? items.first.Nama_Toko
@@ -709,8 +702,6 @@ class _homeScreenState extends State<homeScreen> {
                       String itemDate =
                           pengantaranItem.Tanggal_PickUp.substring(8);
 
-                      //    print(groupedAttributes);
-
                       if (itemDate == tanggal[selectedIndex ?? 0]) {
                         return Column(
                           children: [
@@ -742,7 +733,6 @@ class _homeScreenState extends State<homeScreen> {
                             ),
                             InkWell(
                               onTap: () {
-                                //   Navigasi ke halaman DetailDistribusi
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
                                     builder: (context) => detail_Penjemputan(
@@ -919,7 +909,7 @@ class _homeScreenState extends State<homeScreen> {
                                                             Padding(
                                                               padding:
                                                                   const EdgeInsets
-                                                                          .only(
+                                                                      .only(
                                                                       left: 8,
                                                                       top: 8,
                                                                       right: 8),
