@@ -2,7 +2,8 @@ import 'dart:convert';
 
 import 'package:driver_cold_storage/models/pengawasModel.dart';
 import 'package:driver_cold_storage/screens/formInputPengawas.dart';
-import 'package:driver_cold_storage/screens/formInputPengawasPickup.dart';
+
+import 'package:driver_cold_storage/screens/item.dart';
 import 'package:driver_cold_storage/screens/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -27,9 +28,9 @@ class _homePengawasState extends State<HomePengawas> {
   void toggleContainerSize() {
     setState(() {
       if (isExpanded) {
-        containerHeight = 150.0; // Tinggi awal kontainer
+        containerHeight = 150.0;
       } else {
-        containerHeight = 300.0; // Tinggi yang diperbesar
+        containerHeight = 300.0;
       }
       isExpanded = !isExpanded;
     });
@@ -41,6 +42,38 @@ class _homePengawasState extends State<HomePengawas> {
     selectedIndex = 0;
     fetchPengantaranData();
     super.initState();
+  }
+
+  List<Item> generateItems(int numberOfItems) {
+    return List<Item>.generate(numberOfItems, (int index) {
+      String idOrder = groupedData.keys.elementAt(index);
+      final dataByIdOrder = groupedData[idOrder];
+      print(dataByIdOrder);
+      List<String> idDistributeList = dataByIdOrder!.keys.toList();
+
+      String expandedValue = '';
+      String tanggalMasuk = '';
+
+      for (int i = 0; i < idDistributeList.length; i++) {
+        String idDistribute = idDistributeList[i];
+        expandedValue += '$idDistribute';
+
+        final items = dataByIdOrder[idDistribute];
+        for (var item in items!) {
+          tanggalMasuk = item.Tanggal_Masuk;
+        }
+
+        if (i < idDistributeList.length - 1) {
+          expandedValue += ', ';
+        }
+      }
+      print(tanggalMasuk);
+      return Item(
+          id: index,
+          headerValue: '$idOrder',
+          expandedValue: '$expandedValue',
+          tanggal: '$tanggalMasuk');
+    });
   }
 
   Future<void> fetchPengantaranData() async {
@@ -102,20 +135,17 @@ class _homePengawasState extends State<HomePengawas> {
             }
           });
         });
-
-// Hasil groupedAttributes akan berisi nilai-nilai yang digabungkan sesuai dengan keys yang sama
       } else {
-        // API call failed or returned an error status code
         print('API call failed with status code: ${response.statusCode}');
       }
     } catch (e) {
-      // Error occurred during API call
       print('Error: $e');
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final List<Item> _data = generateItems(groupedData.length);
     return Scaffold(
       body: SafeArea(
           child: Stack(children: [
@@ -144,8 +174,7 @@ class _homePengawasState extends State<HomePengawas> {
                     ),
                   ),
                   Column(
-                    mainAxisAlignment:
-                        MainAxisAlignment.center, // Mengatur posisi ke tengah
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(top: 16, right: 20),
@@ -185,8 +214,7 @@ class _homePengawasState extends State<HomePengawas> {
                     ],
                   ),
                   Column(
-                    mainAxisAlignment:
-                        MainAxisAlignment.center, // Mengatur posisi ke tengah
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(top: 16, right: 16),
@@ -227,179 +255,47 @@ class _homePengawasState extends State<HomePengawas> {
               Padding(
                 padding: const EdgeInsets.only(top: 8.0, bottom: 16),
                 child: Divider(
-                  height: 1, // Atur tinggi garis sesuai kebutuhan
-                  color: Colors.grey, // Atur warna garis sesuai kebutuhan
+                  height: 1,
+                  color: Colors.grey,
                 ),
               ),
-              ListView.builder(
-                  itemCount: groupedData.length,
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    String idOrder = groupedData.keys.elementAt(index);
-                    // final dataByIdOrder = groupedData[idOrder];
-                    //   String idDistribute = dataByIdOrder!.keys.elementAt(index);
-
-                    if (selectedIndex == 0) {
-                      return Stack(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                left: 16, right: 16, top: 24),
-                            child: AnimatedContainer(
-                              duration: Duration(milliseconds: 300),
-                              width: 380,
-                              height: containerHeight,
-                              decoration: BoxDecoration(
-                                border:
-                                    Border.all(width: 1, color: Colors.grey),
-                                borderRadius: BorderRadius.circular(8),
-                                color: Colors.white,
+              ExpansionPanelList.radio(
+                initialOpenPanelValue: 2,
+                children: _data.map<ExpansionPanelRadio>((Item item) {
+                  return ExpansionPanelRadio(
+                      value: item.id,
+                      headerBuilder: (BuildContext context, bool isExpanded) {
+                        return Stack(children: [
+                          Container(
+                            width: 380,
+                            height: 100,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(16),
+                              border: Border.all(width: 1, color: Colors.grey),
+                            ),
+                            child: ListTile(
+                              subtitle: Text(
+                                item.tanggal.toString(),
+                                style: TextStyle(fontSize: 16),
                               ),
-                              child: Row(
+                              title: Row(
                                 children: [
-                                  // Left Side Content
-                                  Flexible(
-                                    // <-- Tambahkan ini
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        // ID Section
-                                        Row(
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 8.0, left: 8),
-                                              child: Text(
-                                                "ID:",
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 22,
-                                                  fontWeight: FontWeight.w700,
-                                                  fontFamily: "Sora",
-                                                ),
-                                              ),
-                                            ),
-                                            Expanded(
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                  top: 8,
-                                                  left: 8,
-                                                ),
-                                                child: Text(
-                                                  idOrder,
-                                                  style: TextStyle(
-                                                    color: Color(0xFF6AD6F9),
-                                                    fontSize: 22,
-                                                    fontFamily: "Sora",
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 8, top: 4),
-                                          child: Text(
-                                            "7 Juli 2023 | 10:00",
-                                            style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 14,
-                                              fontFamily: "Sora",
-                                            ),
-                                          ),
-                                        ),
-
-                                        Row(
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 8, top: 1),
-                                              child: Text(
-                                                "Note :",
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 13,
-                                                  fontFamily: "Sora",
-                                                ),
-                                              ),
-                                            ),
-                                            Expanded(
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 8, top: 1),
-                                                child: Text(
-                                                  "pakai bubble wrap",
-                                                  style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 13,
-                                                    fontFamily: "Sora",
-                                                  ),
-                                                  maxLines: 2,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: 8,
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 8, left: 8),
-                                          child: Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: [
-                                                  ..._buildDetailColumn(
-                                                      "Items", "20"),
-                                                ],
-                                              ),
-                                              SizedBox(
-                                                width: 16,
-                                              ),
-                                              Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: [
-                                                  ..._buildDetailColumn(
-                                                      "Weight", "20kg"),
-                                                ],
-                                              ),
-                                              SizedBox(
-                                                width: 16,
-                                              ),
-                                              Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: [
-                                                  ..._buildDetailColumn(
-                                                      "Location", "Gedung A"),
-                                                ],
-                                              ),
-                                              Expanded(
-                                                child: Container(),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
+                                  Text(
+                                    "ID Order: ",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.w700,
+                                      fontFamily: "Sora",
+                                    ),
+                                  ),
+                                  Text(
+                                    item.headerValue,
+                                    style: TextStyle(
+                                      color: Color(0xFF6AD6F9),
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.w700,
+                                      fontFamily: "Sora",
                                     ),
                                   ),
                                 ],
@@ -407,8 +303,8 @@ class _homePengawasState extends State<HomePengawas> {
                             ),
                           ),
                           Positioned(
-                            right: 5, // Posisi dari kiri
-                            top: 5, // Posisi dari atas
+                            right: 5,
+                            top: 20,
                             child: Stack(
                               alignment: Alignment.center,
                               children: [
@@ -431,464 +327,35 @@ class _homePengawasState extends State<HomePengawas> {
                                 ),
                               ],
                             ),
-                          ),
-                          AnimatedPositioned(
-                            right: 20, // Posisi dari kiri
-                            bottom: isExpanded
-                                ? containerHeight - 290
-                                : 10, // Posisi dari atas
-                            duration: Duration(milliseconds: 300),
-                            child: GestureDetector(
-                              onTap:
-                                  toggleContainerSize, // Panggil fungsi ketika ikon ditekan
-                              child: Icon(
-                                isExpanded
-                                    ? Icons.keyboard_arrow_up
-                                    : Icons.keyboard_arrow_down,
-                                size: 50,
-                              ),
+                          )
+                        ]);
+                      },
+                      body: ListTile(
+                          title: Text(
+                            item.expandedValue,
+                            style: TextStyle(
+                              color: Color(0xFF6AD6F9),
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
+                              fontFamily: "Sora",
                             ),
                           ),
-                          Visibility(
-                            visible:
-                                isExpanded, // Tampilkan widget ini hanya jika kontainer diperluas
-                            child: Positioned(
-                              left: 24,
-                              top: 160, // Atur posisi sesuai kebutuhan Anda
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 16),
-                                    child: Row(
-                                      children: [
-                                        Text(
-                                          "Item 1",
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 15,
-                                            fontFamily: "Sora",
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 150,
-                                        ),
-                                        InkWell(
-                                          onTap: () {
-                                            Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      FormInputPengawas()),
-                                            );
-                                          },
-                                          child: Container(
-                                            width: 100,
-                                            height: 30,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(8.0),
-                                              border: Border.all(
-                                                  width: 2,
-                                                  color: Color(0xFF6AD6F9)),
-                                            ),
-                                            child: Center(
-                                              child: Text(
-                                                "Check Items",
-                                                style: TextStyle(
-                                                  fontFamily: 'Sora',
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Color(0xFF6AD6F9),
-                                                  fontSize: 12,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 16,
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        "Item 2",
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 15,
-                                          fontFamily: "Sora",
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 147,
-                                      ),
-                                      InkWell(
-                                        onTap: () {
-                                          Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    FormInputPengawas()),
-                                          );
-                                        },
-                                        child: Container(
-                                          width: 100,
-                                          height: 30,
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(8.0),
-                                            border: Border.all(
-                                                width: 2,
-                                                color: Color(0xFF6AD6F9)),
-                                          ),
-                                          child: Center(
-                                            child: Text(
-                                              "Check Items",
-                                              style: TextStyle(
-                                                fontFamily: 'Sora',
-                                                fontWeight: FontWeight.bold,
-                                                color: Color(0xFF6AD6F9),
-                                                fontSize: 12,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ), // Gantilah dengan widget tambahan yang ingin Anda tambahkan
-                            ),
-                          ),
-                        ],
-                      );
-                    } else if (selectedIndex == 1) {
-                      return Stack(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                left: 16, right: 16, top: 24),
-                            child: AnimatedContainer(
-                              duration: Duration(milliseconds: 300),
-                              width: 380,
-                              height: containerHeight,
-                              decoration: BoxDecoration(
-                                border:
-                                    Border.all(width: 1, color: Colors.grey),
-                                borderRadius: BorderRadius.circular(8),
-                                color: Colors.white,
-                              ),
-                              child: Row(
-                                children: [
-                                  // Left Side Content
-                                  Flexible(
-                                    // <-- Tambahkan ini
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        // ID Section
-                                        Row(
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 8.0, left: 8),
-                                              child: Text(
-                                                "ID:",
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 22,
-                                                  fontWeight: FontWeight.w700,
-                                                  fontFamily: "Sora",
-                                                ),
-                                              ),
-                                            ),
-                                            Expanded(
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                  top: 8,
-                                                  left: 8,
-                                                ),
-                                                child: Text(
-                                                  "BJE7658332BAP",
-                                                  style: TextStyle(
-                                                    color: Color(0xFF6AD6F9),
-                                                    fontSize: 22,
-                                                    fontFamily: "Sora",
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 8, top: 4),
-                                          child: Text(
-                                            "8 Juli 2023 | 11:00",
-                                            style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 14,
-                                              fontFamily: "Sora",
-                                            ),
-                                          ),
-                                        ),
-
-                                        Row(
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 8, top: 1),
-                                              child: Text(
-                                                "Note :",
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 13,
-                                                  fontFamily: "Sora",
-                                                ),
-                                              ),
-                                            ),
-                                            Expanded(
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 8, top: 1),
-                                                child: Text(
-                                                  "Jangan lupa dibawah 5 derajat celcius ",
-                                                  style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 13,
-                                                    fontFamily: "Sora",
-                                                  ),
-                                                  maxLines: 2,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: 8,
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 8, left: 8),
-                                          child: Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: [
-                                                  ..._buildDetailColumn(
-                                                      "Items", "30"),
-                                                ],
-                                              ),
-                                              SizedBox(
-                                                width: 16,
-                                              ),
-                                              Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: [
-                                                  ..._buildDetailColumn(
-                                                      "Weight", "30kg"),
-                                                ],
-                                              ),
-                                              SizedBox(
-                                                width: 16,
-                                              ),
-                                              Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: [
-                                                  ..._buildDetailColumn(
-                                                      "Location", "Gedung B"),
-                                                ],
-                                              ),
-                                              Expanded(
-                                                child: Container(),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Positioned(
-                            right: 5, // Posisi dari kiri
-                            top: 5, // Posisi dari atas
-                            child: Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                Container(
-                                  width: 60,
-                                  height: 60,
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Color(0xFF6AD6F9)),
-                                  child: Center(
-                                    child: Text(
-                                      "Pickup",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 10,
-                                          fontFamily: "Sora",
-                                          fontWeight: FontWeight.bold),
-                                    ),
+                          trailing: const Icon(Icons.keyboard_arrow_right),
+                          onTap: () {
+                            setState(() {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => FormInputPengawas(
+                                    groupDistribute: groupDistribute,
+                                    distributeId: item.expandedValue,
+                                    userId: widget.userID,
                                   ),
                                 ),
-                              ],
-                            ),
-                          ),
-                          AnimatedPositioned(
-                            right: 20, // Posisi dari kiri
-                            bottom: isExpanded
-                                ? containerHeight - 290
-                                : 10, // Posisi dari atas
-                            duration: Duration(milliseconds: 300),
-                            child: GestureDetector(
-                              onTap:
-                                  toggleContainerSize, // Panggil fungsi ketika ikon ditekan
-                              child: Icon(
-                                isExpanded
-                                    ? Icons.keyboard_arrow_up
-                                    : Icons.keyboard_arrow_down,
-                                size: 50,
-                              ),
-                            ),
-                          ),
-                          Visibility(
-                            visible:
-                                isExpanded, // Tampilkan widget ini hanya jika kontainer diperluas
-                            child: Positioned(
-                              left: 24,
-                              top: 160, // Atur posisi sesuai kebutuhan Anda
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 16),
-                                    child: Row(
-                                      children: [
-                                        Text(
-                                          "Item 1",
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 15,
-                                            fontFamily: "Sora",
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 150,
-                                        ),
-                                        InkWell(
-                                          onTap: () {
-                                            Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      FormInputPengawasPickup()),
-                                            );
-                                          },
-                                          child: Container(
-                                            width: 100,
-                                            height: 30,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(8.0),
-                                              border: Border.all(
-                                                  width: 2,
-                                                  color: Color(0xFF6AD6F9)),
-                                            ),
-                                            child: Center(
-                                              child: Text(
-                                                "Check Items",
-                                                style: TextStyle(
-                                                  fontFamily: 'Sora',
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Color(0xFF6AD6F9),
-                                                  fontSize: 12,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 16,
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        "Item 2",
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 15,
-                                          fontFamily: "Sora",
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 147,
-                                      ),
-                                      InkWell(
-                                        onTap: () {
-                                          Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    FormInputPengawasPickup()),
-                                          );
-                                        },
-                                        child: Container(
-                                          width: 100,
-                                          height: 30,
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(8.0),
-                                            border: Border.all(
-                                                width: 2,
-                                                color: Color(0xFF6AD6F9)),
-                                          ),
-                                          child: Center(
-                                            child: Text(
-                                              "Check Items",
-                                              style: TextStyle(
-                                                fontFamily: 'Sora',
-                                                fontWeight: FontWeight.bold,
-                                                color: Color(0xFF6AD6F9),
-                                                fontSize: 12,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ), // Gantilah dengan widget tambahan yang ingin Anda tambahkan
-                            ),
-                          ),
-                        ],
-                      );
-                    }
-                    return null;
-                  }),
+                              );
+                            });
+                          }));
+                }).toList(),
+              ),
             ],
           ),
         ),
