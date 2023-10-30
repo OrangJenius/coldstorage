@@ -1,12 +1,24 @@
 import 'dart:io';
 
+import 'package:camera/camera.dart';
+import 'package:driver_cold_storage/screens/camerapage.dart';
+import 'package:driver_cold_storage/screens/homePengawas.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
+import 'package:driver_cold_storage/models/pengawasModel.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 
 class FormInputPengawasPickup extends StatefulWidget {
+  final Map<String, Map<String, List<PengawasModel>>> groupPicktup;
+
+  final distributeId;
+  final userId;
+  const FormInputPengawasPickup(
+      {super.key,
+      required this.groupPicktup,
+      required this.distributeId,
+      required this.userId});
   @override
   _FormInputPengawasPickupState createState() =>
       _FormInputPengawasPickupState();
@@ -14,6 +26,16 @@ class FormInputPengawasPickup extends StatefulWidget {
 
 class _FormInputPengawasPickupState extends State<FormInputPengawasPickup> {
   List<String> photos = [];
+
+  String selectedWeight = '';
+  String selectedPieces = '';
+  String selectedTanggal = '';
+  String selectedWaktu = '';
+  String selectedBuilding = '';
+  String selectedAisle = '';
+  String selectedPlace = '';
+  TextEditingController temperatureController = TextEditingController();
+  TextEditingController notesController = TextEditingController();
 
   Future<void> uploadPhoto(File imageFile) async {
     final url =
@@ -46,13 +68,92 @@ class _FormInputPengawasPickupState extends State<FormInputPengawasPickup> {
     }
   }
 
-  String selectedService = 'Service 1';
-  String selectedBuilding = 'Building 1';
-  String selectedAisle = 'Aisle 1';
-  String selectedPlace = 'Place 1';
+  List<String> namaItems = [];
+  List<String> weight = [];
+  List<String> pieces = [];
+  List<String> tanggal = [];
+  List<String> building = [];
+  List<String> aisle = [];
+  List<String> place = [];
+
+  @override
+  void initState() {
+    widget.groupPicktup.values.forEach((dataByIdOrder) {
+      dataByIdOrder.forEach((distributeId, items) {
+        if (distributeId == widget.distributeId) {
+          items.forEach((item) {
+            namaItems.add(item.Nama_Item);
+            weight.add(item.Berat);
+            pieces.add(item.Jumlah);
+            tanggal.add(item.Tanggal_Masuk);
+            building.add(item.Gedung);
+            aisle.add(item.Aisle);
+            place.add(item.Place);
+          });
+        }
+      });
+    });
+
+    if (namaItems.isNotEmpty) {
+      selectedWeight = weight[0];
+      selectedPieces = pieces[0];
+      selectedTanggal = tanggal[0];
+      selectedBuilding = building[0];
+      selectedAisle = aisle[0];
+      selectedPlace = place[0];
+    }
+    super.initState();
+  }
+
+  void _updateSelectedData(String selectedItem) {
+    final index = namaItems.indexOf(selectedItem);
+    if (index != -1) {
+      setState(() {
+        selectedWeight = weight[index];
+        selectedPieces = pieces[index];
+        selectedTanggal = tanggal[index];
+        selectedBuilding = building[index];
+        selectedAisle = aisle[index];
+        selectedPlace = place[index];
+        // Perbarui selectedWaktu jika diperlukan
+      });
+    }
+  }
+
+  Future<void> postDataToApi() async {
+    final apiUrl = 'http://116.68.252.201:1945/TambahTemperature/5';
+    final temperature = temperatureController.text;
+    print(temperature);
+    final response =
+        await http.post(Uri.parse(apiUrl), body: {'Temperature': temperature});
+
+    if (response.statusCode == 200) {
+      print('Data temperatur berhasil dipost ke API');
+    } else {
+      print('Gagal melakukan POST data temperatur ke API');
+      print('Status Code: ${response.statusCode}');
+      print('Response: ${response.body}');
+    }
+  }
+
+  Future<void> postDataToApi2() async {
+    final apiUrl = 'http://116.68.252.201:1945/TambahNotes/5';
+    final notes = notesController.text;
+    print(notes);
+    final response = await http.post(Uri.parse(apiUrl), body: {'Notes': notes});
+
+    if (response.statusCode == 200) {
+      print('Data temperatur berhasil dipost ke API');
+    } else {
+      print('Gagal melakukan POST data temperatur ke API');
+      print('Status Code: ${response.statusCode}');
+      print('Response: ${response.body}');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    String selectedService = namaItems.isNotEmpty ? namaItems[0] : '';
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -90,9 +191,9 @@ class _FormInputPengawasPickupState extends State<FormInputPengawasPickup> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 8, left: 8),
+                    padding: const EdgeInsets.only(top: 16, left: 8),
                     child: Text(
-                      "sda213271321",
+                      widget.distributeId,
                       style: TextStyle(
                         color: Color(0xFF6AD6F9),
                         fontSize: 24,
@@ -113,17 +214,17 @@ class _FormInputPengawasPickupState extends State<FormInputPengawasPickup> {
                   ),
                   child: DropdownButtonFormField<String>(
                     value: selectedService,
-                    items: [
-                      DropdownMenuItem(
-                          value: "Service 1", child: Text("Service 1")),
-                      DropdownMenuItem(
-                          value: "Service 2", child: Text("Service 2")),
-                      DropdownMenuItem(
-                          value: "Service 3", child: Text("Service 3")),
-                    ],
+                    items: namaItems.map((namaItem) {
+                      return DropdownMenuItem(
+                        value: namaItem,
+                        child: Text(namaItem),
+                      );
+                    }).toList(),
                     onChanged: (value) {
                       setState(() {
                         selectedService = value ?? '';
+
+                        _updateSelectedData(selectedService);
                       });
                     },
                     decoration: InputDecoration(
@@ -155,7 +256,7 @@ class _FormInputPengawasPickupState extends State<FormInputPengawasPickup> {
                   Padding(
                     padding: const EdgeInsets.only(right: 8),
                     child: Text(
-                      "10 kg ",
+                      selectedWeight,
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 16,
@@ -186,7 +287,7 @@ class _FormInputPengawasPickupState extends State<FormInputPengawasPickup> {
                   Padding(
                     padding: const EdgeInsets.only(right: 8),
                     child: Text(
-                      "10 pcs ",
+                      selectedPieces,
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 16,
@@ -237,12 +338,12 @@ class _FormInputPengawasPickupState extends State<FormInputPengawasPickup> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "22-06-2023",
+                        selectedTanggal,
                         style: TextStyle(
                           fontFamily: 'Sora',
                           fontSize: 15,
                           fontWeight: FontWeight.w400,
-                          color: Color(0xFF747474),
+                          color: Colors.black,
                           fontStyle: FontStyle.normal,
                         ),
                       ),
@@ -334,7 +435,7 @@ class _FormInputPengawasPickupState extends State<FormInputPengawasPickup> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Building A",
+                        selectedBuilding,
                         style: TextStyle(
                           fontFamily: 'Sora',
                           fontSize: 15,
@@ -374,7 +475,7 @@ class _FormInputPengawasPickupState extends State<FormInputPengawasPickup> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Aisle B",
+                        selectedAisle,
                         style: TextStyle(
                           fontFamily: 'Sora',
                           fontSize: 15,
@@ -414,7 +515,7 @@ class _FormInputPengawasPickupState extends State<FormInputPengawasPickup> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Place c",
+                        selectedPlace,
                         style: TextStyle(
                           fontFamily: 'Sora',
                           fontSize: 15,
@@ -452,6 +553,7 @@ class _FormInputPengawasPickupState extends State<FormInputPengawasPickup> {
                     child: Padding(
                       padding: const EdgeInsets.only(right: 8, left: 24),
                       child: TextFormField(
+                        controller: temperatureController,
                         inputFormatters: [
                           FilteringTextInputFormatter.digitsOnly
                         ],
@@ -503,7 +605,15 @@ class _FormInputPengawasPickupState extends State<FormInputPengawasPickup> {
               Padding(
                 padding: EdgeInsets.only(top: 16, left: 24),
                 child: InkWell(
-                  onTap: chooseImage,
+                  onTap: () async => {
+                    print("tes"),
+                    await availableCameras().then(
+                      (value) => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => CameraPage(cameras: value))),
+                    ),
+                  },
                   child: Container(
                     width: 100,
                     height: 75,
@@ -573,16 +683,14 @@ class _FormInputPengawasPickupState extends State<FormInputPengawasPickup> {
                         borderRadius: BorderRadius.circular(8),
                         border: Border.all(width: 1)),
                     child: TextField(
-                      // Tambahkan TextField di sini
+                      controller: notesController,
                       decoration: InputDecoration(
-                        hintText: 'Masukkan teks di sini', // Teks placeholder
-                        border: InputBorder.none, // Hapus garis bawah default
-                        contentPadding:
-                            EdgeInsets.all(8), // Jarak dari tepi kontainer
+                        hintText: 'Masukkan teks di sini',
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.all(8),
                       ),
                     ),
                   )),
-
               SizedBox(
                 height: 16,
               ),
@@ -624,14 +732,10 @@ class _FormInputPengawasPickupState extends State<FormInputPengawasPickup> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.symmetric(
-                    horizontal: 32,
-                    vertical: 8), // Padding horizontal 32 dan vertikal 24
+                padding: EdgeInsets.symmetric(horizontal: 32, vertical: 8),
                 child: Container(
-                  width: double
-                      .infinity, // Ini akan membuat Container mengambil lebar maksimal yang tersedia.
-                  height:
-                      50, // Anda bisa mengatur tinggi tombol sesuai kebutuhan Anda.
+                  width: double.infinity,
+                  height: 50,
                   child: ElevatedButton(
                     style: ButtonStyle(
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -644,7 +748,18 @@ class _FormInputPengawasPickupState extends State<FormInputPengawasPickup> {
                       backgroundColor:
                           MaterialStateProperty.all<Color>(Color(0xFF6AD6F9)),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      postDataToApi();
+                      postDataToApi2();
+
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => HomePengawas(
+                            userID: widget.userId,
+                          ),
+                        ),
+                      );
+                    },
                     child: Text('Save',
                         style: TextStyle(
                           fontSize: 20,
