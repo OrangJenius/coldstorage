@@ -14,10 +14,13 @@ class pengirimanScreen extends StatefulWidget {
 
 class _pengirimanScreenState extends State<pengirimanScreen> {
   Position? _currentLocation;
+<<<<<<< Updated upstream
 <<<<<<< HEAD
   late LatLng _srcLoc = LatLng(37.422131, -122.084801);
   late LatLng _destLoc = LatLng(37.411374, -122.071204);
 =======
+=======
+>>>>>>> Stashed changes
   LatLng? posisiAwal;
   // late LatLng _srcLoc = LatLng(37.422131, -122.084801);
   // late LatLng _destLoc = LatLng(37.411374, -122.071204);
@@ -39,7 +42,10 @@ class _pengirimanScreenState extends State<pengirimanScreen> {
       ),
     );
   }
+<<<<<<< Updated upstream
 >>>>>>> f39cf968f1f32008be5768b7e7022cce6686b36f
+=======
+>>>>>>> Stashed changes
 
   @override
   void initState() {
