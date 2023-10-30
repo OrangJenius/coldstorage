@@ -14,8 +14,32 @@ class pengirimanScreen extends StatefulWidget {
 
 class _pengirimanScreenState extends State<pengirimanScreen> {
   Position? _currentLocation;
+<<<<<<< HEAD
   late LatLng _srcLoc = LatLng(37.422131, -122.084801);
   late LatLng _destLoc = LatLng(37.411374, -122.071204);
+=======
+  LatLng? posisiAwal;
+  // late LatLng _srcLoc = LatLng(37.422131, -122.084801);
+  // late LatLng _destLoc = LatLng(37.411374, -122.071204);
+
+  TextEditingController mytext = TextEditingController();
+  List<String> namaTokoPisah = [];
+  List<String> namaItems = [];
+  List<String> quantities = [];
+  List<String> nomorTelfon = [];
+  List<String> longlat = [];
+  List<String> longlat2 = [];
+  List<String> longLatAwal = [];
+
+  void _showSnackbar() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text("Phone Number Copied"),
+        // backgroundColor: Colors.green, // Use a success color
+      ),
+    );
+  }
+>>>>>>> f39cf968f1f32008be5768b7e7022cce6686b36f
 
   @override
   void initState() {

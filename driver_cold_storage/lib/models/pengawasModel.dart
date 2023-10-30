@@ -20,6 +20,7 @@
   final String Id_Distribute;
   final String Temperature;
   final String Status_Distribute;
+  bool isExpanded;
 
   PengawasModel({
     required this.Id,
@@ -43,6 +44,7 @@
     required this.Id_Distribute,
     required this.Temperature,
     required this.Status_Distribute,
+    required this.isExpanded,
   });
 
   Map<String, dynamic> toJson() {
@@ -95,6 +97,7 @@
       Id_Distribute: json['Id_Distribute'] ?? '',
       Temperature: json['Temperature'] ?? '',
       Status_Distribute: json['Status_Distribute'] ?? '',
+      isExpanded: false,
     );
   }
 }
