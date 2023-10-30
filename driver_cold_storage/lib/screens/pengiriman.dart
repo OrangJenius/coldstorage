@@ -26,6 +26,7 @@ class _pengirimanScreenState extends State<pengirimanScreen> {
   // late LatLng _destLoc = LatLng(37.411374, -122.071204);
 
   TextEditingController mytext = TextEditingController();
+  List<String> nama = [];
   List<String> namaTokoPisah = [];
   List<String> namaItems = [];
   List<String> quantities = [];
