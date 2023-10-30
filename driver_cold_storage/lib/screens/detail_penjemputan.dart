@@ -6,10 +6,8 @@ import 'package:driver_cold_storage/models/pengantaranModel.dart';
 class detail_Penjemputan extends StatefulWidget {
   final Map<String, List<PengantaranModel>> sortedGroupedData;
   final distributeId;
-
   const detail_Penjemputan(
       {super.key, required this.sortedGroupedData, required this.distributeId});
-
   @override
   _detailPenjemputanState createState() => _detailPenjemputanState();
 }
@@ -18,7 +16,6 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
   final ScrollController _listViewController = ScrollController();
   final ScrollController _listViewController2 = ScrollController();
   final ScrollController _listViewController3 = ScrollController();
-
   @override
   void dispose() {
     // Dispose of the ScrollController when the widget is disposed
@@ -35,14 +32,11 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
     final pengantaranItem = items![0];
     String timeString =
         pengantaranItem.Time.toString(); // Replace with your time string
-
     // Split the time string using the ':' delimiter
     List<String> timeParts = timeString.split(':');
-
     // Get the hour and minute parts
     String hour = timeParts[0];
     String minute = timeParts[1];
-
     // Now you have the hour and minute separately
     String formattedTime = "$hour:$minute"; // "hh:mm" format
     List<String> quantitiesList = items.isNotEmpty
@@ -51,45 +45,37 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
             .map((quantity) => quantity.trim())
             .toList()
         : [];
-
     int totalJumlah = 0;
-
     for (String angka in quantitiesList) {
       totalJumlah += int.parse(angka);
     }
-
     List<String> NamaTokoList = items.isNotEmpty
         ? items.first.Nama_Toko
             .split(',')
             .map((namaToko) => namaToko.trim())
             .toList()
         : [];
-
     List<String> addressList = items.isNotEmpty
         ? items.first.Address
             .split(',')
             .map((address) => address.trim())
             .toList()
         : [];
-
     List<String> noHPlist = items.isNotEmpty
         ? items.first.Phone_Number
             .split(',')
             .map((noHP) => noHP.trim())
             .toList()
         : [];
-
     List<String> time = items.isNotEmpty
         ? items.first.Time.split(',').map((time) => time.trim()).toList()
         : [];
-
     List<String> totalNamaItem = items.isNotEmpty
         ? items.first.Item
             .split(',')
             .map((namaItem) => namaItem.trim())
             .toList()
         : [];
-
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -209,7 +195,6 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                   ),
                 ],
               ),
-
               SizedBox(
                 height: 16,
               ),
@@ -749,7 +734,9 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
               ),
               Container(
                 padding: EdgeInsets.only(left: 16, right: 16, bottom: 16),
-                child: SlideActionBtn(),
+                child: SlideActionBtn(
+                  pengantaran: items,
+                ),
               ),
             ],
           ),

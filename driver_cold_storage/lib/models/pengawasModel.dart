@@ -1,4 +1,4 @@
--class PengawasModel {
+class PengawasModel {
   final String Id;
   final String Nama_Item;
   final String Jumlah;
@@ -20,7 +20,7 @@
   final String Id_Distribute;
   final String Temperature;
   final String Status_Distribute;
-
+  bool isExpanded;
   PengawasModel({
     required this.Id,
     required this.Nama_Item,
@@ -43,8 +43,8 @@
     required this.Id_Distribute,
     required this.Temperature,
     required this.Status_Distribute,
+    required this.isExpanded,
   });
-
   Map<String, dynamic> toJson() {
     return {
       'Id': Id,
@@ -74,7 +74,6 @@
   factory PengawasModel.fromJson(Map<String, dynamic> json) {
     return PengawasModel(
       Id: json['Id'] ?? '', // Assuming ekspedisi_Id is of type int
-
       Nama_Item: json['Nama_Item'] ?? '',
       Jumlah: json['Jumlah'],
       Berat: json['Berat'],
@@ -95,6 +94,7 @@
       Id_Distribute: json['Id_Distribute'] ?? '',
       Temperature: json['Temperature'] ?? '',
       Status_Distribute: json['Status_Distribute'] ?? '',
+      isExpanded: false,
     );
   }
 }
