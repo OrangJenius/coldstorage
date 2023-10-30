@@ -101,12 +101,14 @@ class _homeScreenState extends State<homeScreen> {
         });
 
 // Iterasi melalui sortedGroupedData
+        countDistribute = 0;
+        countPickup = 0;
 
         for (String distributeId in sortedGroupedData.keys) {
           List<PengantaranModel> items = sortedGroupedData[distributeId]!;
 
           for (PengantaranModel item in items) {
-            String itemDate = item.Tanggal_PickUp;
+            String itemDate = item.Tanggal_PickUp.substring(8);
 
             // Di sini Anda dapat mengakses dan melakukan operasi pada setiap item
             if (itemDate == tanggal[selectedIndex ?? 0]) {
