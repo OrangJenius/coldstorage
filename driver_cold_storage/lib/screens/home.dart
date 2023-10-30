@@ -101,14 +101,12 @@ class _homeScreenState extends State<homeScreen> {
         });
 
 // Iterasi melalui sortedGroupedData
-        countDistribute = 0;
-        countPickup = 0;
 
         for (String distributeId in sortedGroupedData.keys) {
           List<PengantaranModel> items = sortedGroupedData[distributeId]!;
 
           for (PengantaranModel item in items) {
-            String itemDate = item.Tanggal_PickUp.substring(8);
+            String itemDate = item.Tanggal_PickUp;
 
             // Di sini Anda dapat mengakses dan melakukan operasi pada setiap item
             if (itemDate == tanggal[selectedIndex ?? 0]) {
@@ -649,22 +647,29 @@ class _homeScreenState extends State<homeScreen> {
                   ListView.builder(
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
-                    itemCount: sortedGroupedData.length,
+                    itemCount: sortedGroupedData
+                        .length, // Replace 'itemCount' with the number of items you have
+
                     itemBuilder: (BuildContext context, int index) {
-                      String distributeId =
-                          sortedGroupedData.keys.elementAt(index);
+                      String distributeId = sortedGroupedData.keys.elementAt(
+                          index); // Ambil Distribute_Id berdasarkan indeks
                       List<PengantaranModel>? items =
                           sortedGroupedData[distributeId];
 
                       final pengantaranItem = items![0];
 
-                      String timeString = pengantaranItem.Time.toString();
+                      String timeString = pengantaranItem.Time
+                          .toString(); // Replace with your time string
+
+                      // Split the time string using the ':' delimiter
                       List<String> timeParts = timeString.split(':');
 
+                      // Get the hour and minute parts
                       String hour = timeParts[0];
                       String minute = timeParts[1];
 
-                      String formattedTime = "$hour:$minute";
+                      // Now you have the hour and minute separately
+                      String formattedTime = "$hour:$minute"; // "hh:mm" format
 
                       List<String> NamaTokoList = items.isNotEmpty
                           ? items.first.Nama_Toko
@@ -704,6 +709,8 @@ class _homeScreenState extends State<homeScreen> {
                       String itemDate =
                           pengantaranItem.Tanggal_PickUp.substring(8);
 
+                      //    print(groupedAttributes);
+
                       if (itemDate == tanggal[selectedIndex ?? 0]) {
                         return Column(
                           children: [
@@ -735,6 +742,7 @@ class _homeScreenState extends State<homeScreen> {
                             ),
                             InkWell(
                               onTap: () {
+                                //   Navigasi ke halaman DetailDistribusi
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
                                     builder: (context) => detail_Penjemputan(
@@ -911,7 +919,7 @@ class _homeScreenState extends State<homeScreen> {
                                                             Padding(
                                                               padding:
                                                                   const EdgeInsets
-                                                                      .only(
+                                                                          .only(
                                                                       left: 8,
                                                                       top: 8,
                                                                       right: 8),

@@ -1,9 +1,5 @@
 import 'dart:io';
 
-import 'package:camera/camera.dart';
-import 'package:driver_cold_storage/models/pengawasModel.dart';
-import 'package:driver_cold_storage/screens/camerapage.dart';
-import 'package:driver_cold_storage/screens/homePengawas.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -11,31 +7,16 @@ import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 
 class FormInputPengawas extends StatefulWidget {
-  final Map<String, Map<String, List<PengawasModel>>> groupDistribute;
-
-  final distributeId;
-  final userId;
-
-  const FormInputPengawas(
-      {super.key,
-      required this.groupDistribute,
-      required this.distributeId,
-      required this.userId});
   @override
   _FormInputPengawasState createState() => _FormInputPengawasState();
 }
 
 class _FormInputPengawasState extends State<FormInputPengawas> {
   List<String> photos = [];
-  String selectedWeight = '';
-  String selectedPieces = '';
-  String selectedTanggal = '';
-  String selectedWaktu = '';
-  TextEditingController temperatureController = TextEditingController();
-  TextEditingController notesController = TextEditingController();
 
   Future<void> uploadPhoto(File imageFile) async {
-    final url = Uri.parse('https://example.com/upload');
+    final url =
+        Uri.parse('https://example.com/upload'); // Ganti dengan URL server Anda
     final response = await http.post(
       url,
       body: {
@@ -44,10 +25,12 @@ class _FormInputPengawasState extends State<FormInputPengawas> {
     );
 
     if (response.statusCode == 200) {
+      // Jika berhasil diunggah, Anda dapat menambahkannya ke daftar foto yang diunggah
       setState(() {
         photos.add(imageFile.path);
       });
     } else {
+      // Tampilkan pesan kesalahan jika unggah gagal
       print('Gagal mengunggah foto: ${response.statusCode}');
     }
   }
@@ -62,82 +45,10 @@ class _FormInputPengawasState extends State<FormInputPengawas> {
     }
   }
 
-  List<String> namaItems = [];
-  List<String> weight = [];
-  List<String> pieces = [];
-  List<String> tanggal = [];
-
-  @override
-  void initState() {
-    widget.groupDistribute.values.forEach((dataByIdOrder) {
-      dataByIdOrder.forEach((distributeId, items) {
-        if (distributeId == widget.distributeId) {
-          items.forEach((item) {
-            namaItems.add(item.Nama_Item);
-            weight.add(item.Berat);
-            pieces.add(item.Jumlah);
-            tanggal.add(item.Tanggal_Masuk);
-          });
-        }
-      });
-    });
-
-    if (namaItems.isNotEmpty) {
-      selectedWeight = weight[0];
-      selectedPieces = pieces[0];
-      selectedTanggal = tanggal[0];
-    }
-    super.initState();
-  }
-
-  void _updateSelectedData(String selectedItem) {
-    final index = namaItems.indexOf(selectedItem);
-    if (index != -1) {
-      setState(() {
-        selectedWeight = weight[index];
-        selectedPieces = pieces[index];
-        selectedTanggal = tanggal[index];
-        // Perbarui selectedWaktu jika diperlukan
-      });
-    }
-  }
-
-  Future<void> postDataToApi() async {
-    final apiUrl = 'http://116.68.252.201:1945/TambahTemperature/5';
-    final temperature = temperatureController.text;
-    print(temperature);
-    final response =
-        await http.post(Uri.parse(apiUrl), body: {'Temperature': temperature});
-
-    if (response.statusCode == 200) {
-      print('Data temperatur berhasil dipost ke API');
-    } else {
-      print('Gagal melakukan POST data temperatur ke API');
-      print('Status Code: ${response.statusCode}');
-      print('Response: ${response.body}');
-    }
-  }
-
-  Future<void> postDataToApi2() async {
-    final apiUrl = 'http://116.68.252.201:1945/TambahNotes/5';
-    final notes = notesController.text;
-    print(notes);
-    final response = await http.post(Uri.parse(apiUrl), body: {'Notes': notes});
-
-    if (response.statusCode == 200) {
-      print('Data temperatur berhasil dipost ke API');
-    } else {
-      print('Gagal melakukan POST data temperatur ke API');
-      print('Status Code: ${response.statusCode}');
-      print('Response: ${response.body}');
-    }
-  }
+  String selectedService = 'Service 1';
 
   @override
   Widget build(BuildContext context) {
-    print(namaItems);
-    String selectedService = namaItems.isNotEmpty ? namaItems[0] : '';
-    print(tanggal);
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -177,7 +88,7 @@ class _FormInputPengawasState extends State<FormInputPengawas> {
                   Padding(
                     padding: const EdgeInsets.only(top: 16, left: 8),
                     child: Text(
-                      widget.distributeId,
+                      "sda213271321",
                       style: TextStyle(
                         color: Color(0xFF6AD6F9),
                         fontSize: 24,
@@ -197,17 +108,17 @@ class _FormInputPengawasState extends State<FormInputPengawas> {
                   ),
                   child: DropdownButtonFormField<String>(
                     value: selectedService,
-                    items: namaItems.map((namaItem) {
-                      return DropdownMenuItem(
-                        value: namaItem,
-                        child: Text(namaItem),
-                      );
-                    }).toList(),
+                    items: [
+                      DropdownMenuItem(
+                          value: "Service 1", child: Text("Service 1")),
+                      DropdownMenuItem(
+                          value: "Service 2", child: Text("Service 2")),
+                      DropdownMenuItem(
+                          value: "Service 3", child: Text("Service 3")),
+                    ],
                     onChanged: (value) {
                       setState(() {
                         selectedService = value ?? '';
-
-                        _updateSelectedData(selectedService);
                       });
                     },
                     decoration: InputDecoration(
@@ -238,7 +149,7 @@ class _FormInputPengawasState extends State<FormInputPengawas> {
                   Padding(
                     padding: const EdgeInsets.only(right: 8),
                     child: Text(
-                      selectedWeight,
+                      "10 kg ",
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 16,
@@ -269,7 +180,7 @@ class _FormInputPengawasState extends State<FormInputPengawas> {
                   Padding(
                     padding: const EdgeInsets.only(right: 8),
                     child: Text(
-                      selectedPieces,
+                      "10 pcs ",
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 16,
@@ -320,12 +231,12 @@ class _FormInputPengawasState extends State<FormInputPengawas> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        selectedTanggal,
+                        "22-06-2023",
                         style: TextStyle(
                           fontFamily: 'Sora',
                           fontSize: 15,
                           fontWeight: FontWeight.w400,
-                          color: Colors.black,
+                          color: Color(0xFF747474),
                           fontStyle: FontStyle.normal,
                         ),
                       ),
@@ -401,7 +312,6 @@ class _FormInputPengawasState extends State<FormInputPengawas> {
                     child: Padding(
                       padding: const EdgeInsets.only(right: 8, left: 24),
                       child: TextFormField(
-                        controller: temperatureController,
                         inputFormatters: [
                           FilteringTextInputFormatter.digitsOnly
                         ],
@@ -453,15 +363,7 @@ class _FormInputPengawasState extends State<FormInputPengawas> {
               Padding(
                 padding: EdgeInsets.only(top: 16, left: 24),
                 child: InkWell(
-                  onTap: () async => {
-                    print("tes"),
-                    await availableCameras().then(
-                      (value) => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) => CameraPage(cameras: value))),
-                    ),
-                  },
+                  onTap: chooseImage,
                   child: Container(
                     width: 100,
                     height: 75,
@@ -516,11 +418,12 @@ class _FormInputPengawasState extends State<FormInputPengawas> {
                         borderRadius: BorderRadius.circular(8),
                         border: Border.all(width: 1)),
                     child: TextField(
-                      controller: notesController,
+                      // Tambahkan TextField di sini
                       decoration: InputDecoration(
-                        hintText: 'Masukkan teks di sini',
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.all(8),
+                        hintText: 'Masukkan teks di sini', // Teks placeholder
+                        border: InputBorder.none, // Hapus garis bawah default
+                        contentPadding:
+                            EdgeInsets.all(8), // Jarak dari tepi kontainer
                       ),
                     ),
                   )),
@@ -528,18 +431,25 @@ class _FormInputPengawasState extends State<FormInputPengawas> {
                 height: 16,
               ),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 32, vertical: 8),
+                padding: EdgeInsets.symmetric(
+                    horizontal: 32,
+                    vertical: 8), // Padding horizontal 32 dan vertikal 24
                 child: Container(
-                  width: double.infinity,
-                  height: 50,
+                  width: double
+                      .infinity, // Ini akan membuat Container mengambil lebar maksimal yang tersedia.
+                  height:
+                      50, // Anda bisa mengatur tinggi tombol sesuai kebutuhan Anda.
+
                   child: ElevatedButton(
                     style: ButtonStyle(
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
+                          borderRadius: BorderRadius.circular(
+                              30), // border radius sebesar 30
                           side: BorderSide(
-                            color: Color(0xFF6AD6F9),
-                            width: 1.0,
+                            color: Color(0xFF6AD6F9), // Warna border
+                            width:
+                                1.0, // Lebar border (sesuaikan dengan kebutuhan Anda)
                           ),
                         ),
                       ),
@@ -558,10 +468,14 @@ class _FormInputPengawasState extends State<FormInputPengawas> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 32, vertical: 8),
+                padding: EdgeInsets.symmetric(
+                    horizontal: 32,
+                    vertical: 8), // Padding horizontal 32 dan vertikal 24
                 child: Container(
-                  width: double.infinity,
-                  height: 50,
+                  width: double
+                      .infinity, // Ini akan membuat Container mengambil lebar maksimal yang tersedia.
+                  height:
+                      50, // Anda bisa mengatur tinggi tombol sesuai kebutuhan Anda.
                   child: ElevatedButton(
                     style: ButtonStyle(
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -574,18 +488,7 @@ class _FormInputPengawasState extends State<FormInputPengawas> {
                       backgroundColor:
                           MaterialStateProperty.all<Color>(Color(0xFF6AD6F9)),
                     ),
-                    onPressed: () {
-                      postDataToApi();
-                      postDataToApi2();
-
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => HomePengawas(
-                            userID: widget.userId,
-                          ),
-                        ),
-                      );
-                    },
+                    onPressed: () {},
                     child: Text('Save',
                         style: TextStyle(
                           fontSize: 20,
