@@ -4,14 +4,14 @@ class Item {
     required this.expandedValue,
     required this.headerValue,
     required this.tanggal,
-    this.isChecked = false,
-    this.isSubmitted = false,
+    required this.isCheck,
+    required this.canSubmit,
   });
 
   int id;
   String expandedValue;
   String headerValue;
   String tanggal;
-  bool isChecked;
-  bool isSubmitted;
+  String isCheck;
+  bool canSubmit;
 }

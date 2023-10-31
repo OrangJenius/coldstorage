@@ -121,7 +121,8 @@ class _FormInputPengawasPickupState extends State<FormInputPengawasPickup> {
   }
 
   Future<void> postDataToApi() async {
-    final apiUrl = 'http://116.68.252.201:1945/TambahTemperature/5';
+    final apiUrl =
+        'http://116.68.252.201:1945/TambahTemperature/${widget.distributeId}';
     final temperature = temperatureController.text;
     print(temperature);
     final response =
@@ -137,7 +138,8 @@ class _FormInputPengawasPickupState extends State<FormInputPengawasPickup> {
   }
 
   Future<void> postDataToApi2() async {
-    final apiUrl = 'http://116.68.252.201:1945/TambahNotes/5';
+    final apiUrl =
+        'http://116.68.252.201:1945/TambahNotes/${widget.distributeId}';
     final notes = notesController.text;
     print(notes);
     final response = await http.post(Uri.parse(apiUrl), body: {'Notes': notes});
@@ -721,7 +723,9 @@ class _FormInputPengawasPickupState extends State<FormInputPengawasPickup> {
                       backgroundColor:
                           MaterialStateProperty.all<Color>(Colors.white),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
                     child: Text('HomePage',
                         style: TextStyle(
                             fontSize: 20,

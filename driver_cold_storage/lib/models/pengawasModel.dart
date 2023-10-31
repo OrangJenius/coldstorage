@@ -20,6 +20,8 @@ class PengawasModel {
   final String Id_Distribute;
   final String Temperature;
   final String Status_Distribute;
+  late final String isCheck;
+  late final String Status_Selesai;
   bool isExpanded;
   PengawasModel({
     required this.Id,
@@ -43,6 +45,8 @@ class PengawasModel {
     required this.Id_Distribute,
     required this.Temperature,
     required this.Status_Distribute,
+    required this.isCheck,
+    required this.Status_Selesai,
     required this.isExpanded,
   });
   Map<String, dynamic> toJson() {
@@ -68,6 +72,8 @@ class PengawasModel {
       'Id_Distribute': Id_Distribute,
       'Temperature': Temperature,
       'Status_Distribute': Status_Distribute,
+      'Status_Selesai': Status_Selesai,
+      'Is_Check': isCheck,
     };
   }
 
@@ -94,6 +100,8 @@ class PengawasModel {
       Id_Distribute: json['Id_Distribute'] ?? '',
       Temperature: json['Temperature'] ?? '',
       Status_Distribute: json['Status_Distribute'] ?? '',
+      isCheck: json['Is_Check'] ?? '',
+      Status_Selesai: json['Status_Selesai'] ?? '',
       isExpanded: false,
     );
   }

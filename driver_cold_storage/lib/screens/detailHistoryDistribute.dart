@@ -10,22 +10,24 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 
-class FormInputPengawas extends StatefulWidget {
+class DetailHistoryDistributePengawas extends StatefulWidget {
   final Map<String, Map<String, List<PengawasModel>>> groupDistribute;
 
   final distributeId;
   final userId;
 
-  const FormInputPengawas(
+  const DetailHistoryDistributePengawas(
       {super.key,
       required this.groupDistribute,
       required this.distributeId,
       required this.userId});
   @override
-  _FormInputPengawasState createState() => _FormInputPengawasState();
+  _detailHistoryDistributeState createState() =>
+      _detailHistoryDistributeState();
 }
 
-class _FormInputPengawasState extends State<FormInputPengawas> {
+class _detailHistoryDistributeState
+    extends State<DetailHistoryDistributePengawas> {
   List<String> photos = [];
   String selectedWeight = '';
   String selectedPieces = '';
@@ -68,6 +70,7 @@ class _FormInputPengawasState extends State<FormInputPengawas> {
   List<String> tanggal = [];
   List<String> temperature = [];
   List<String> note = [];
+
   @override
   void initState() {
     widget.groupDistribute.values.forEach((dataByIdOrder) {
@@ -600,8 +603,6 @@ class _FormInputPengawasState extends State<FormInputPengawas> {
                           MaterialStateProperty.all<Color>(Color(0xFF6AD6F9)),
                     ),
                     onPressed: () {
-                      putDataToApi();
-                      putDataToApi2();
                       putIschecked();
 
                       Navigator.of(context).push(

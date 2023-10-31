@@ -1,23 +1,23 @@
 import 'dart:convert';
 
 import 'package:driver_cold_storage/models/pengawasModel.dart';
-import 'package:driver_cold_storage/screens/formInputPengawas.dart';
+import 'package:driver_cold_storage/screens/detailHistoryDistribute.dart';
+import 'package:driver_cold_storage/screens/detailHistoryPickupPengawas.dart';
+
 import 'package:driver_cold_storage/screens/formInputPengawasPickup.dart';
-import 'package:driver_cold_storage/screens/historyPengawas.dart';
 import 'package:driver_cold_storage/screens/item.dart';
 import 'package:driver_cold_storage/screens/profile.dart';
-import 'package:driver_cold_storage/screens/profilePengawas.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-class HomePengawas extends StatefulWidget {
+class HistoryPengawas extends StatefulWidget {
   final String userID;
-  HomePengawas({required this.userID});
+  HistoryPengawas({required this.userID});
   @override
-  _homePengawasState createState() => _homePengawasState();
+  _HistoryPengawasState createState() => _HistoryPengawasState();
 }
 
-class _homePengawasState extends State<HomePengawas> {
+class _HistoryPengawasState extends State<HistoryPengawas> {
   double containerHeight = 150.0; // Tinggi awal kontainer
   bool isExpanded = false;
   int? selectedIndex;
@@ -172,7 +172,7 @@ class _homePengawasState extends State<HomePengawas> {
         groupedData.forEach((idOrder, dataByIdOrder) {
           dataByIdOrder.forEach((idDistribute, items) {
             for (var item in items) {
-              if (item.Status_Selesai != 'selesai') {
+              if (item.Status_Selesai == 'selesai') {
                 if (item.Status_Distribute == 'Distribute') {
                   if (!groupDistribute.containsKey(idOrder)) {
                     groupDistribute[idOrder] = {};
@@ -224,7 +224,7 @@ class _homePengawasState extends State<HomePengawas> {
                         top: 16,
                       ),
                       child: Text(
-                        "Home",
+                        "History Pengawas",
                         style: TextStyle(
                             color: Color(0xFF6AD6F9),
                             fontSize: 36,
@@ -232,83 +232,6 @@ class _homePengawasState extends State<HomePengawas> {
                             fontFamily: "Sora"),
                       ),
                     ),
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 16, right: 20),
-                        child: Transform.scale(
-                          scale: 1.2,
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => HistoryPengawas(
-                                    userID: widget.userID,
-                                  ),
-                                ),
-                              );
-                            },
-                            child: CircleAvatar(
-                              child: Icon(
-                                Icons.alarm,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 8, right: 20),
-                        child: Text(
-                          "History",
-                          style: TextStyle(
-                              color: Color(0xFF6AD6F9),
-                              fontSize: 15,
-                              fontWeight: FontWeight.w700,
-                              fontFamily: "Sora"),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 16, right: 16),
-                        child: Transform.scale(
-                          scale: 1.2,
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => profilePengawasScreen(
-                                    id: widget.userID,
-                                  ),
-                                ),
-                              );
-                            },
-                            child: CircleAvatar(
-                              child: Icon(Icons.image),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 8, right: 16),
-                        child: Text(
-                          "Profile",
-                          style: TextStyle(
-                              color: Color(0xFF6AD6F9),
-                              fontSize: 15,
-                              fontWeight: FontWeight.w700,
-                              fontFamily: "Sora"),
-                        ),
-                      ),
-                    ],
                   ),
                 ],
               ),
@@ -398,30 +321,6 @@ class _homePengawasState extends State<HomePengawas> {
                                 Container(
                                   width: 80,
                                   height: 30,
-                                  child: item.canSubmit
-                                      ? ElevatedButton(
-                                          style: ButtonStyle(
-                                            backgroundColor:
-                                                MaterialStateProperty.all<
-                                                    Color>(Color(0xFF6AD6F9)),
-                                          ),
-                                          onPressed: () async {
-                                            await putStatus(item.headerValue);
-
-                                            // Setelah aksi selesai, ganti halaman dengan halaman HomePengawas yang baru
-                                            Navigator.pushReplacement(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    HomePengawas(
-                                                        userID: widget.userID),
-                                              ),
-                                            );
-                                            // Tambahkan aksi yang sesuai ketika tombol Submit ditekan
-                                          },
-                                          child: Text('Submit'),
-                                        )
-                                      : null,
                                 ),
                               ],
                             ),
@@ -454,7 +353,8 @@ class _homePengawasState extends State<HomePengawas> {
                               if (selectedIndex == 0) {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
-                                    builder: (context) => FormInputPengawas(
+                                    builder: (context) =>
+                                        DetailHistoryDistributePengawas(
                                       groupDistribute: groupDistribute,
                                       distributeId: item.expandedValue,
                                       userId: widget.userID,
@@ -465,8 +365,8 @@ class _homePengawasState extends State<HomePengawas> {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
                                     builder: (context) =>
-                                        FormInputPengawasPickup(
-                                      groupPicktup: groupPickup,
+                                        DetailHistoryPickupPengawas(
+                                      groupPickup: groupPickup,
                                       distributeId: item.expandedValue,
                                       userId: widget.userID,
                                     ),
