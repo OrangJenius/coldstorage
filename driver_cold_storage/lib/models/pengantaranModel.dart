@@ -33,26 +33,6 @@ class PengantaranModel {
     required this.Nama_Client,
   });
 
-  Map<String, dynamic> toJson() {
-    return {
-      'Id': Id,
-      'Order_Id': Order_Id,
-      'Item': Item,
-      'Address': Address,
-      'Tanggal_PickUp': Tanggal_PickUp,
-      'Time': Time,
-      'Quantities': Quantities,
-      'Phone_Number': Phone_Number,
-      'Status': Status,
-      'Titik_Awal': Titik_Awal,
-      'Destination': Destination,
-      'Nama_Toko': Nama_Toko,
-      'Berat': Berat,
-      'Jumlah': Jumlah,
-      'Nama_Client': Nama_Client,
-    };
-  }
-
   factory PengantaranModel.fromJson(Map<String, dynamic> json) {
     return PengantaranModel(
       Id: json['Id'] ?? '', // Assuming ekspedisi_Id is of type int

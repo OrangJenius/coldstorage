@@ -30,6 +30,7 @@ class _CustomStepState extends State<CustomStep> {
     print('Selected Date: ${widget.selectedDate}');
     print("panjang data 1: ${widget.historyModel.length}");
     print("panjang data 2: ${widget.historyModel2.length}");
+    print("history date ${widget.historyModel[0].tanggalPickup}");
     displayItems.clear(); // Clear the existing display items
     List<HistoryModel> filteredHistory = widget.historyModel;
     if (widget.selectedDate != null) {
@@ -64,6 +65,7 @@ class _CustomStepState extends State<CustomStep> {
       print(filteredHistory.map((history) => history.Id).toList());
     }
     print('Filtered History Count: ${filteredHistory.length}');
+    print("filter history date: ${filteredHistory[0].tanggalPickup}");
     // Group the filtered history by the 'tanggal' (date) field
     final groupedHistory = groupBy(filteredHistory, (HistoryModel history) {
       final tanggalPickup = (history.tanggalPickup.toString()).trim();
