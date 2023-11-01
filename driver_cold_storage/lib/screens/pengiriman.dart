@@ -242,40 +242,6 @@ class _pengirimanScreenState extends State<pengirimanScreen> {
                         ),
                       onMapCreated: (GoogleMapController controller) {},
                     ),
-              // : GoogleMap(
-              //     zoomControlsEnabled: false,
-              //     initialCameraPosition: CameraPosition(
-              //       target: LatLng(
-              //         _currentLocation!.latitude,
-              //         _currentLocation!.longitude,
-              //       ),
-              //       zoom: 13.5,
-              //     ),
-              //     markers: {
-              //       Marker(
-              //         markerId: const MarkerId('currentLocation'),
-              //         position: LatLng(
-              //           _currentLocation!.latitude,
-              //           _currentLocation!.longitude,
-              //         ),
-              //         infoWindow:
-              //             const InfoWindow(title: 'Current Location'),
-              //       ),
-              //       Marker(
-              //         markerId: const MarkerId('source'),
-              //         position: _srcLoc,
-              //         infoWindow:
-              //             const InfoWindow(title: 'Source Location'),
-              //       ),
-              //       Marker(
-              //         markerId: const MarkerId('destination'),
-              //         position: _destLoc,
-              //         infoWindow:
-              //             const InfoWindow(title: 'Destination Location'),
-              //       ),
-              //     },
-              //     onMapCreated: (GoogleMapController controller) {},
-              //   ),
             ),
             Container(
               height: 450,
@@ -457,8 +423,9 @@ class _pengirimanScreenState extends State<pengirimanScreen> {
                                   (value) => Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (_) =>
-                                              CameraPage(cameras: value))),
+                                          builder: (_) => CameraPage(
+                                              cameras: value,
+                                              id: widget.pengantaran))),
                                 ),
                               },
                               child: Container(
