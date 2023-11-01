@@ -608,13 +608,13 @@ class _FormInputPengawasPickupState extends State<FormInputPengawasPickup> {
                 padding: EdgeInsets.only(top: 16, left: 24),
                 child: InkWell(
                   onTap: () async => {
-                    print("tes"),
-                    await availableCameras().then(
-                      (value) => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) => CameraPage(cameras: value))),
-                    ),
+                    // print("tes"),
+                    // await availableCameras().then(
+                    //   (value) => Navigator.push(
+                    //       context,
+                    //       MaterialPageRoute(
+                    //           builder: (_) => CameraPage(cameras: value))),
+                    // ),
                   },
                   child: Container(
                     width: 100,
