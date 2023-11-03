@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:driver_cold_storage/models/pengantaranModel.dart';
@@ -44,6 +45,10 @@ class _homeScreenState extends State<homeScreen> {
     }
   }
 
+  List<String> namaItemList = [];
+  List<String> quantityList = [];
+  List<String> namaToko = [];
+  List<String> status = [];
   Map<String, List<PengantaranModel>> groupedData = {};
   Map<String, List<PengantaranModel>> sortedGroupedData = {};
 
@@ -104,6 +109,9 @@ class _homeScreenState extends State<homeScreen> {
         countDistribute = 0;
         countPickup = 0;
 
+        quantityList.clear();
+        namaItemList.clear();
+
         for (String distributeId in sortedGroupedData.keys) {
           List<PengantaranModel> items = sortedGroupedData[distributeId]!;
 
@@ -113,6 +121,10 @@ class _homeScreenState extends State<homeScreen> {
             // Di sini Anda dapat mengakses dan melakukan operasi pada setiap item
             if (itemDate == tanggal[selectedIndex ?? 0]) {
               // Periksa status item
+              namaToko.add(item.Nama_Toko);
+              quantityList.add(item.Quantities);
+              namaItemList.add(item.Item);
+              status.add(item.Status);
               if (item.Status == "Distribute") {
                 countDistribute++; // Jika status "Distribute", tambahkan ke hitung Distribute
                 break;
@@ -137,6 +149,21 @@ class _homeScreenState extends State<homeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    List<String> combinedListQuantity = [];
+    for (int i = 0; i < quantityList.length; i++) {
+      List<String> splitValues = quantityList[i].split(',');
+      combinedListQuantity.addAll(splitValues);
+    }
+
+    List<String> combinedListItem = [];
+    for (int i = 0; i < namaItemList.length; i++) {
+      List<String> splitValues = namaItemList[i].split(',');
+      combinedListItem.addAll(splitValues);
+    }
+    print("hahahahha");
+    print(namaToko);
+    print(combinedListQuantity);
+    print(combinedListItem);
     return Scaffold(
       body: RefreshIndicator(
         onRefresh: fetchPengantaranData,
@@ -234,6 +261,11 @@ class _homeScreenState extends State<homeScreen> {
                                       countPickup =
                                           0; // Reset countPickup menjadi 0
 
+                                      quantityList.clear();
+                                      namaItemList.clear();
+                                      namaToko.clear();
+                                      status.clear();
+
                                       for (String distributeId
                                           in sortedGroupedData.keys) {
                                         List<PengantaranModel> items =
@@ -243,12 +275,13 @@ class _homeScreenState extends State<homeScreen> {
                                           String itemDate =
                                               item.Tanggal_PickUp.substring(8);
 
-                                          print(itemDate);
-                                          print(tanggal[selectedIndex ?? 0]);
-
                                           // Di sini Anda dapat mengakses dan melakukan operasi pada setiap item
                                           if (itemDate ==
                                               tanggal[selectedIndex ?? 0]) {
+                                            namaToko.add(item.Nama_Toko);
+                                            quantityList.add(item.Quantities);
+                                            namaItemList.add(item.Item);
+                                            status.add(item.Status);
                                             // Periksa status item
                                             if (item.Status == "Distribute") {
                                               countDistribute++; // Jika status "Distribute", tambahkan ke hitung Distribute
@@ -633,6 +666,257 @@ class _homeScreenState extends State<homeScreen> {
                     ],
                   ),
                   Padding(
+                    padding:
+                        const EdgeInsets.only(top: 20, left: 16, right: 16),
+                    child: InkWell(
+                      onTap: () {
+                        showDialog(
+                          barrierDismissible: true,
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              scrollable: true,
+                              title: Text(
+                                "Detail Pengantaran",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontFamily: 'Sora',
+                                  fontSize: 25,
+                                  fontStyle: FontStyle.normal,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              content: Container(
+                                  width: 300,
+                                  height: 200,
+                                  child: SingleChildScrollView(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Tujuan Hari ini",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 23,
+                                              fontFamily: "Sora"),
+                                        ),
+                                        SingleChildScrollView(
+                                          scrollDirection: Axis.horizontal,
+                                          child: Row(
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 8),
+                                                child: Text(
+                                                  "Cold Storage",
+                                                  style: TextStyle(
+                                                      color: Colors.red,
+                                                      fontSize: 15,
+                                                      fontFamily: "Sora",
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  softWrap: true,
+                                                ),
+                                              ),
+                                              SizedBox(width: 8),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.end,
+                                                children: [
+                                                  for (int i = 0;
+                                                      i < namaToko.length;
+                                                      i++)
+                                                    Row(
+                                                      children: [
+                                                        Column(
+                                                          children: [
+                                                            Text(
+                                                              ('${status[i]}'),
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .red,
+                                                                  fontSize: 12,
+                                                                  fontFamily:
+                                                                      "Sora",
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                              maxLines: 1,
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                              softWrap: true,
+                                                            ),
+                                                            Text(
+                                                              "-----",
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .red,
+                                                                  fontSize: 15,
+                                                                  fontFamily:
+                                                                      "Sora",
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                              maxLines: 1,
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                              softWrap: true,
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                                  left: 8,
+                                                                  top: 8,
+                                                                  right: 8),
+                                                          child: Text(
+                                                            namaToko[i],
+                                                            style: TextStyle(
+                                                                color:
+                                                                    Colors.red,
+                                                                fontSize: 15,
+                                                                fontFamily:
+                                                                    "Sora",
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                ],
+                                              ),
+                                              SizedBox(width: 8),
+                                            ],
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 8,
+                                        ),
+                                        Text(
+                                          "List barang yang dibawa",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 23,
+                                              fontFamily: "Sora"),
+                                        ),
+                                        Column(
+                                          children: [
+                                            for (int i = 0;
+                                                i < combinedListItem.length;
+                                                i++)
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                    combinedListItem[i],
+                                                    style: TextStyle(
+                                                      fontFamily: 'Sora',
+                                                      fontSize: 16,
+                                                      fontStyle:
+                                                          FontStyle.normal,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.red,
+                                                    ),
+                                                  ),
+                                                  Expanded(child: Container()),
+                                                  Text(
+                                                    '${combinedListQuantity[i]} pcs',
+                                                    style: TextStyle(
+                                                      fontFamily: 'Sora',
+                                                      fontSize: 16,
+                                                      fontStyle:
+                                                          FontStyle.normal,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.red,
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  )),
+                              actions: [
+                                Center(
+                                  child: ElevatedButton(
+                                    style: ButtonStyle(
+                                      shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          side: BorderSide(
+                                            color: Color(0xff6AD6F9),
+                                          ),
+                                        ),
+                                      ),
+                                      elevation: MaterialStateProperty.all(5),
+                                      backgroundColor:
+                                          MaterialStateProperty.all<Color>(
+                                              Color(0xff6AD6F9)),
+                                    ),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text(
+                                      "Go back",
+                                      style: TextStyle(
+                                        fontFamily: 'Sora',
+                                        fontSize: 15,
+                                        fontStyle: FontStyle.normal,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            );
+                          },
+                        );
+                      },
+                      child: Container(
+                        height: 50,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8.0),
+                          border:
+                              Border.all(width: 2, color: Color(0xFF6AD6F9)),
+                        ),
+                        child: Center(
+                          child: Text(
+                            "Detail Pengantaran",
+                            style: TextStyle(
+                              fontFamily: 'Sora',
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF6AD6F9),
+                              fontSize: 20,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
                     padding: EdgeInsets.only(
                       left: 16,
                       top: 16,
@@ -680,15 +964,19 @@ class _homeScreenState extends State<homeScreen> {
                               .toList()
                           : [];
 
+                      List<String> item = items.isNotEmpty
+                          ? items.first.Item
+                              .split(',')
+                              .map((item) => item.trim())
+                              .toList()
+                          : [];
+
                       List<String> berat = items.isNotEmpty
                           ? items.first.Berat
                               .split(',')
                               .map((Berat) => Berat.trim())
                               .toList()
                           : [];
-
-                      print(NamaTokoList);
-                      print(quantitiesList);
 
                       int totalJumlah = 0;
                       int totalBerat = 0;
@@ -811,21 +1099,10 @@ class _homeScreenState extends State<homeScreen> {
                                                     fontFamily: "Sora",
                                                   ),
                                                 )),
+
                                             Padding(
                                               padding: const EdgeInsets.only(
                                                   left: 8, top: 4),
-                                              child: Text(
-                                                pengantaranItem.Item,
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 16,
-                                                  fontFamily: "Sora",
-                                                ),
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 8, top: 8),
                                               child: Text(
                                                 pengantaranItem.Status,
                                                 style: TextStyle(
@@ -835,18 +1112,39 @@ class _homeScreenState extends State<homeScreen> {
                                                 ),
                                               ),
                                             ),
-                                            SingleChildScrollView(
-                                              scrollDirection: Axis.horizontal,
-                                              child: Row(
-                                                children: [
+
+                                            Row(
+                                              children: [
+                                                for (int i = 0;
+                                                    i < NamaTokoList.length;
+                                                    i++)
                                                   Padding(
                                                     padding:
                                                         const EdgeInsets.only(
-                                                            left: 8, top: 8),
+                                                            left: 8, top: 4),
                                                     child: Text(
-                                                      "Cold Storage",
+                                                      "Tujuan :",
                                                       style: TextStyle(
-                                                        color: Colors.red,
+                                                        color: Colors.black,
+                                                        fontSize: 16,
+                                                        fontFamily: "Sora",
+                                                      ),
+                                                    ),
+                                                  ),
+                                                for (int i = 0;
+                                                    i < NamaTokoList.length;
+                                                    i++)
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 8, top: 4),
+                                                    child: Text(
+                                                      // i == 0
+                                                      //     ? "Cold Storage "
+                                                      //     : "${NamaTokoList[i - 1]} ",
+                                                      "${NamaTokoList[i]} ",
+                                                      style: TextStyle(
+                                                        color: Colors.black,
                                                         fontSize: 15,
                                                         fontFamily: "Sora",
                                                       ),
@@ -856,86 +1154,101 @@ class _homeScreenState extends State<homeScreen> {
                                                       softWrap: true,
                                                     ),
                                                   ),
-                                                  SizedBox(width: 8),
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.end,
-                                                    children: [
-                                                      for (int index = 0;
-                                                          index <
-                                                              NamaTokoList
-                                                                  .length;
-                                                          index++)
-                                                        Row(
-                                                          children: [
-                                                            Column(
-                                                              children: [
-                                                                Text(
-                                                                  '${quantitiesList[index]} pcs',
-                                                                  style:
-                                                                      TextStyle(
-                                                                    color: Colors
-                                                                        .red,
-                                                                    fontSize:
-                                                                        12,
-                                                                    fontFamily:
-                                                                        "Sora",
-                                                                  ),
-                                                                  maxLines: 1,
-                                                                  overflow:
-                                                                      TextOverflow
-                                                                          .ellipsis,
-                                                                  softWrap:
-                                                                      true,
-                                                                ),
-                                                                Text(
-                                                                  "-----",
-                                                                  style:
-                                                                      TextStyle(
-                                                                    color: Colors
-                                                                        .red,
-                                                                    fontSize:
-                                                                        15,
-                                                                    fontFamily:
-                                                                        "Sora",
-                                                                  ),
-                                                                  maxLines: 1,
-                                                                  overflow:
-                                                                      TextOverflow
-                                                                          .ellipsis,
-                                                                  softWrap:
-                                                                      true,
-                                                                ),
-                                                              ],
+                                              ],
+                                            ),
+
+                                            SingleChildScrollView(
+                                              scrollDirection: Axis.horizontal,
+                                              child: Row(
+                                                children: [
+                                                  for (int i = 0;
+                                                      i < item.length;
+                                                      i++)
+                                                    Row(
+                                                      children: [
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                                  left: 8,
+                                                                  top: 8),
+                                                          child: Text(
+                                                            // i == 0
+                                                            //     ? "Cold Storage "
+                                                            //     : "${NamaTokoList[i - 1]} ",
+                                                            "${item[i]} ",
+                                                            style: TextStyle(
+                                                              color: Colors.red,
+                                                              fontSize: 15,
+                                                              fontFamily:
+                                                                  "Sora",
                                                             ),
-                                                            Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .only(
-                                                                      left: 8,
-                                                                      top: 8,
-                                                                      right: 8),
-                                                              child: Text(
-                                                                NamaTokoList[
-                                                                    index],
-                                                                style:
-                                                                    TextStyle(
-                                                                  color: Colors
-                                                                      .red,
-                                                                  fontSize: 15,
-                                                                  fontFamily:
-                                                                      "Sora",
-                                                                ),
-                                                                overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis,
+                                                            maxLines: 1,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                            softWrap: true,
+                                                          ),
+                                                        ),
+                                                        Column(
+                                                          children: [
+                                                            SizedBox(
+                                                              height: 4,
+                                                            ),
+                                                            Text(
+                                                              ('${quantitiesList[i]} pcs'),
+                                                              style: TextStyle(
+                                                                color:
+                                                                    Colors.red,
+                                                                fontSize: 12,
+                                                                fontFamily:
+                                                                    "Sora",
                                                               ),
+                                                              maxLines: 1,
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                              softWrap: true,
+                                                            ),
+                                                            Text(
+                                                              "-----",
+                                                              style: TextStyle(
+                                                                color:
+                                                                    Colors.red,
+                                                                fontSize: 15,
+                                                                fontFamily:
+                                                                    "Sora",
+                                                              ),
+                                                              maxLines: 1,
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                              softWrap: true,
                                                             ),
                                                           ],
                                                         ),
-                                                    ],
-                                                  ),
-                                                  SizedBox(width: 8),
+                                                        // Padding(
+                                                        //   padding:
+                                                        //       const EdgeInsets
+                                                        //           .only(
+                                                        //           left: 8,
+                                                        //           top: 8,
+                                                        //           right: 8),
+                                                        //   child: Text(
+                                                        //     "${NamaTokoList[i]}",
+                                                        //     style: TextStyle(
+                                                        //       color: Colors.red,
+                                                        //       fontSize: 15,
+                                                        //       fontFamily:
+                                                        //           "Sora",
+                                                        //     ),
+                                                        //     overflow:
+                                                        //         TextOverflow
+                                                        //             .ellipsis,
+                                                        //   ),
+                                                        // ),
+                                                      ],
+                                                    ),
                                                 ],
                                               ),
                                             )

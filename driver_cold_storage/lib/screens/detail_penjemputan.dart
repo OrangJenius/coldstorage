@@ -595,61 +595,57 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                                             content: Container(
                                               width: 300,
                                               height: 100,
-                                              child: Scrollbar(
-                                                thumbVisibility: true,
+                                              child: ListView.builder(
                                                 controller:
                                                     _listViewController3,
-                                                child: Column(
-                                                  children: [
-                                                    ListView(
-                                                      controller:
-                                                          _listViewController3,
-                                                      shrinkWrap: true,
-                                                      children: [
-                                                        Row(
-                                                          children: [
-                                                            Text(
-                                                              totalNamaItem[
-                                                                  index],
-                                                              style: TextStyle(
-                                                                fontFamily:
-                                                                    'Sora',
-                                                                fontSize: 18,
-                                                                fontStyle:
-                                                                    FontStyle
-                                                                        .normal,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w400,
-                                                                color: Colors
-                                                                    .black,
-                                                              ),
+                                                shrinkWrap: true,
+                                                itemCount: totalNamaItem.length,
+                                                itemBuilder: (context, index) {
+                                                  return Column(
+                                                    children: [
+                                                      Row(
+                                                        children: [
+                                                          Text(
+                                                            totalNamaItem[
+                                                                index],
+                                                            style: TextStyle(
+                                                              fontFamily:
+                                                                  'Sora',
+                                                              fontSize: 18,
+                                                              fontStyle:
+                                                                  FontStyle
+                                                                      .normal,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400,
+                                                              color:
+                                                                  Colors.black,
                                                             ),
-                                                            Expanded(
-                                                                child:
-                                                                    Container()),
-                                                            Text(
-                                                              '${quantitiesList[index]} pcs',
-                                                              style: TextStyle(
-                                                                fontFamily:
-                                                                    'Sora',
-                                                                fontSize: 18,
-                                                                fontStyle:
-                                                                    FontStyle
-                                                                        .normal,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w400,
-                                                                color: Colors
-                                                                    .black,
-                                                              ),
+                                                          ),
+                                                          Expanded(
+                                                              child:
+                                                                  Container()),
+                                                          Text(
+                                                            '${quantitiesList[index]} pcs',
+                                                            style: TextStyle(
+                                                              fontFamily:
+                                                                  'Sora',
+                                                              fontSize: 18,
+                                                              fontStyle:
+                                                                  FontStyle
+                                                                      .normal,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400,
+                                                              color:
+                                                                  Colors.black,
                                                             ),
-                                                          ],
-                                                        ),
-                                                      ],
-                                                    )
-                                                  ],
-                                                ),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
                                               ),
                                             ),
                                             actions: [
