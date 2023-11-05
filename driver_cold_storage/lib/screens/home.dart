@@ -111,6 +111,8 @@ class _homeScreenState extends State<homeScreen> {
 
         quantityList.clear();
         namaItemList.clear();
+        namaToko.clear();
+        status.clear();
 
         for (String distributeId in sortedGroupedData.keys) {
           List<PengantaranModel> items = sortedGroupedData[distributeId]!;
