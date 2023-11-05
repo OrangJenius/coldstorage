@@ -7,6 +7,8 @@ import 'linePainter.dart';
 import 'package:camera/camera.dart';
 import 'camerapage.dart';
 import 'package:driver_cold_storage/models/pengantaranModel.dart';
+import 'package:http/http.dart' as http;
+import 'package:cached_network_image/cached_network_image.dart';
 
 class pengirimanScreen extends StatefulWidget {
   final List<PengantaranModel> pengantaran;
@@ -32,11 +34,37 @@ class _pengirimanScreenState extends State<pengirimanScreen> {
   List<String> longlat2 = [];
   List<String> longLatAwal = [];
 
+  Future<String> tampilkanFoto() async {
+    final params = {'folder': 'Distribute', 'id': widget.pengantaran[0].Id};
+    final apiurl = Uri.http('116.68.252.201:1945', '/getPhoto', params);
+    try {
+      final response = await http.get(apiurl);
+
+      if (response.statusCode == 200) {
+        print("sukses");
+        return "http://116.68.252.201:1945/getPhoto?folder=Distribute&id=${widget.pengantaran[0].Id}";
+      } else {
+        print("gagal");
+        return "";
+      }
+    } catch (e) {
+      print("error $e");
+      return "";
+    }
+  }
+
+  Future<Uint8List> getImageBytes() async {
+    String imgurl = await tampilkanFoto();
+    print("url image: ${imgurl}");
+    http.Response response = await http.get(Uri.parse(imgurl));
+    return response.bodyBytes;
+  }
+
   void _showSnackbar() {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text("Phone Number Copied"),
-        // backgroundColor: Colors.green, // Use a success color
+        //backgroundColor: Colors.green, // Use a success color
       ),
     );
   }
@@ -409,59 +437,80 @@ class _pengirimanScreenState extends State<pengirimanScreen> {
                         SizedBox(
                           height: 8,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: DottedBorder(
-                            borderType: BorderType.RRect,
-                            radius: Radius.circular(12),
-                            color: Colors.white,
-                            strokeCap: StrokeCap.round,
-                            child: InkWell(
-                              onTap: () async => {
-                                print("tes"),
-                                await availableCameras().then(
-                                  (value) => Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (_) => CameraPage(
-                                              cameras: value,
-                                              id: widget.pengantaran))),
-                                ),
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Color(0xffe0e0e0),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                padding: EdgeInsets.all(16),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      "+",
-                                      style: TextStyle(
-                                        fontFamily: 'Sora',
-                                        fontSize: 48,
-                                        fontStyle: FontStyle.normal,
-                                        fontWeight: FontWeight.w700,
-                                        color: Colors.white,
-                                      ),
+                        Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: DottedBorder(
+                                borderType: BorderType.RRect,
+                                radius: Radius.circular(12),
+                                color: Colors.white,
+                                strokeCap: StrokeCap.round,
+                                child: InkWell(
+                                  onTap: () async => {
+                                    print("tes"),
+                                    await availableCameras().then(
+                                      (value) => Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (_) => CameraPage(
+                                                  cameras: value,
+                                                  id: widget.pengantaran))),
                                     ),
-                                    Text(
-                                      "Add photos",
-                                      style: TextStyle(
-                                        fontFamily: 'Sora',
-                                        fontSize: 13,
-                                        fontStyle: FontStyle.normal,
-                                        fontWeight: FontWeight.w700,
-                                        color: Colors.white,
-                                      ),
-                                    )
-                                  ],
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Color(0xffe0e0e0),
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    padding: EdgeInsets.all(16),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          "+",
+                                          style: TextStyle(
+                                            fontFamily: 'Sora',
+                                            fontSize: 48,
+                                            fontStyle: FontStyle.normal,
+                                            fontWeight: FontWeight.w700,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        Text(
+                                          "Add photos",
+                                          style: TextStyle(
+                                            fontFamily: 'Sora',
+                                            fontSize: 13,
+                                            fontStyle: FontStyle.normal,
+                                            fontWeight: FontWeight.w700,
+                                            color: Colors.white,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
+                            Container(
+                              height: 110,
+                              width: 50,
+                              child: FutureBuilder<Uint8List>(
+                                future: getImageBytes(),
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasData)
+                                    return Image.memory(snapshot.data!);
+                                  return SizedBox(
+                                    width: 100,
+                                    height: 100,
+                                    child: Text("NO DATA"),
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
                         ),
                         Container(
                           padding:
