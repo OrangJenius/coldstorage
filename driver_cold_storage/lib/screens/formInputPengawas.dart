@@ -1,13 +1,11 @@
-import 'dart:io';
-
 import 'package:camera/camera.dart';
 import 'package:driver_cold_storage/models/pengawasModel.dart';
-import 'package:driver_cold_storage/screens/camerapage.dart';
+import 'package:driver_cold_storage/screens/cameraPage2.dart';
+
 import 'package:driver_cold_storage/screens/homePengawas.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 
 class FormInputPengawas extends StatefulWidget {
@@ -34,32 +32,30 @@ class _FormInputPengawasState extends State<FormInputPengawas> {
   TextEditingController temperatureController = TextEditingController();
   TextEditingController notesController = TextEditingController();
 
-  Future<void> uploadPhoto(File imageFile) async {
-    final url = Uri.parse('https://example.com/upload');
-    final response = await http.post(
-      url,
-      body: {
-        'file': imageFile.path,
-      },
-    );
+  Future<String> tampilkanFoto() async {
+    final params = {'folder': 'order_item', 'id': widget.distributeId};
+    final apiurl = Uri.http('116.68.252.201:1945', '/getPhoto', params);
+    try {
+      final response = await http.get(apiurl);
 
-    if (response.statusCode == 200) {
-      setState(() {
-        photos.add(imageFile.path);
-      });
-    } else {
-      print('Gagal mengunggah foto: ${response.statusCode}');
+      if (response.statusCode == 200) {
+        print("sukses");
+        return "http://116.68.252.201:1945/getPhoto?folder=order_item&id=${widget.distributeId}";
+      } else {
+        print("gagal");
+        return "";
+      }
+    } catch (e) {
+      print("error $e");
+      return "";
     }
   }
 
-  Future<void> chooseImage() async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-
-    if (pickedFile != null) {
-      File imageFile = File(pickedFile.path);
-      await uploadPhoto(imageFile);
-    }
+  Future<Uint8List> getImageBytes() async {
+    String imgurl = await tampilkanFoto();
+    print("url image: ${imgurl}");
+    http.Response response = await http.get(Uri.parse(imgurl));
+    return response.bodyBytes;
   }
 
   List<String> namaItems = [];
@@ -473,48 +469,70 @@ class _FormInputPengawasState extends State<FormInputPengawas> {
                       fontWeight: FontWeight.bold),
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.only(top: 16, left: 24),
-                child: InkWell(
-                  onTap: () async => {
-                    // print("tes"),
-                    // await availableCameras().then(
-                    //   (value) => Navigator.push(
-                    //       context,
-                    //       MaterialPageRoute(
-                    //           builder: (_) => CameraPage(cameras: value))),
-                    // ),
-                  },
-                  child: Container(
-                    width: 100,
-                    height: 75,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: Colors.grey[400],
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          '+',
-                          style: TextStyle(
-                            fontSize: 30.0,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
+              Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(top: 16, left: 24),
+                    child: InkWell(
+                      onTap: () async => {
+                        print("tes"),
+                        await availableCameras().then(
+                          (value) => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => CameraPage2(
+                                      cameras: value,
+                                      id: widget.distributeId))),
                         ),
-                        Text(
-                          'Add Photos',
-                          style: TextStyle(
-                            fontSize: 13.0,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
+                      },
+                      child: Container(
+                        width: 100,
+                        height: 75,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: Colors.grey[400],
                         ),
-                      ],
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              '+',
+                              style: TextStyle(
+                                fontSize: 30.0,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                            Text(
+                              'Add Photos',
+                              style: TextStyle(
+                                fontSize: 13.0,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                  Container(
+                    height: 75,
+                    width: 100,
+                    child: FutureBuilder<Uint8List>(
+                      future: getImageBytes(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData)
+                          return Image.memory(snapshot.data!);
+                        return SizedBox(
+                          width: 100,
+                          height: 75,
+                          child: Text("NO DATA"),
+                        );
+                      },
+                    ),
+                  ),
+                ],
               ),
               Padding(
                 padding: EdgeInsets.only(

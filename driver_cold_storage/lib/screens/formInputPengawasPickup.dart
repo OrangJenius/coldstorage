@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:camera/camera.dart';
+import 'package:driver_cold_storage/screens/cameraPage2.dart';
 import 'package:driver_cold_storage/screens/camerapage.dart';
 import 'package:driver_cold_storage/screens/homePengawas.dart';
 import 'package:flutter/material.dart';
@@ -37,35 +38,30 @@ class _FormInputPengawasPickupState extends State<FormInputPengawasPickup> {
   TextEditingController temperatureController = TextEditingController();
   TextEditingController notesController = TextEditingController();
 
-  Future<void> uploadPhoto(File imageFile) async {
-    final url =
-        Uri.parse('https://example.com/upload'); // Ganti dengan URL server Anda
-    final response = await http.post(
-      url,
-      body: {
-        'file': imageFile.path,
-      },
-    );
+  Future<String> tampilkanFoto() async {
+    final params = {'folder': 'order_item', 'id': widget.distributeId};
+    final apiurl = Uri.http('116.68.252.201:1945', '/getPhoto', params);
+    try {
+      final response = await http.get(apiurl);
 
-    if (response.statusCode == 200) {
-      // Jika berhasil diunggah, Anda dapat menambahkannya ke daftar foto yang diunggah
-      setState(() {
-        photos.add(imageFile.path);
-      });
-    } else {
-      // Tampilkan pesan kesalahan jika unggah gagal
-      print('Gagal mengunggah foto: ${response.statusCode}');
+      if (response.statusCode == 200) {
+        print("sukses");
+        return "http://116.68.252.201:1945/getPhoto?folder=order_item&id=${widget.distributeId}";
+      } else {
+        print("gagal");
+        return "";
+      }
+    } catch (e) {
+      print("error $e");
+      return "";
     }
   }
 
-  Future<void> chooseImage() async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-
-    if (pickedFile != null) {
-      File imageFile = File(pickedFile.path);
-      await uploadPhoto(imageFile);
-    }
+  Future<Uint8List> getImageBytes() async {
+    String imgurl = await tampilkanFoto();
+    print("url image: ${imgurl}");
+    http.Response response = await http.get(Uri.parse(imgurl));
+    return response.bodyBytes;
   }
 
   List<String> namaItems = [];
@@ -608,13 +604,14 @@ class _FormInputPengawasPickupState extends State<FormInputPengawasPickup> {
                 padding: EdgeInsets.only(top: 16, left: 24),
                 child: InkWell(
                   onTap: () async => {
-                    // print("tes"),
-                    // await availableCameras().then(
-                    //   (value) => Navigator.push(
-                    //       context,
-                    //       MaterialPageRoute(
-                    //           builder: (_) => CameraPage(cameras: value))),
-                    // ),
+                    print("tes"),
+                    await availableCameras().then(
+                      (value) => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => CameraPage2(
+                                  cameras: value, id: widget.distributeId))),
+                    ),
                   },
                   child: Container(
                     width: 100,
@@ -645,6 +642,21 @@ class _FormInputPengawasPickupState extends State<FormInputPengawasPickup> {
                       ],
                     ),
                   ),
+                ),
+              ),
+              Container(
+                height: 110,
+                width: 50,
+                child: FutureBuilder<Uint8List>(
+                  future: getImageBytes(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) return Image.memory(snapshot.data!);
+                    return SizedBox(
+                      width: 100,
+                      height: 100,
+                      child: Text("NO DATA"),
+                    );
+                  },
                 ),
               ),
               // Expanded(
