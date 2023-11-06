@@ -46,6 +46,7 @@ class _HistoryPengawasState extends State<HistoryPengawas> {
       String tanggalMasuk = '';
       String isCheck = '';
       bool canSubmit = true;
+      String tanggalAmbil = '';
 
       for (int i = 0; i < idDistributeList.length; i++) {
         String idDistribute = idDistributeList[i];
@@ -54,6 +55,7 @@ class _HistoryPengawasState extends State<HistoryPengawas> {
         final items = dataByIdOrder[idDistribute];
         for (var item in items!) {
           tanggalMasuk = item.Tanggal_Masuk;
+          tanggalAmbil = item.Tanggal_Ambil;
           isCheck = item.isCheck;
           if (item.isCheck != 'true') {
             canSubmit =
@@ -72,7 +74,8 @@ class _HistoryPengawasState extends State<HistoryPengawas> {
           expandedValue: '$expandedValue',
           tanggal: '$tanggalMasuk',
           isCheck: '$isCheck',
-          canSubmit: canSubmit);
+          canSubmit: canSubmit,
+          tanggalAmbil: tanggalAmbil);
     });
   }
 
@@ -87,6 +90,7 @@ class _HistoryPengawasState extends State<HistoryPengawas> {
       String tanggalMasuk = '';
       String isCheck = '';
       bool canSubmit = true;
+      String tanggalAmbil = '';
 
       for (int i = 0; i < idDistributeList.length; i++) {
         String idDistribute = idDistributeList[i];
@@ -95,6 +99,7 @@ class _HistoryPengawasState extends State<HistoryPengawas> {
         final items = dataByIdOrder[idDistribute];
         for (var item in items!) {
           tanggalMasuk = item.Tanggal_Masuk;
+          tanggalAmbil = tanggalAmbil;
           isCheck = item.isCheck;
           if (item.isCheck != 'true') {
             canSubmit =
@@ -108,13 +113,13 @@ class _HistoryPengawasState extends State<HistoryPengawas> {
       }
       print(tanggalMasuk);
       return Item(
-        id: index,
-        headerValue: '$idOrder',
-        expandedValue: '$expandedValue',
-        tanggal: '$tanggalMasuk',
-        isCheck: '$isCheck',
-        canSubmit: canSubmit,
-      );
+          id: index,
+          headerValue: '$idOrder',
+          expandedValue: '$expandedValue',
+          tanggal: '$tanggalMasuk',
+          isCheck: '$isCheck',
+          canSubmit: canSubmit,
+          tanggalAmbil: tanggalAmbil);
     });
   }
 

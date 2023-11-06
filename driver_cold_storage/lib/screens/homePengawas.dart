@@ -46,6 +46,7 @@ class _homePengawasState extends State<HomePengawas> {
       String tanggalMasuk = '';
       String isCheck = '';
       bool canSubmit = true;
+      String tanggalAmbil = '';
 
       for (int i = 0; i < idDistributeList.length; i++) {
         String idDistribute = idDistributeList[i];
@@ -54,6 +55,7 @@ class _homePengawasState extends State<HomePengawas> {
         final items = dataByIdOrder[idDistribute];
         for (var item in items!) {
           tanggalMasuk = item.Tanggal_Masuk;
+          tanggalAmbil = item.Tanggal_Ambil;
           isCheck = item.isCheck;
           if (item.isCheck != 'true') {
             canSubmit =
@@ -66,13 +68,15 @@ class _homePengawasState extends State<HomePengawas> {
         }
       }
       print(tanggalMasuk);
+      print(tanggalAmbil);
       return Item(
           id: index,
           headerValue: '$idOrder',
           expandedValue: '$expandedValue',
           tanggal: '$tanggalMasuk',
           isCheck: '$isCheck',
-          canSubmit: canSubmit);
+          canSubmit: canSubmit,
+          tanggalAmbil: tanggalAmbil);
     });
   }
 
@@ -80,13 +84,14 @@ class _homePengawasState extends State<HomePengawas> {
     return List<Item>.generate(numberOfItems, (int index) {
       String idOrder = groupPickup.keys.elementAt(index);
       final dataByIdOrder = groupPickup[idOrder];
-      print(dataByIdOrder);
+
       List<String> idDistributeList = dataByIdOrder!.keys.toList();
 
       String expandedValue = '';
       String tanggalMasuk = '';
       String isCheck = '';
       bool canSubmit = true;
+      String tanggalAmbil = '';
 
       for (int i = 0; i < idDistributeList.length; i++) {
         String idDistribute = idDistributeList[i];
@@ -95,6 +100,7 @@ class _homePengawasState extends State<HomePengawas> {
         final items = dataByIdOrder[idDistribute];
         for (var item in items!) {
           tanggalMasuk = item.Tanggal_Masuk;
+          tanggalAmbil = item.Tanggal_Ambil;
           isCheck = item.isCheck;
           if (item.isCheck != 'true') {
             canSubmit =
@@ -106,7 +112,7 @@ class _homePengawasState extends State<HomePengawas> {
           expandedValue += ', ';
         }
       }
-      print(tanggalMasuk);
+
       return Item(
         id: index,
         headerValue: '$idOrder',
@@ -114,6 +120,7 @@ class _homePengawasState extends State<HomePengawas> {
         tanggal: '$tanggalMasuk',
         isCheck: '$isCheck',
         canSubmit: canSubmit,
+        tanggalAmbil: tanggalAmbil,
       );
     });
   }
@@ -166,8 +173,6 @@ class _homePengawasState extends State<HomePengawas> {
         setState(() {
           selectedIndex = 0;
         });
-
-        print(groupedData);
 
         groupedData.forEach((idOrder, dataByIdOrder) {
           dataByIdOrder.forEach((idDistribute, items) {
@@ -439,14 +444,27 @@ class _homePengawasState extends State<HomePengawas> {
                                   ),
                                 )
                               : null,
-                          title: Text(
-                            item.expandedValue,
-                            style: TextStyle(
-                              color: Color(0xFF6AD6F9),
-                              fontSize: 20,
-                              fontWeight: FontWeight.w700,
-                              fontFamily: "Sora",
-                            ),
+                          title: Row(
+                            children: [
+                              Text(
+                                item.expandedValue,
+                                style: TextStyle(
+                                  color: Color(0xFF6AD6F9),
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w700,
+                                  fontFamily: "Sora",
+                                ),
+                              ),
+                              Expanded(child: Container()),
+                              Text(
+                                item.tanggalAmbil,
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 15,
+                                  fontFamily: "Sora",
+                                ),
+                              ),
+                            ],
                           ),
                           trailing: const Icon(Icons.keyboard_arrow_right),
                           onTap: () {
@@ -497,13 +515,6 @@ class _homePengawasState extends State<HomePengawas> {
                           setState(() {
                             selectedIndex = 0;
                             print(selectedIndex);
-                            // Navigator.of(context).push(
-                            //   MaterialPageRoute(
-                            //     builder: (context) => HomePengawas(
-                            //       userID: widget.userID,
-                            //     ),
-                            //   ),
-                            // );
                           });
                         },
                         child: Image.asset(
@@ -533,13 +544,6 @@ class _homePengawasState extends State<HomePengawas> {
                           setState(() {
                             selectedIndex = 1;
                             print(selectedIndex);
-                            // Navigator.of(context).push(
-                            //   MaterialPageRoute(
-                            //     builder: (context) => HomePengawas2(
-                            //       userID: widget.userID,
-                            //     ),
-                            //   ),
-                            // );
                           });
                         },
                         child: Image.asset(

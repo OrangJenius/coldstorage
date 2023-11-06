@@ -6,6 +6,7 @@ class Item {
     required this.tanggal,
     required this.isCheck,
     required this.canSubmit,
+    required this.tanggalAmbil,
   });
 
   int id;
@@ -14,4 +15,5 @@ class Item {
   String tanggal;
   String isCheck;
   bool canSubmit;
+  String tanggalAmbil;
 }
