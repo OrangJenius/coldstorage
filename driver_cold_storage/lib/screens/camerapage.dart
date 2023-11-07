@@ -1,16 +1,14 @@
 import 'package:camera/camera.dart';
-import 'package:driver_cold_storage/screens/pengiriman.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
-import 'package:driver_cold_storage/models/pengantaranModel.dart';
 
 class CameraPage extends StatefulWidget {
   const CameraPage({Key? key, required this.cameras, required this.id})
       : super(key: key);
 
   final List<CameraDescription>? cameras;
-  final List<PengantaranModel> id;
+  final String id;
 
   @override
   State<CameraPage> createState() => _CameraPageState();
@@ -38,7 +36,7 @@ class _CameraPageState extends State<CameraPage> {
       _message = '';
     });
 
-    final apiurl = "http://116.68.252.201:1945/uploadFoto/${widget.id[0].Id}";
+    final apiurl = "http://116.68.252.201:1945/uploadFoto/${widget.id}";
 
     try {
       var request = http.MultipartRequest('POST', Uri.parse(apiurl));
@@ -48,7 +46,7 @@ class _CameraPageState extends State<CameraPage> {
 
       // Add other fields as needed
       request.fields['folder'] = 'Distribute';
-      request.fields['id'] = widget.id[0].Id;
+      request.fields['id'] = widget.id;
 
       var streamedResponse = await request.send();
 

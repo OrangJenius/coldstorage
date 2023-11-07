@@ -1,9 +1,7 @@
 import 'package:camera/camera.dart';
-import 'package:driver_cold_storage/screens/pengiriman.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
-import 'package:driver_cold_storage/models/pengantaranModel.dart';
 
 class CameraPage2 extends StatefulWidget {
   const CameraPage2({Key? key, required this.cameras, required this.id})

@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -8,10 +11,14 @@ import 'package:camera/camera.dart';
 import 'camerapage.dart';
 import 'package:driver_cold_storage/models/pengantaranModel.dart';
 import 'package:http/http.dart' as http;
-import 'package:cached_network_image/cached_network_image.dart';
+import 'dart:math' as math;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_background_service/flutter_background_service.dart';
+import 'package:flutter_background_service_android/flutter_background_service_android.dart';
+// import 'home.dart';
 
 class pengirimanScreen extends StatefulWidget {
-  final List<PengantaranModel> pengantaran;
+  final PengantaranModel pengantaran;
   const pengirimanScreen({super.key, required this.pengantaran});
   @override
   _pengirimanScreenState createState() => _pengirimanScreenState();
@@ -33,16 +40,29 @@ class _pengirimanScreenState extends State<pengirimanScreen> {
   List<String> longlat = [];
   List<String> longlat2 = [];
   List<String> longLatAwal = [];
+  bool cekFoto = false;
+  Timer? _locationTimer;
+  late SharedPreferences prefs;
+
+  Future<void> initializeSharedPreferences() async {
+    prefs = await SharedPreferences.getInstance();
+    prefs.setBool('isOnTheWay', true);
+    final pengantaranItemJson = json
+        .encode(widget.pengantaran.toJson()); // Encode pengantaranItem to JSON
+    print(widget.pengantaran);
+    print(pengantaranItemJson);
+    prefs.setString('pengantaran_model', pengantaranItemJson);
+  }
 
   Future<String> tampilkanFoto() async {
-    final params = {'folder': 'Distribute', 'id': widget.pengantaran[0].Id};
+    final params = {'folder': 'Distribute', 'id': widget.pengantaran.Id};
     final apiurl = Uri.http('116.68.252.201:1945', '/getPhoto', params);
     try {
       final response = await http.get(apiurl);
 
       if (response.statusCode == 200) {
         print("sukses");
-        return "http://116.68.252.201:1945/getPhoto?folder=Distribute&id=${widget.pengantaran[0].Id}";
+        return "http://116.68.252.201:1945/getPhoto?folder=Distribute&id=${widget.pengantaran.Id}";
       } else {
         print("gagal");
         return "";
@@ -69,42 +89,159 @@ class _pengirimanScreenState extends State<pengirimanScreen> {
     );
   }
 
+  Future selesaiDistribute() async {
+    final apiurl =
+        "http://116.68.252.201:1945/UpdateStatus_Perjalanan/${widget.pengantaran.Id}";
+    try {
+      if (cekFoto == true) {
+        final response = await http
+            .put(Uri.parse(apiurl), body: {'Status_Perjalanan': 'selesai'});
+        if (response.statusCode == 200) {
+          print("Berhasil");
+          postToHIstory();
+          _locationTimer!.cancel();
+          Navigator.pop(context);
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (context) => homeScreen(userID: widget.pengantaran.),
+          //   ),
+          // );
+        }
+      }
+    } catch (e) {
+      print("error: $e");
+    }
+  }
+
+  Future postToHIstory() async {
+    final apiurl = "http://116.68.252.201:1945/TambahHistory";
+    try {
+      final response = await http.post(Uri.parse(apiurl), body: {
+        'Order_Id': widget.pengantaran.Order_Id,
+        'Distribute_Id': widget.pengantaran.Id
+      });
+      if (response.statusCode == 200) {
+        print("berhasil");
+      }
+    } catch (e) {}
+  }
+
+  Future getCurrentLocation(double latitude, double longitude) async {
+    final apiurl =
+        "http://116.68.252.201:1945/UpdatePosisiKendaraan/${widget.pengantaran.Order_Id}";
+    try {
+      final response = await http.put(Uri.parse(apiurl), body: {
+        'Latitude': _currentLocation!.latitude.toString(),
+        'Longitude': _currentLocation!.longitude.toString(),
+      });
+      if (response.statusCode == 200) {
+        print("update lokasi OK");
+      }
+    } catch (e) {
+      print("error lokasi $e");
+    }
+  }
+
+  Future getCurrentLocationWithPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String pengantaranItemJson = prefs.getString('pengantaran_model') ?? '';
+
+    // Melakukan decode JSON String ke Map (jika tidak kosong)
+    Map<String, dynamic> pengantaranItemMap = {};
+    if (pengantaranItemJson.isNotEmpty) {
+      pengantaranItemMap = json.decode(pengantaranItemJson);
+    }
+    PengantaranModel pengantaranItem =
+        PengantaranModel.fromJson(pengantaranItemMap);
+
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.bestForNavigation);
+    final apiurl =
+        "http://116.68.252.201:1945/UpdatePosisiKendaraan/${pengantaranItem.Order_Id}";
+    try {
+      final response = await http.put(Uri.parse(apiurl), body: {
+        'Latitude': position.latitude.toString(),
+        'Longitude': position.longitude.toString(),
+      });
+      if (response.statusCode == 200) {
+        print("update lokasi OK");
+      }
+    } catch (e) {
+      print("error lokasi $e");
+    }
+  }
+
+  double calculateDistance(
+    double startLatitude,
+    double startLongitude,
+    double endLatitude,
+    double endLongitude,
+  ) {
+    const int earthRadius = 6371000;
+
+    final double lat1Rad = startLatitude * (3.141592653589793 / 180);
+    final double lon1Rad = startLongitude * (3.141592653589793 / 180);
+    final double lat2Rad = endLatitude * (3.141592653589793 / 180);
+    final double lon2Rad = endLongitude * (3.141592653589793 / 180);
+
+    final double dLat = lat2Rad - lat1Rad;
+    final double dLon = lon2Rad - lon1Rad;
+
+    final double a = math.pow(math.sin(dLat / 2), 2) +
+        math.cos(lat1Rad) * math.cos(lat2Rad) * math.pow(math.sin(dLon / 2), 2);
+    final double c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a));
+
+    final double distance = earthRadius * c;
+    return distance;
+  }
+
   @override
   void initState() {
     super.initState();
+    initializeSharedPreferences();
     print("Test: ${widget.pengantaran}");
-    print("Test: ${widget.pengantaran.length}");
-    String namaToko = widget.pengantaran[0].Nama_Toko;
+    print("Test: ${widget.pengantaran}");
+    String namaToko = widget.pengantaran.Nama_Toko;
     if (namaToko.contains(',')) {
       namaTokoPisah = namaToko.split(',');
     } else {
       namaTokoPisah.add(namaToko);
     }
-    String namaItem = widget.pengantaran[0].Item;
+    String namaItem = widget.pengantaran.Item;
     if (namaItem.contains(',')) {
       namaItems = namaItem.split(',');
     } else {
       namaItems.add(namaItem);
     }
-    String quantity = widget.pengantaran[0].Quantities;
+    String quantity = widget.pengantaran.Quantities;
     if (quantity.contains(',')) {
       quantities = quantity.split(',');
     } else {
       quantities.add(quantity);
     }
-    String nomor = widget.pengantaran[0].Phone_Number;
+    String nomor = widget.pengantaran.Phone_Number;
     if (nomor.contains(',')) {
       nomorTelfon = nomor.split(',');
     } else {
       nomorTelfon.add(nomor);
     }
-    String lokasi = widget.pengantaran[0].Destination;
+    String lokasi = widget.pengantaran.Destination;
     if (lokasi.contains(';')) {
       longlat = lokasi.split(';');
     } else {
       longlat.add(lokasi);
     }
-    longLatAwal = widget.pengantaran[0].Titik_Awal.split(',');
+    longLatAwal = widget.pengantaran.Titik_Awal.split(',');
+
+    _locationTimer = Timer.periodic(Duration(seconds: 5), (timer) {
+      if (_currentLocation != null) {
+        getCurrentLocation(
+          _currentLocation!.latitude,
+          _currentLocation!.longitude,
+        );
+      }
+    });
 
     _currentLocation = Position(
       longitude: double.parse(longLatAwal[1]),
@@ -120,6 +257,8 @@ class _pengirimanScreenState extends State<pengirimanScreen> {
         LatLng(double.parse(longLatAwal[0]), double.parse(longLatAwal[1]));
     _startLocationUpdates();
   }
+
+  late Position _dest;
 
   Set<Marker> generateMarkers() {
     Set<Marker> markers = Set<Marker>();
@@ -143,6 +282,16 @@ class _pengirimanScreenState extends State<pengirimanScreen> {
             "latitude: ${double.parse(cleanedCoordinate)} longitude: ${double.parse(cleanedCoordinate2)}");
         double latitude = double.parse(cleanedCoordinate);
         double longitude = double.parse(cleanedCoordinate2);
+        _dest = Position(
+          longitude: latitude,
+          latitude: longitude,
+          accuracy: 0.0,
+          altitude: 0.0,
+          heading: 0.0,
+          speed: 0.0,
+          speedAccuracy: 0.0,
+          timestamp: DateTime.now(),
+        );
         markers.add(
           Marker(
             markerId: MarkerId("Pemberhentian ${i + 1}"),
@@ -455,7 +604,7 @@ class _pengirimanScreenState extends State<pengirimanScreen> {
                                           MaterialPageRoute(
                                               builder: (_) => CameraPage(
                                                   cameras: value,
-                                                  id: widget.pengantaran))),
+                                                  id: widget.pengantaran.Id))),
                                     ),
                                   },
                                   child: Container(
@@ -500,8 +649,10 @@ class _pengirimanScreenState extends State<pengirimanScreen> {
                               child: FutureBuilder<Uint8List>(
                                 future: getImageBytes(),
                                 builder: (context, snapshot) {
-                                  if (snapshot.hasData)
+                                  if (snapshot.hasData) {
+                                    cekFoto = true;
                                     return Image.memory(snapshot.data!);
+                                  }
                                   return SizedBox(
                                     width: 100,
                                     height: 100,
@@ -552,7 +703,7 @@ class _pengirimanScreenState extends State<pengirimanScreen> {
                               ),
                               Expanded(child: Row()),
                               Text(
-                                widget.pengantaran[0].Nama_Client,
+                                widget.pengantaran.Nama_Client,
                                 style: TextStyle(
                                   fontFamily: 'Sora',
                                   fontSize: 20,
@@ -628,7 +779,20 @@ class _pengirimanScreenState extends State<pengirimanScreen> {
                                     MaterialStateProperty.all<Color>(
                                         Colors.white),
                               ),
-                              onPressed: () {},
+                              onPressed: () {
+                                initializeSharedPreferences();
+                                double distance = calculateDistance(
+                                    _currentLocation!.latitude,
+                                    _currentLocation!.latitude,
+                                    _dest.latitude,
+                                    _dest.longitude);
+                                final double desiredRange = 100;
+                                if (distance <= desiredRange) {
+                                  prefs.remove('isOnTheWay');
+                                  prefs.remove('pengantaran_model');
+                                  selesaiDistribute();
+                                }
+                              },
                               child: Text(
                                 "Finish",
                                 style: TextStyle(

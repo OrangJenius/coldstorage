@@ -87,7 +87,7 @@ class SlideActionBtn extends StatelessWidget {
               context,
               MaterialPageRoute(
                   builder: (context) => pengirimanScreen(
-                        pengantaran: pengantaran,
+                        pengantaran: pengantaran[0],
                       )),
             ),
           );
