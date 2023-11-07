@@ -18,7 +18,7 @@ class HomePengawas extends StatefulWidget {
 }
 
 class _homePengawasState extends State<HomePengawas> {
-  double containerHeight = 150.0; // Tinggi awal kontainer
+  double containerHeight = 150.0;
   bool isExpanded = false;
   int? selectedIndex;
   List<String> button = ["distribute", "pickup"];
@@ -29,7 +29,6 @@ class _homePengawasState extends State<HomePengawas> {
 
   @override
   void initState() {
-    // TODO: implement initState
     selectedIndex = 0;
     fetchPengantaranData();
     super.initState();
@@ -39,42 +38,41 @@ class _homePengawasState extends State<HomePengawas> {
     return List<Item>.generate(numberOfItems, (int index) {
       String idOrder = groupDistribute.keys.elementAt(index);
       final dataByIdOrder = groupDistribute[idOrder];
-      print(dataByIdOrder);
+
       List<String> idDistributeList = dataByIdOrder!.keys.toList();
+      List<String> idDistributeValues = [];
 
-      String expandedValue = '';
-      String tanggalMasuk = '';
-      String isCheck = '';
+      for (String idDistribute in idDistributeList) {
+        idDistributeValues.add(idDistribute);
+      }
+
+      List<String> tanggalMasuk = [];
+      List<String> isCheck = [];
       bool canSubmit = true;
-      String tanggalAmbil = '';
+      List<String> tanggalAmbil = [];
 
-      for (int i = 0; i < idDistributeList.length; i++) {
-        String idDistribute = idDistributeList[i];
-        expandedValue += '$idDistribute';
-
+      for (String idDistribute in idDistributeList) {
         final items = dataByIdOrder[idDistribute];
         for (var item in items!) {
-          tanggalMasuk = item.Tanggal_Masuk;
-          tanggalAmbil = item.Tanggal_Ambil;
-          isCheck = item.isCheck;
+          tanggalMasuk.add(item.Tanggal_Masuk);
+          tanggalAmbil.add(item.Tanggal_Ambil);
+          isCheck.add(item.isCheck);
+
           if (item.isCheck != 'true') {
-            canSubmit =
-                false; // Jika ada isCheck yang bukan true, canSubmit menjadi false
+            canSubmit = false;
           }
         }
 
-        if (i < idDistributeList.length - 1) {
-          expandedValue += ', ';
-        }
+        // Sekarang Anda memiliki data tanggalMasuk, isCheck, canSubmit, dan tanggalAmbil
+        // yang sesuai dengan idDistribute saat ini
       }
-      print(tanggalMasuk);
-      print(tanggalAmbil);
+
       return Item(
           id: index,
-          headerValue: '$idOrder',
-          expandedValue: '$expandedValue',
-          tanggal: '$tanggalMasuk',
-          isCheck: '$isCheck',
+          headerValue: idOrder,
+          expandedValue: idDistributeValues,
+          tanggal: tanggalMasuk,
+          isCheck: isCheck,
           canSubmit: canSubmit,
           tanggalAmbil: tanggalAmbil);
     });
@@ -86,42 +84,41 @@ class _homePengawasState extends State<HomePengawas> {
       final dataByIdOrder = groupPickup[idOrder];
 
       List<String> idDistributeList = dataByIdOrder!.keys.toList();
+      List<String> idDistributeValues = [];
 
-      String expandedValue = '';
-      String tanggalMasuk = '';
-      String isCheck = '';
+      for (String idDistribute in idDistributeList) {
+        idDistributeValues.add(idDistribute);
+      }
+
+      List<String> tanggalMasuk = [];
+      List<String> isCheck = [];
       bool canSubmit = true;
-      String tanggalAmbil = '';
+      List<String> tanggalAmbil = [];
 
-      for (int i = 0; i < idDistributeList.length; i++) {
-        String idDistribute = idDistributeList[i];
-        expandedValue += '$idDistribute';
-
+      for (String idDistribute in idDistributeList) {
         final items = dataByIdOrder[idDistribute];
         for (var item in items!) {
-          tanggalMasuk = item.Tanggal_Masuk;
-          tanggalAmbil = item.Tanggal_Ambil;
-          isCheck = item.isCheck;
+          tanggalMasuk.add(item.Tanggal_Masuk);
+          tanggalAmbil.add(item.Tanggal_Ambil);
+          isCheck.add(item.isCheck);
+
           if (item.isCheck != 'true') {
-            canSubmit =
-                false; // Jika ada isCheck yang bukan true, canSubmit menjadi false
+            canSubmit = false;
           }
         }
 
-        if (i < idDistributeList.length - 1) {
-          expandedValue += ', ';
-        }
+        // Sekarang Anda memiliki data tanggalMasuk, isCheck, canSubmit, dan tanggalAmbil
+        // yang sesuai dengan idDistribute saat ini
       }
 
       return Item(
-        id: index,
-        headerValue: '$idOrder',
-        expandedValue: '$expandedValue',
-        tanggal: '$tanggalMasuk',
-        isCheck: '$isCheck',
-        canSubmit: canSubmit,
-        tanggalAmbil: tanggalAmbil,
-      );
+          id: index,
+          headerValue: idOrder,
+          expandedValue: idDistributeValues,
+          tanggal: tanggalMasuk,
+          isCheck: isCheck,
+          canSubmit: canSubmit,
+          tanggalAmbil: tanggalAmbil);
     });
   }
 
@@ -199,6 +196,7 @@ class _homePengawasState extends State<HomePengawas> {
             }
           });
         });
+        print(groupDistribute);
       } else {
         print('API call failed with status code: ${response.statusCode}');
       }
@@ -341,7 +339,7 @@ class _homePengawasState extends State<HomePengawas> {
                             ),
                             child: ListTile(
                               subtitle: Text(
-                                item.tanggal.toString(),
+                                item.tanggal[0].toString(),
                                 style: TextStyle(fontSize: 16),
                               ),
                               title: Row(
@@ -413,7 +411,6 @@ class _homePengawasState extends State<HomePengawas> {
                                           onPressed: () async {
                                             await putStatus(item.headerValue);
 
-                                            // Setelah aksi selesai, ganti halaman dengan halaman HomePengawas yang baru
                                             Navigator.pushReplacement(
                                               context,
                                               MaterialPageRoute(
@@ -422,7 +419,6 @@ class _homePengawasState extends State<HomePengawas> {
                                                         userID: widget.userID),
                                               ),
                                             );
-                                            // Tambahkan aksi yang sesuai ketika tombol Submit ditekan
                                           },
                                           child: Text('Submit'),
                                         )
@@ -433,65 +429,126 @@ class _homePengawasState extends State<HomePengawas> {
                           )
                         ]);
                       },
-                      body: ListTile(
-                          subtitle: item.isCheck == 'true'
-                              ? Text(
-                                  "checked",
-                                  style: TextStyle(
-                                    color: Colors
-                                        .green, // Atur warna sesuai preferensi Anda
-                                    fontSize: 16,
-                                  ),
-                                )
-                              : null,
-                          title: Row(
-                            children: [
-                              Text(
-                                item.expandedValue,
-                                style: TextStyle(
-                                  color: Color(0xFF6AD6F9),
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w700,
-                                  fontFamily: "Sora",
+                      body: ListView.builder(
+                          itemCount: item.expandedValue.length,
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) {
+                            final idDistribute = item.expandedValue[index];
+
+                            final isCheck = item.isCheck[index];
+
+                            final tanggalAmbil = item.tanggalAmbil[index];
+
+                            return Padding(
+                              padding:
+                                  const EdgeInsets.only(bottom: 8, right: 54),
+                              child: Container(
+                                height: 80,
+                                decoration: BoxDecoration(
+                                  border: Border.all(width: 1),
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 8, top: 8),
+                                            child: Text(
+                                              idDistribute,
+                                              style: TextStyle(
+                                                color: Color(0xFF6AD6F9),
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.w700,
+                                                fontFamily: "Sora",
+                                              ),
+                                            ),
+                                          ),
+                                          Row(
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 8),
+                                                child: Text(
+                                                  tanggalAmbil,
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 15,
+                                                    fontFamily: "Sora",
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(left: 8),
+                                            child: isCheck == 'true'
+                                                ? Text(
+                                                    "checked",
+                                                    style: TextStyle(
+                                                      color: Colors.green,
+                                                      fontSize: 16,
+                                                    ),
+                                                  )
+                                                : Container(),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 8),
+                                        child: ElevatedButton(
+                                          style: ButtonStyle(
+                                            backgroundColor:
+                                                MaterialStateProperty.all<
+                                                    Color>(Color(0xFF6AD6F9)),
+                                          ),
+                                          onPressed: () {
+                                            setState(() {
+                                              if (selectedIndex == 0) {
+                                                Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        FormInputPengawas(
+                                                      groupDistribute:
+                                                          groupDistribute,
+                                                      distributeId:
+                                                          idDistribute,
+                                                      userId: widget.userID,
+                                                      orderId: item.headerValue,
+                                                    ),
+                                                  ),
+                                                );
+                                              } else if (selectedIndex == 1) {
+                                                Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        FormInputPengawasPickup(
+                                                      groupPicktup: groupPickup,
+                                                      distributeId:
+                                                          item.expandedValue,
+                                                      userId: widget.userID,
+                                                      orderId: item.headerValue,
+                                                    ),
+                                                  ),
+                                                );
+                                              }
+                                            });
+                                          },
+                                          child: Text('Edit'),
+                                        ))
+                                  ],
                                 ),
                               ),
-                              Expanded(child: Container()),
-                              Text(
-                                item.tanggalAmbil,
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 15,
-                                  fontFamily: "Sora",
-                                ),
-                              ),
-                            ],
-                          ),
-                          trailing: const Icon(Icons.keyboard_arrow_right),
-                          onTap: () {
-                            setState(() {
-                              if (selectedIndex == 0) {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => FormInputPengawas(
-                                      groupDistribute: groupDistribute,
-                                      distributeId: item.expandedValue,
-                                      userId: widget.userID,
-                                    ),
-                                  ),
-                                );
-                              } else if (selectedIndex == 1) {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        FormInputPengawasPickup(
-                                      groupPicktup: groupPickup,
-                                      distributeId: item.expandedValue,
-                                      userId: widget.userID,
-                                    ),
-                                  ),
-                                );
-                              }
-                            });
+                            );
                           }));
                 }).toList(),
               ),

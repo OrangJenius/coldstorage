@@ -22,6 +22,7 @@ class PengawasModel {
   final String Status_Distribute;
   late final String isCheck;
   late final String Status_Selesai;
+  final String time;
   bool isExpanded;
   PengawasModel({
     required this.Id,
@@ -48,6 +49,7 @@ class PengawasModel {
     required this.isCheck,
     required this.Status_Selesai,
     required this.isExpanded,
+    required this.time,
   });
   Map<String, dynamic> toJson() {
     return {
@@ -82,14 +84,14 @@ class PengawasModel {
       Id: json['Id'] ?? '', // Assuming ekspedisi_Id is of type int
       Nama_Item: json['Nama_Item'] ?? '',
       Jumlah: json['Jumlah'],
-      Berat: json['Berat'],
+      Berat: json['Weight'],
       Tanggal_Masuk: json['Tanggal_Masuk'] ?? '',
       Gedung: json['Gedung'] ?? '',
       Aisle: json['Aisle'] ?? '',
       Place: json['Place'] ?? '',
       Service_Type: json['Service_Type'] ?? '',
       Rent_Driver: json['Rent_Driver'] ?? '',
-      Tanggal_Ambil: json['Tanggal_Ambil'] ?? '',
+      Tanggal_Ambil: json['Tanggal_PickUp'] ?? '',
       Foto: json['Foto'] ?? '',
       Notes: json['Notes'] ?? '',
       Jenis_Pembayaran: json['Jenis_Pembayaran'] ?? '',
@@ -103,6 +105,7 @@ class PengawasModel {
       isCheck: json['Is_Check'] ?? '',
       Status_Selesai: json['Status_Selesai'] ?? '',
       isExpanded: false,
+      time: json['Time'] ?? '',
     );
   }
 }

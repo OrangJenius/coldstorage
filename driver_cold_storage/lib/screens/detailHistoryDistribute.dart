@@ -1,13 +1,11 @@
-import 'dart:io';
-
 import 'package:camera/camera.dart';
 import 'package:driver_cold_storage/models/pengawasModel.dart';
-import 'package:driver_cold_storage/screens/camerapage.dart';
+import 'package:driver_cold_storage/screens/cameraPage2.dart';
+
 import 'package:driver_cold_storage/screens/homePengawas.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 
 class DetailHistoryDistributePengawas extends StatefulWidget {
@@ -15,18 +13,20 @@ class DetailHistoryDistributePengawas extends StatefulWidget {
 
   final distributeId;
   final userId;
+  final orderId;
 
-  const DetailHistoryDistributePengawas(
-      {super.key,
-      required this.groupDistribute,
-      required this.distributeId,
-      required this.userId});
+  const DetailHistoryDistributePengawas({
+    super.key,
+    required this.groupDistribute,
+    required this.distributeId,
+    required this.userId,
+    required this.orderId,
+  });
   @override
-  _detailHistoryDistributeState createState() =>
-      _detailHistoryDistributeState();
+  detailHistoryDistributeState createState() => detailHistoryDistributeState();
 }
 
-class _detailHistoryDistributeState
+class detailHistoryDistributeState
     extends State<DetailHistoryDistributePengawas> {
   List<String> photos = [];
   String selectedWeight = '';
@@ -36,32 +36,30 @@ class _detailHistoryDistributeState
   TextEditingController temperatureController = TextEditingController();
   TextEditingController notesController = TextEditingController();
 
-  Future<void> uploadPhoto(File imageFile) async {
-    final url = Uri.parse('https://example.com/upload');
-    final response = await http.post(
-      url,
-      body: {
-        'file': imageFile.path,
-      },
-    );
+  Future<String> tampilkanFoto() async {
+    final params = {'folder': 'order_item', 'id': widget.orderId};
+    final apiurl = Uri.http('116.68.252.201:1945', '/getPhoto', params);
+    try {
+      final response = await http.get(apiurl);
 
-    if (response.statusCode == 200) {
-      setState(() {
-        photos.add(imageFile.path);
-      });
-    } else {
-      print('Gagal mengunggah foto: ${response.statusCode}');
+      if (response.statusCode == 200) {
+        print("sukses");
+        return "http://116.68.252.201:1945/getPhoto?folder=order_item&id=${widget.orderId}";
+      } else {
+        print("gagal");
+        return "";
+      }
+    } catch (e) {
+      print("error $e");
+      return "";
     }
   }
 
-  Future<void> chooseImage() async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-
-    if (pickedFile != null) {
-      File imageFile = File(pickedFile.path);
-      await uploadPhoto(imageFile);
-    }
+  Future<Uint8List> getImageBytes() async {
+    String imgurl = await tampilkanFoto();
+    print("url image: ${imgurl}");
+    http.Response response = await http.get(Uri.parse(imgurl));
+    return response.bodyBytes;
   }
 
   List<String> namaItems = [];
@@ -70,7 +68,7 @@ class _detailHistoryDistributeState
   List<String> tanggal = [];
   List<String> temperature = [];
   List<String> note = [];
-
+  String time = '';
   @override
   void initState() {
     widget.groupDistribute.values.forEach((dataByIdOrder) {
@@ -82,11 +80,39 @@ class _detailHistoryDistributeState
             pieces.add(item.Jumlah);
             tanggal.add(item.Tanggal_Masuk);
             temperature.add(item.Temperature);
+            time = item.time.substring(0, 5);
             note.add(item.Notes);
           });
         }
       });
     });
+
+    List<String> itemsTerpisah = [];
+    List<String> itemsTerpisah2 = [];
+    List<String> itemsTerpisah3 = [];
+
+    for (String items in namaItems) {
+      List<String> itemPerString = items.split(',');
+      itemsTerpisah.addAll(itemPerString);
+    }
+
+    for (String items in weight) {
+      List<String> itemPerString = items.split(',');
+      itemsTerpisah2.addAll(itemPerString);
+    }
+
+    for (String items in pieces) {
+      List<String> itemPerString = items.split(',');
+      itemsTerpisah3.addAll(itemPerString);
+    }
+
+    namaItems = itemsTerpisah;
+    weight = itemsTerpisah2;
+    pieces = itemsTerpisah3;
+
+    print(namaItems);
+    print(weight);
+    print(pieces);
 
     if (namaItems.isNotEmpty) {
       selectedWeight = weight[0];
@@ -98,11 +124,13 @@ class _detailHistoryDistributeState
 
   void _updateSelectedData(String selectedItem) {
     final index = namaItems.indexOf(selectedItem);
+    print("hahahhahahahhahhahaa");
+    print(index);
     if (index != -1) {
       setState(() {
         selectedWeight = weight[index];
         selectedPieces = pieces[index];
-        selectedTanggal = tanggal[index];
+
         // Perbarui selectedWaktu jika diperlukan
       });
     }
@@ -164,6 +192,7 @@ class _detailHistoryDistributeState
     print(namaItems);
     String selectedService = namaItems.isNotEmpty ? namaItems[0] : '';
     print(tanggal);
+    print(widget.groupDistribute);
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -232,7 +261,8 @@ class _detailHistoryDistributeState
                     onChanged: (value) {
                       setState(() {
                         selectedService = value ?? '';
-
+                        print("hahahhaa");
+                        print(selectedService);
                         _updateSelectedData(selectedService);
                       });
                     },
@@ -389,7 +419,7 @@ class _detailHistoryDistributeState
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        '12:30',
+                        time,
                         style: TextStyle(
                           fontFamily: 'Sora',
                           fontSize: 15,
@@ -476,48 +506,69 @@ class _detailHistoryDistributeState
                       fontWeight: FontWeight.bold),
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.only(top: 16, left: 24),
-                child: InkWell(
-                  onTap: () async => {
-                    // print("tes"),
-                    // await availableCameras().then(
-                    //   (value) => Navigator.push(
-                    //       context,
-                    //       MaterialPageRoute(
-                    //           builder: (_) => CameraPage(cameras: value))),
-                    // ),
-                  },
-                  child: Container(
-                    width: 100,
-                    height: 75,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: Colors.grey[400],
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          '+',
-                          style: TextStyle(
-                            fontSize: 30.0,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
+              Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(top: 16, left: 24),
+                    child: InkWell(
+                      onTap: () async => {
+                        print("tes"),
+                        await availableCameras().then(
+                          (value) => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => CameraPage2(
+                                      cameras: value, id: widget.orderId))),
                         ),
-                        Text(
-                          'Add Photos',
-                          style: TextStyle(
-                            fontSize: 13.0,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
+                      },
+                      child: Container(
+                        width: 100,
+                        height: 75,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: Colors.grey[400],
                         ),
-                      ],
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              '+',
+                              style: TextStyle(
+                                fontSize: 30.0,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                            Text(
+                              'Add Photos',
+                              style: TextStyle(
+                                fontSize: 13.0,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                  Container(
+                    height: 75,
+                    width: 100,
+                    child: FutureBuilder<Uint8List>(
+                      future: getImageBytes(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData)
+                          return Image.memory(snapshot.data!);
+                        return SizedBox(
+                          width: 100,
+                          height: 75,
+                          child: Text("NO DATA"),
+                        );
+                      },
+                    ),
+                  ),
+                ],
               ),
               Padding(
                 padding: EdgeInsets.only(
@@ -582,43 +633,6 @@ class _detailHistoryDistributeState
                             fontWeight: FontWeight.bold,
                             fontFamily: "Sora",
                             color: Color(0xFF6AD6F9))),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 32, vertical: 8),
-                child: Container(
-                  width: double.infinity,
-                  height: 50,
-                  child: ElevatedButton(
-                    style: ButtonStyle(
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(
-                              30), // border radius sebesar 30
-                        ),
-                      ),
-                      elevation: MaterialStateProperty.all(5),
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(Color(0xFF6AD6F9)),
-                    ),
-                    onPressed: () {
-                      putIschecked();
-
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => HomePengawas(
-                            userID: widget.userId,
-                          ),
-                        ),
-                      );
-                    },
-                    child: Text('Save',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: "Sora",
-                        )),
                   ),
                 ),
               ),

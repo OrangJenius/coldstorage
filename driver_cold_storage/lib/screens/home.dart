@@ -72,9 +72,17 @@ class _homeScreenState extends State<homeScreen> {
 
         for (var item in pengantaranModel) {
           if (!groupedData.containsKey(item.Id)) {
-            groupedData[item.Id] = [item];
+            if (item.is_check == "true") {
+              if (item.status_perjalanan != "selesai") {
+                groupedData[item.Id] = [item];
+              }
+            }
           } else {
-            groupedData[item.Id]!.add(item);
+            if (item.is_check == "true") {
+              if (item.status_perjalanan != "selesai") {
+                groupedData[item.Id]!.add(item);
+              }
+            }
           }
         }
 

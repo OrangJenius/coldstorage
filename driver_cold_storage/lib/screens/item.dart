@@ -10,10 +10,10 @@ class Item {
   });
 
   int id;
-  String expandedValue;
+  List<String> expandedValue;
   String headerValue;
-  String tanggal;
-  String isCheck;
+  List<String> tanggal;
+  List<String> isCheck;
   bool canSubmit;
-  String tanggalAmbil;
+  List<String> tanggalAmbil;
 }

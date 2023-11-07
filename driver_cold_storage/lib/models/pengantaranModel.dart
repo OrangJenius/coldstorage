@@ -14,6 +14,8 @@ class PengantaranModel {
   final String Berat;
   final String Jumlah;
   final String Nama_Client;
+  final String is_check;
+  final String status_perjalanan;
 
   PengantaranModel({
     required this.Id,
@@ -31,6 +33,8 @@ class PengantaranModel {
     required this.Berat,
     required this.Jumlah,
     required this.Nama_Client,
+    required this.is_check,
+    required this.status_perjalanan,
   });
 
   factory PengantaranModel.fromJson(Map<String, dynamic> json) {
@@ -47,9 +51,11 @@ class PengantaranModel {
       Titik_Awal: json['Titik_Awal'],
       Destination: json['Destination'],
       Nama_Toko: json['Nama_Toko'],
-      Berat: json['Berat'],
+      Berat: json['Weight'],
       Jumlah: json['Jumlah'],
       Nama_Client: json['Nama_Client'],
+      is_check: json['Is_Check'],
+      status_perjalanan: json['Status_Perjalanan'],
     );
   }
 }

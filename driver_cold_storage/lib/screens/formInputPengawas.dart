@@ -13,12 +13,15 @@ class FormInputPengawas extends StatefulWidget {
 
   final distributeId;
   final userId;
+  final orderId;
 
-  const FormInputPengawas(
-      {super.key,
-      required this.groupDistribute,
-      required this.distributeId,
-      required this.userId});
+  const FormInputPengawas({
+    super.key,
+    required this.groupDistribute,
+    required this.distributeId,
+    required this.userId,
+    required this.orderId,
+  });
   @override
   _FormInputPengawasState createState() => _FormInputPengawasState();
 }
@@ -33,14 +36,14 @@ class _FormInputPengawasState extends State<FormInputPengawas> {
   TextEditingController notesController = TextEditingController();
 
   Future<String> tampilkanFoto() async {
-    final params = {'folder': 'order_item', 'id': widget.distributeId};
+    final params = {'folder': 'order_item', 'id': widget.orderId};
     final apiurl = Uri.http('116.68.252.201:1945', '/getPhoto', params);
     try {
       final response = await http.get(apiurl);
 
       if (response.statusCode == 200) {
         print("sukses");
-        return "http://116.68.252.201:1945/getPhoto?folder=order_item&id=${widget.distributeId}";
+        return "http://116.68.252.201:1945/getPhoto?folder=order_item&id=${widget.orderId}";
       } else {
         print("gagal");
         return "";
@@ -64,6 +67,7 @@ class _FormInputPengawasState extends State<FormInputPengawas> {
   List<String> tanggal = [];
   List<String> temperature = [];
   List<String> note = [];
+  String time = '';
   @override
   void initState() {
     widget.groupDistribute.values.forEach((dataByIdOrder) {
@@ -75,11 +79,39 @@ class _FormInputPengawasState extends State<FormInputPengawas> {
             pieces.add(item.Jumlah);
             tanggal.add(item.Tanggal_Masuk);
             temperature.add(item.Temperature);
+            time = item.time.substring(0, 5);
             note.add(item.Notes);
           });
         }
       });
     });
+
+    List<String> itemsTerpisah = [];
+    List<String> itemsTerpisah2 = [];
+    List<String> itemsTerpisah3 = [];
+
+    for (String items in namaItems) {
+      List<String> itemPerString = items.split(',');
+      itemsTerpisah.addAll(itemPerString);
+    }
+
+    for (String items in weight) {
+      List<String> itemPerString = items.split(',');
+      itemsTerpisah2.addAll(itemPerString);
+    }
+
+    for (String items in pieces) {
+      List<String> itemPerString = items.split(',');
+      itemsTerpisah3.addAll(itemPerString);
+    }
+
+    namaItems = itemsTerpisah;
+    weight = itemsTerpisah2;
+    pieces = itemsTerpisah3;
+
+    print(namaItems);
+    print(weight);
+    print(pieces);
 
     if (namaItems.isNotEmpty) {
       selectedWeight = weight[0];
@@ -91,11 +123,13 @@ class _FormInputPengawasState extends State<FormInputPengawas> {
 
   void _updateSelectedData(String selectedItem) {
     final index = namaItems.indexOf(selectedItem);
+    print("hahahhahahahhahhahaa");
+    print(index);
     if (index != -1) {
       setState(() {
         selectedWeight = weight[index];
         selectedPieces = pieces[index];
-        selectedTanggal = tanggal[index];
+
         // Perbarui selectedWaktu jika diperlukan
       });
     }
@@ -157,6 +191,7 @@ class _FormInputPengawasState extends State<FormInputPengawas> {
     print(namaItems);
     String selectedService = namaItems.isNotEmpty ? namaItems[0] : '';
     print(tanggal);
+    print(widget.groupDistribute);
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -225,7 +260,8 @@ class _FormInputPengawasState extends State<FormInputPengawas> {
                     onChanged: (value) {
                       setState(() {
                         selectedService = value ?? '';
-
+                        print("hahahhaa");
+                        print(selectedService);
                         _updateSelectedData(selectedService);
                       });
                     },
@@ -382,7 +418,7 @@ class _FormInputPengawasState extends State<FormInputPengawas> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        '12:30',
+                        time,
                         style: TextStyle(
                           fontFamily: 'Sora',
                           fontSize: 15,
@@ -481,8 +517,7 @@ class _FormInputPengawasState extends State<FormInputPengawas> {
                               context,
                               MaterialPageRoute(
                                   builder: (_) => CameraPage2(
-                                      cameras: value,
-                                      id: widget.distributeId))),
+                                      cameras: value, id: widget.orderId))),
                         ),
                       },
                       child: Container(

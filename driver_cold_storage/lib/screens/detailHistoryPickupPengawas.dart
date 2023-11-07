@@ -1,77 +1,83 @@
 import 'dart:io';
 
 import 'package:camera/camera.dart';
-import 'package:driver_cold_storage/models/pengawasModel.dart';
+import 'package:driver_cold_storage/screens/cameraPage2.dart';
 import 'package:driver_cold_storage/screens/camerapage.dart';
 import 'package:driver_cold_storage/screens/homePengawas.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
+import 'package:driver_cold_storage/models/pengawasModel.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 
 class DetailHistoryPickupPengawas extends StatefulWidget {
-  final Map<String, Map<String, List<PengawasModel>>> groupPickup;
+  final Map<String, Map<String, List<PengawasModel>>> groupPicktup;
 
   final distributeId;
   final userId;
-
-  const DetailHistoryPickupPengawas(
-      {super.key,
-      required this.groupPickup,
-      required this.distributeId,
-      required this.userId});
+  final orderId;
+  const DetailHistoryPickupPengawas({
+    super.key,
+    required this.groupPicktup,
+    required this.distributeId,
+    required this.userId,
+    required this.orderId,
+  });
   @override
-  _detailHistoryPickupState createState() => _detailHistoryPickupState();
+  detailHistoryPickupState createState() => detailHistoryPickupState();
 }
 
-class _detailHistoryPickupState extends State<DetailHistoryPickupPengawas> {
+class detailHistoryPickupState extends State<DetailHistoryPickupPengawas> {
   List<String> photos = [];
+
   String selectedWeight = '';
   String selectedPieces = '';
   String selectedTanggal = '';
   String selectedWaktu = '';
+  String selectedBuilding = '';
+  String selectedAisle = '';
+  String selectedPlace = '';
   TextEditingController temperatureController = TextEditingController();
   TextEditingController notesController = TextEditingController();
 
-  Future<void> uploadPhoto(File imageFile) async {
-    final url = Uri.parse('https://example.com/upload');
-    final response = await http.post(
-      url,
-      body: {
-        'file': imageFile.path,
-      },
-    );
+  Future<String> tampilkanFoto() async {
+    final params = {'folder': 'order_item', 'id': widget.orderId};
+    final apiurl = Uri.http('116.68.252.201:1945', '/getPhoto', params);
+    try {
+      final response = await http.get(apiurl);
 
-    if (response.statusCode == 200) {
-      setState(() {
-        photos.add(imageFile.path);
-      });
-    } else {
-      print('Gagal mengunggah foto: ${response.statusCode}');
+      if (response.statusCode == 200) {
+        print("sukses");
+        return "http://116.68.252.201:1945/getPhoto?folder=order_item&id=${widget.orderId}";
+      } else {
+        print("gagal");
+        return "";
+      }
+    } catch (e) {
+      print("error $e");
+      return "";
     }
   }
 
-  Future<void> chooseImage() async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-
-    if (pickedFile != null) {
-      File imageFile = File(pickedFile.path);
-      await uploadPhoto(imageFile);
-    }
+  Future<Uint8List> getImageBytes() async {
+    String imgurl = await tampilkanFoto();
+    print("url image: ${imgurl}");
+    http.Response response = await http.get(Uri.parse(imgurl));
+    return response.bodyBytes;
   }
 
   List<String> namaItems = [];
   List<String> weight = [];
   List<String> pieces = [];
   List<String> tanggal = [];
-  List<String> temperature = [];
-  List<String> note = [];
+  List<String> building = [];
+  List<String> aisle = [];
+  List<String> place = [];
+  String time = '';
 
   @override
   void initState() {
-    widget.groupPickup.values.forEach((dataByIdOrder) {
+    widget.groupPicktup.values.forEach((dataByIdOrder) {
       dataByIdOrder.forEach((distributeId, items) {
         if (distributeId == widget.distributeId) {
           items.forEach((item) {
@@ -79,17 +85,44 @@ class _detailHistoryPickupState extends State<DetailHistoryPickupPengawas> {
             weight.add(item.Berat);
             pieces.add(item.Jumlah);
             tanggal.add(item.Tanggal_Masuk);
-            temperature.add(item.Temperature);
-            note.add(item.Notes);
+            building.add(item.Gedung);
+            aisle.add(item.Aisle);
+            time = item.time.substring(0, 5);
+            place.add(item.Place);
           });
         }
       });
     });
 
+    List<String> itemsTerpisah = [];
+    List<String> itemsTerpisah2 = [];
+    List<String> itemsTerpisah3 = [];
+
+    for (String items in namaItems) {
+      List<String> itemPerString = items.split(',');
+      itemsTerpisah.addAll(itemPerString);
+    }
+
+    for (String items in weight) {
+      List<String> itemPerString = items.split(',');
+      itemsTerpisah2.addAll(itemPerString);
+    }
+
+    for (String items in pieces) {
+      List<String> itemPerString = items.split(',');
+      itemsTerpisah3.addAll(itemPerString);
+    }
+
+    namaItems = itemsTerpisah;
+    weight = itemsTerpisah2;
+    pieces = itemsTerpisah3;
     if (namaItems.isNotEmpty) {
       selectedWeight = weight[0];
       selectedPieces = pieces[0];
       selectedTanggal = tanggal[0];
+      selectedBuilding = building[0];
+      selectedAisle = aisle[0];
+      selectedPlace = place[0];
     }
     super.initState();
   }
@@ -101,18 +134,21 @@ class _detailHistoryPickupState extends State<DetailHistoryPickupPengawas> {
         selectedWeight = weight[index];
         selectedPieces = pieces[index];
         selectedTanggal = tanggal[index];
+        selectedBuilding = building[index];
+        selectedAisle = aisle[index];
+        selectedPlace = place[index];
         // Perbarui selectedWaktu jika diperlukan
       });
     }
   }
 
-  Future<void> putDataToApi() async {
+  Future<void> postDataToApi() async {
     final apiUrl =
         'http://116.68.252.201:1945/TambahTemperature/${widget.distributeId}';
     final temperature = temperatureController.text;
     print(temperature);
     final response =
-        await http.put(Uri.parse(apiUrl), body: {'Temperature': temperature});
+        await http.post(Uri.parse(apiUrl), body: {'Temperature': temperature});
 
     if (response.statusCode == 200) {
       print('Data temperatur berhasil dipost ke API');
@@ -123,33 +159,17 @@ class _detailHistoryPickupState extends State<DetailHistoryPickupPengawas> {
     }
   }
 
-  Future<void> putIschecked() async {
-    final apiUrl =
-        'http://116.68.252.201:1945/UpdateISCHECK/${widget.distributeId}';
-
-    final response =
-        await http.put(Uri.parse(apiUrl), body: {'Is_Check': "true"});
-
-    if (response.statusCode == 200) {
-      print('Data ischeck berhasil dipost ke API');
-    } else {
-      print('Gagal melakukan put data ischeck ke API');
-      print('Status Code: ${response.statusCode}');
-      print('Response: ${response.body}');
-    }
-  }
-
-  Future<void> putDataToApi2() async {
+  Future<void> postDataToApi2() async {
     final apiUrl =
         'http://116.68.252.201:1945/TambahNotes/${widget.distributeId}';
     final notes = notesController.text;
     print(notes);
-    final response = await http.put(Uri.parse(apiUrl), body: {'Notes': notes});
+    final response = await http.post(Uri.parse(apiUrl), body: {'Notes': notes});
 
     if (response.statusCode == 200) {
-      print('Data note berhasil dipost ke API');
+      print('Data temperatur berhasil dipost ke API');
     } else {
-      print('Gagal melakukan POST data note ke API');
+      print('Gagal melakukan POST data temperatur ke API');
       print('Status Code: ${response.statusCode}');
       print('Response: ${response.body}');
     }
@@ -157,11 +177,7 @@ class _detailHistoryPickupState extends State<DetailHistoryPickupPengawas> {
 
   @override
   Widget build(BuildContext context) {
-    temperatureController.text = temperature[0];
-    notesController.text = note[0];
-    print(namaItems);
     String selectedService = namaItems.isNotEmpty ? namaItems[0] : '';
-    print(tanggal);
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -175,7 +191,7 @@ class _detailHistoryPickupState extends State<DetailHistoryPickupPengawas> {
                   top: 16,
                 ),
                 child: Text(
-                  "Distribute",
+                  "Pickup",
                   style: TextStyle(
                     color: Color(0xFF6AD6F9),
                     fontSize: 36,
@@ -212,6 +228,7 @@ class _detailHistoryPickupState extends State<DetailHistoryPickupPengawas> {
                   ),
                 ],
               ),
+
               Padding(
                 padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
                 child: Container(
@@ -241,6 +258,7 @@ class _detailHistoryPickupState extends State<DetailHistoryPickupPengawas> {
                   ),
                 ),
               ),
+
               SizedBox(
                 height: 8,
               ),
@@ -387,7 +405,7 @@ class _detailHistoryPickupState extends State<DetailHistoryPickupPengawas> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        '12:30',
+                        time,
                         style: TextStyle(
                           fontFamily: 'Sora',
                           fontSize: 15,
@@ -397,6 +415,140 @@ class _detailHistoryPickupState extends State<DetailHistoryPickupPengawas> {
                         ),
                       ),
                       Icon(Icons.alarm),
+                    ],
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(
+                  left: 24.0,
+                  top: 16,
+                ),
+                child: Text(
+                  "Storage",
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 21,
+                      fontFamily: "Sora",
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(
+                  left: 24.0,
+                  top: 16,
+                ),
+                child: Text(
+                  "Building",
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontFamily: "Sora",
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
+                child: Container(
+                  padding: EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        selectedBuilding,
+                        style: TextStyle(
+                          fontFamily: 'Sora',
+                          fontSize: 15,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xFF747474),
+                          fontStyle: FontStyle.normal,
+                        ),
+                      ),
+                      SizedBox(width: 8),
+                    ],
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(
+                  left: 24.0,
+                  top: 16,
+                ),
+                child: Text(
+                  "Aisle",
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontFamily: "Sora",
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
+                child: Container(
+                  padding: EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        selectedAisle,
+                        style: TextStyle(
+                          fontFamily: 'Sora',
+                          fontSize: 15,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xFF747474),
+                          fontStyle: FontStyle.normal,
+                        ),
+                      ),
+                      SizedBox(width: 8),
+                    ],
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(
+                  left: 24.0,
+                  top: 16,
+                ),
+                child: Text(
+                  "Place",
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontFamily: "Sora",
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
+                child: Container(
+                  padding: EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        selectedPlace,
+                        style: TextStyle(
+                          fontFamily: 'Sora',
+                          fontSize: 15,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xFF747474),
+                          fontStyle: FontStyle.normal,
+                        ),
+                      ),
+                      SizedBox(width: 8),
                     ],
                   ),
                 ),
@@ -478,13 +630,14 @@ class _detailHistoryPickupState extends State<DetailHistoryPickupPengawas> {
                 padding: EdgeInsets.only(top: 16, left: 24),
                 child: InkWell(
                   onTap: () async => {
-                    // print("tes"),
-                    // await availableCameras().then(
-                    //   (value) => Navigator.push(
-                    //       context,
-                    //       MaterialPageRoute(
-                    //           builder: (_) => CameraPage(cameras: value))),
-                    // ),
+                    print("tes"),
+                    await availableCameras().then(
+                      (value) => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => CameraPage2(
+                                  cameras: value, id: widget.orderId))),
+                    ),
                   },
                   child: Container(
                     width: 100,
@@ -517,6 +670,35 @@ class _detailHistoryPickupState extends State<DetailHistoryPickupPengawas> {
                   ),
                 ),
               ),
+              Container(
+                height: 110,
+                width: 50,
+                child: FutureBuilder<Uint8List>(
+                  future: getImageBytes(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) return Image.memory(snapshot.data!);
+                    return SizedBox(
+                      width: 100,
+                      height: 100,
+                      child: Text("NO DATA"),
+                    );
+                  },
+                ),
+              ),
+              // Expanded(
+              //   child: Container(
+              //     width: 100,
+              //     height: 75,
+              //     child: ListView.builder(
+              //       itemCount: photos.length,
+              //       itemBuilder: (context, index) {
+              //         return ListTile(
+              //           title: Image.file(File(photos[index])),
+              //         );
+              //       },
+              //     ),
+              //   ),
+              // ),
               Padding(
                 padding: EdgeInsets.only(
                   left: 24.0,
@@ -531,6 +713,7 @@ class _detailHistoryPickupState extends State<DetailHistoryPickupPengawas> {
                       fontWeight: FontWeight.bold),
                 ),
               ),
+
               Padding(
                   padding: EdgeInsets.only(left: 24.0, top: 16, right: 24),
                   child: Container(
@@ -552,18 +735,25 @@ class _detailHistoryPickupState extends State<DetailHistoryPickupPengawas> {
                 height: 16,
               ),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 32, vertical: 8),
+                padding: EdgeInsets.symmetric(
+                    horizontal: 32,
+                    vertical: 8), // Padding horizontal 32 dan vertikal 24
                 child: Container(
-                  width: double.infinity,
-                  height: 50,
+                  width: double
+                      .infinity, // Ini akan membuat Container mengambil lebar maksimal yang tersedia.
+                  height:
+                      50, // Anda bisa mengatur tinggi tombol sesuai kebutuhan Anda.
+
                   child: ElevatedButton(
                     style: ButtonStyle(
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
+                          borderRadius: BorderRadius.circular(
+                              30), // border radius sebesar 30
                           side: BorderSide(
-                            color: Color(0xFF6AD6F9),
-                            width: 1.0,
+                            color: Color(0xFF6AD6F9), // Warna border
+                            width:
+                                1.0, // Lebar border (sesuaikan dengan kebutuhan Anda)
                           ),
                         ),
                       ),
@@ -583,43 +773,7 @@ class _detailHistoryPickupState extends State<DetailHistoryPickupPengawas> {
                   ),
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 32, vertical: 8),
-                child: Container(
-                  width: double.infinity,
-                  height: 50,
-                  child: ElevatedButton(
-                    style: ButtonStyle(
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(
-                              30), // border radius sebesar 30
-                        ),
-                      ),
-                      elevation: MaterialStateProperty.all(5),
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(Color(0xFF6AD6F9)),
-                    ),
-                    onPressed: () {
-                      putIschecked();
 
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => HomePengawas(
-                            userID: widget.userId,
-                          ),
-                        ),
-                      );
-                    },
-                    child: Text('Save',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: "Sora",
-                        )),
-                  ),
-                ),
-              ),
               SizedBox(
                 height: 16,
               )

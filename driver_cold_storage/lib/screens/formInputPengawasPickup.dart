@@ -15,11 +15,14 @@ class FormInputPengawasPickup extends StatefulWidget {
 
   final distributeId;
   final userId;
-  const FormInputPengawasPickup(
-      {super.key,
-      required this.groupPicktup,
-      required this.distributeId,
-      required this.userId});
+  final orderId;
+  const FormInputPengawasPickup({
+    super.key,
+    required this.groupPicktup,
+    required this.distributeId,
+    required this.userId,
+    required this.orderId,
+  });
   @override
   _FormInputPengawasPickupState createState() =>
       _FormInputPengawasPickupState();
@@ -39,14 +42,14 @@ class _FormInputPengawasPickupState extends State<FormInputPengawasPickup> {
   TextEditingController notesController = TextEditingController();
 
   Future<String> tampilkanFoto() async {
-    final params = {'folder': 'order_item', 'id': widget.distributeId};
+    final params = {'folder': 'order_item', 'id': widget.orderId};
     final apiurl = Uri.http('116.68.252.201:1945', '/getPhoto', params);
     try {
       final response = await http.get(apiurl);
 
       if (response.statusCode == 200) {
         print("sukses");
-        return "http://116.68.252.201:1945/getPhoto?folder=order_item&id=${widget.distributeId}";
+        return "http://116.68.252.201:1945/getPhoto?folder=order_item&id=${widget.orderId}";
       } else {
         print("gagal");
         return "";
@@ -71,6 +74,7 @@ class _FormInputPengawasPickupState extends State<FormInputPengawasPickup> {
   List<String> building = [];
   List<String> aisle = [];
   List<String> place = [];
+  String time = '';
 
   @override
   void initState() {
@@ -84,12 +88,35 @@ class _FormInputPengawasPickupState extends State<FormInputPengawasPickup> {
             tanggal.add(item.Tanggal_Masuk);
             building.add(item.Gedung);
             aisle.add(item.Aisle);
+            time = item.time.substring(0, 5);
             place.add(item.Place);
           });
         }
       });
     });
 
+    List<String> itemsTerpisah = [];
+    List<String> itemsTerpisah2 = [];
+    List<String> itemsTerpisah3 = [];
+
+    for (String items in namaItems) {
+      List<String> itemPerString = items.split(',');
+      itemsTerpisah.addAll(itemPerString);
+    }
+
+    for (String items in weight) {
+      List<String> itemPerString = items.split(',');
+      itemsTerpisah2.addAll(itemPerString);
+    }
+
+    for (String items in pieces) {
+      List<String> itemPerString = items.split(',');
+      itemsTerpisah3.addAll(itemPerString);
+    }
+
+    namaItems = itemsTerpisah;
+    weight = itemsTerpisah2;
+    pieces = itemsTerpisah3;
     if (namaItems.isNotEmpty) {
       selectedWeight = weight[0];
       selectedPieces = pieces[0];
@@ -379,7 +406,7 @@ class _FormInputPengawasPickupState extends State<FormInputPengawasPickup> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        '12:30',
+                        time,
                         style: TextStyle(
                           fontFamily: 'Sora',
                           fontSize: 15,
@@ -610,7 +637,7 @@ class _FormInputPengawasPickupState extends State<FormInputPengawasPickup> {
                           context,
                           MaterialPageRoute(
                               builder: (_) => CameraPage2(
-                                  cameras: value, id: widget.distributeId))),
+                                  cameras: value, id: widget.orderId))),
                     ),
                   },
                   child: Container(
