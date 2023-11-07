@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../models/userModel.dart';
 import 'login.dart';
 import 'package:http/http.dart' as http;
@@ -61,9 +60,6 @@ class _change_PassState extends State<change_pass> {
 
   void _logout() async {
     // Hapus status login dan data terkait lainnya dari SharedPreferences
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.remove('isLoggedIn');
-    prefs.remove('userID');
 
     // Navigate to the Login screen and remove all previous routes
     Navigator.pushAndRemoveUntil(
