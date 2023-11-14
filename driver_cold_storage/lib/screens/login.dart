@@ -67,8 +67,6 @@ class _loginState extends State<Login> {
 
         // Simpan status login ke dalam SharedPreferences
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        prefs.setBool('isLoggedIn', true);
-        prefs.setString('userID', idValue.toString());
 
         setState(() {
           _message = 'Login successful';
@@ -81,6 +79,9 @@ class _loginState extends State<Login> {
                 builder: (context) => homeScreen(userID: simpanData),
               ),
             );
+            prefs.setBool('isLoggedIn', true);
+            prefs.setString('userID', idValue.toString());
+            prefs.setString('role', roleValue);
           } else if (roleValue == "staff") {
             Navigator.push(
               context,
@@ -88,6 +89,9 @@ class _loginState extends State<Login> {
                 builder: (context) => HomePengawas(userID: simpanData),
               ),
             );
+            prefs.setBool('isLoggedIn', true);
+            prefs.setString('userID', idValue.toString());
+            prefs.setString('role', roleValue);
           }
         });
       } else if (response.statusCode == 401) {

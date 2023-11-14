@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:driver_cold_storage/screens/homePengawas.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'models/pengantaranModel.dart';
@@ -52,6 +53,10 @@ class MainApp extends StatelessWidget {
                   pengantaran: pengantaranItems,
                 ), // Pass userID and pengantaranItems to Pengiriman screen
               );
+            } else if (initialScreen == 'staffHome') {
+              return MaterialApp(
+                home: HomePengawas(userID: userID), // Pass userID to HomeScreen
+              );
             }
           }
           return MaterialApp(
@@ -67,6 +72,7 @@ Future<String> getInitialScreen() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   bool lastScreen = prefs.getBool('isOnTheWay') ?? false;
   String userID = prefs.getString('userID') ?? '';
+  String role = prefs.getString('role') ?? '';
   String pengantaranItem = prefs.getString('pengantaran_model') ?? '';
   print("Items: ${pengantaranItem}");
 
@@ -85,13 +91,17 @@ Future<String> getInitialScreen() async {
       return 'pengiriman| $userID |${json.encode(pengantaranModel)}'; // Pass userID and pengantaranItem JSON to Pengiriman screen
     }
     bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
-    if (isLoggedIn) {
+    if (isLoggedIn && role == 'driver') {
       return 'home|$userID';
+    } else {
+      return 'staffHome|$userID';
     }
   } else {
     bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
-    if (isLoggedIn) {
+    if (isLoggedIn && role == 'driver') {
       return 'home|$userID';
+    } else if (isLoggedIn && role == 'staff') {
+      return 'staffHome|$userID';
     }
   }
   return 'login'; // Return 'login' as the default case

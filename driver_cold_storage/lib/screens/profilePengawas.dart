@@ -81,6 +81,8 @@ class _profilePengawasScreenState extends State<profilePengawasScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.remove('isLoggedIn');
     prefs.remove('userID');
+    prefs.remove('role');
+    print("Hapus prefs");
 
     // Navigate to the Login screen and remove all previous routes
     Navigator.pushAndRemoveUntil(
