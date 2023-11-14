@@ -80,6 +80,7 @@ class _profileScreenState extends State<profileScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.remove('isLoggedIn');
     prefs.remove('userID');
+    print("Hapus prefs");
 
     // Navigate to the Login screen and remove all previous routes
     Navigator.pushAndRemoveUntil(

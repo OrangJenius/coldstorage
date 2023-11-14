@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'models/pengantaranModel.dart';
 import 'screens/splashScreen.dart';
@@ -22,11 +23,17 @@ class MainApp extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return CircularProgressIndicator();
         } else if (snapshot.hasError) {
-          return Text('Error: ${snapshot.error}');
+          return Text(
+            'data',
+            textDirection: TextDirection.ltr,
+          );
+          // return Text(
+          //   'Error: ${snapshot.error}',
+          //   textDirection: TextDirection.ltr,
+          // );
         } else {
           String initialScreenWithUserID = snapshot.data ?? '';
           List<String> parts = initialScreenWithUserID.split('|');
-
           if (parts.length >= 2) {
             String initialScreen = parts[0];
             String userID = parts[1];
@@ -35,7 +42,6 @@ class MainApp extends StatelessWidget {
               pengantaranItems =
                   PengantaranModel.fromJson(json.decode(parts[2]));
             }
-
             if (initialScreen == 'home') {
               return MaterialApp(
                 home: homeScreen(userID: userID), // Pass userID to HomeScreen
@@ -62,14 +68,21 @@ Future<String> getInitialScreen() async {
   bool lastScreen = prefs.getBool('isOnTheWay') ?? false;
   String userID = prefs.getString('userID') ?? '';
   String pengantaranItem = prefs.getString('pengantaran_model') ?? '';
+  print("Items: ${pengantaranItem}");
 
   if (pengantaranItem.isNotEmpty) {
+    print("ga kosong");
     Map<String, dynamic> pengantaranJson = json.decode(pengantaranItem);
+    print("Step 1");
+    print("pengantaran JSON ${pengantaranJson}");
     PengantaranModel pengantaranModel =
         PengantaranModel.fromJson(pengantaranJson);
+    print("step 2");
+    print("Pengantaran Model ${pengantaranModel}");
+    print("User ID ${userID}");
 
     if (lastScreen) {
-      return 'pengiriman|${json.encode(pengantaranModel)}'; // Pass userID and pengantaranItem JSON to Pengiriman screen
+      return 'pengiriman| $userID |${json.encode(pengantaranModel)}'; // Pass userID and pengantaranItem JSON to Pengiriman screen
     }
     bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
     if (isLoggedIn) {

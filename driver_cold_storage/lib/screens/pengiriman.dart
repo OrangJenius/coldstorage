@@ -49,9 +49,11 @@ class _pengirimanScreenState extends State<pengirimanScreen> {
     prefs.setBool('isOnTheWay', true);
     final pengantaranItemJson = json
         .encode(widget.pengantaran.toJson()); // Encode pengantaranItem to JSON
-    print(widget.pengantaran);
+    print(" cek 1 ${widget.pengantaran.is_check}");
+    print(" cek 1 ${widget.pengantaran.status_perjalanan}");
     print(pengantaranItemJson);
     prefs.setString('pengantaran_model', pengantaranItemJson);
+    print("Pengantaran item json : ${pengantaranItemJson}");
   }
 
   Future<String> tampilkanFoto() async {
@@ -199,6 +201,9 @@ class _pengirimanScreenState extends State<pengirimanScreen> {
   @override
   void initState() {
     super.initState();
+    print("pengantaran is check: ${widget.pengantaran.is_check}");
+    print(
+        "pengantaran is status_perjalanan: ${widget.pengantaran.status_perjalanan}");
     initializeSharedPreferences();
     print("Test: ${widget.pengantaran}");
     print("Test: ${widget.pengantaran}");

@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 class PengantaranModel {
   final String Id;
   final String Order_Id;
@@ -54,6 +56,8 @@ class PengantaranModel {
       'Weight': Berat,
       'Jumlah': Jumlah,
       'Nama_Client': Nama_Client,
+      'Is_Check': is_check,
+      'Status_Perjalanan': status_perjalanan,
     };
   }
 
