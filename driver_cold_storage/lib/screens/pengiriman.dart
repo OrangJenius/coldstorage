@@ -1,8 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_background_service/flutter_background_service.dart';
+import 'package:flutter_background_service_android/flutter_background_service_android.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:dotted_border/dotted_border.dart';
@@ -16,6 +20,74 @@ import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:flutter_background_service/flutter_background_service.dart';
 // import 'package:flutter_background_service_android/flutter_background_service_android.dart';
 // import 'home.dart';
+
+@pragma('vm:entry-point')
+Future<bool> onIosBackground(ServiceInstance service) async {
+  WidgetsFlutterBinding.ensureInitialized();
+  DartPluginRegistrant.ensureInitialized();
+
+  return true;
+}
+
+@pragma('vm:entry-point')
+Future<void> onStart(ServiceInstance service) async {
+  DartPluginRegistrant.ensureInitialized();
+
+  if (service is AndroidServiceInstance) {
+    service.on('setAsForeground').listen((event) {
+      service.setAsForegroundService();
+    });
+
+    service.on('setAsBackground').listen((event) {
+      service.setAsBackgroundService();
+    });
+  }
+
+  service.on('stopService').listen((event) {
+    service.stopSelf();
+  });
+
+  Timer.periodic(Duration(seconds: 1), (timer) {
+    //tempat untuk update lokasi ke rest api ketika berjalan di background
+    getLocation();
+    print("berjalannnnnnn hahahhahah2");
+  });
+
+  print("berjalannnnnnn hahahhahah");
+}
+
+Future<void> getLocation() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String pengantaranItemJson = prefs.getString('pengantaran_model') ?? '';
+
+  // Melakukan decode JSON String ke Map (jika tidak kosong)
+  Map<String, dynamic> pengantaranItemMap = {};
+  if (pengantaranItemJson.isNotEmpty) {
+    pengantaranItemMap = json.decode(pengantaranItemJson);
+  }
+  PengantaranModel pengantaranItem =
+      PengantaranModel.fromJson(pengantaranItemMap);
+
+  Position position = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.bestForNavigation);
+
+  // Position current;
+  // Geolocator.getPositionStream().listen((Position newPosition) {
+  //   current = newPosition;
+  // });
+
+  final apiUrl =
+      "http://116.68.252.201:1945/UpdateStatus_Perjalanan/${pengantaranItem.Id}";
+  final response = await http.put(
+    Uri.parse(apiUrl),
+    body: {
+      "Latitude": position.latitude.toString(),
+      "Longitude": position.longitude.toString(),
+    },
+  );
+  if (response.statusCode == 200) {
+  } else {}
+}
 
 class pengirimanScreen extends StatefulWidget {
   final PengantaranModel pengantaran;
@@ -198,9 +270,39 @@ class _pengirimanScreenState extends State<pengirimanScreen> {
     return distance;
   }
 
+  Future<void> initializeService() async {
+    final service = FlutterBackgroundService();
+
+    await service.configure(
+      androidConfiguration: AndroidConfiguration(
+        // this will be executed when app is in foreground or background in separated isolate
+        onStart: onStart,
+        autoStartOnBoot: true,
+        // auto start service
+        autoStart: true,
+        isForegroundMode: true,
+
+        foregroundServiceNotificationId: 888,
+      ),
+      iosConfiguration: IosConfiguration(
+        // auto start service
+        autoStart: true,
+
+        // this will be executed when app is in foreground in separated isolate
+        onForeground: onStart,
+
+        // you have to enable background fetch capability on xcode project
+        onBackground: onIosBackground,
+      ),
+    );
+
+    service.startService();
+  }
+
   @override
   void initState() {
     super.initState();
+    initializeService();
     print("pengantaran is check: ${widget.pengantaran.is_check}");
     print(
         "pengantaran is status_perjalanan: ${widget.pengantaran.status_perjalanan}");
@@ -288,8 +390,8 @@ class _pengirimanScreenState extends State<pengirimanScreen> {
         double latitude = double.parse(cleanedCoordinate);
         double longitude = double.parse(cleanedCoordinate2);
         _dest = Position(
-          longitude: latitude,
-          latitude: longitude,
+          longitude: longitude,
+          latitude: latitude,
           accuracy: 0.0,
           altitude: 0.0,
           heading: 0.0,
@@ -786,16 +888,25 @@ class _pengirimanScreenState extends State<pengirimanScreen> {
                               ),
                               onPressed: () {
                                 initializeSharedPreferences();
+                                print("pengiriman selesai");
                                 double distance = calculateDistance(
                                     _currentLocation!.latitude,
-                                    _currentLocation!.latitude,
+                                    _currentLocation!.longitude,
                                     _dest.latitude,
                                     _dest.longitude);
+                                print("curr 1 ${_currentLocation!.latitude}");
+                                print("curr 2 ${_currentLocation!.longitude}");
+                                print("curr 3 ${_dest.latitude}");
+                                print("curr 4 ${_dest.longitude}");
+                                print("distance ${distance}");
                                 final double desiredRange = 100;
                                 if (distance <= desiredRange) {
                                   prefs.remove('isOnTheWay');
                                   prefs.remove('pengantaran_model');
                                   selesaiDistribute();
+                                  _locationTimer!.cancel();
+                                  FlutterBackgroundService()
+                                      .invoke("stopService");
                                 }
                               },
                               child: Text(

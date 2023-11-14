@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:driver_cold_storage/screens/homePengawas.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'models/pengantaranModel.dart';
 import 'screens/splashScreen.dart';
@@ -25,13 +24,9 @@ class MainApp extends StatelessWidget {
           return CircularProgressIndicator();
         } else if (snapshot.hasError) {
           return Text(
-            'data',
+            'Error: ${snapshot.error}',
             textDirection: TextDirection.ltr,
           );
-          // return Text(
-          //   'Error: ${snapshot.error}',
-          //   textDirection: TextDirection.ltr,
-          // );
         } else {
           String initialScreenWithUserID = snapshot.data ?? '';
           List<String> parts = initialScreenWithUserID.split('|');
