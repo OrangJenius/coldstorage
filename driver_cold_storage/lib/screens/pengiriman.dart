@@ -17,72 +17,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:flutter_background_service_android/flutter_background_service_android.dart';
 // import 'home.dart';
 
-<<<<<<< HEAD
-=======
-@pragma('vm:entry-point')
-Future<bool> onIosBackground(ServiceInstance service) async {
-  WidgetsFlutterBinding.ensureInitialized();
-  DartPluginRegistrant.ensureInitialized();
-
-  return true;
-}
-
-@pragma('vm:entry-point')
-Future<void> onStart(ServiceInstance service) async {
-  DartPluginRegistrant.ensureInitialized();
-
-  if (service is AndroidServiceInstance) {
-    service.on('setAsForeground').listen((event) {
-      service.setAsForegroundService();
-    });
-
-    service.on('setAsBackground').listen((event) {
-      service.setAsBackgroundService();
-    });
-  }
-
-  service.on('stopService').listen((event) {
-    service.stopSelf();
-  });
-
-  Timer.periodic(Duration(seconds: 1), (timer) {
-    //tempat untuk update lokasi ke rest api ketika berjalan di background
-    getLocation();
-    print("berjalannnnnnn hahahhahah2");
-  });
-
-  print("berjalannnnnnn hahahhahah");
-}
-
-Future<void> getLocation() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  String pengantaranItemJson = prefs.getString('pengantaran_model') ?? '';
-
-  // Melakukan decode JSON String ke Map (jika tidak kosong)
-  Map<String, dynamic> pengantaranItemMap = {};
-  if (pengantaranItemJson.isNotEmpty) {
-    pengantaranItemMap = json.decode(pengantaranItemJson);
-  }
-  PengantaranModel pengantaranItem =
-      PengantaranModel.fromJson(pengantaranItemMap);
-
-  Position position = await Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.bestForNavigation);
-
-  final apiUrl =
-      "http://116.68.252.201:1945/UpdatePosisiKendaraan/${pengantaranItem.Order_Id}";
-  final response = await http.put(
-    Uri.parse(apiUrl),
-    body: {
-      "Latitude": position.latitude.toString(),
-      "Longitude": position.longitude.toString(),
-    },
-  );
-  if (response.statusCode == 200) {
-  } else {}
-}
-
->>>>>>> 665e937233060700139b8b61cbb2788e0a1ae29f
 class pengirimanScreen extends StatefulWidget {
   final PengantaranModel pengantaran;
   const pengirimanScreen({super.key, required this.pengantaran});
@@ -159,7 +93,7 @@ class _pengirimanScreenState extends State<pengirimanScreen> {
 
   Future selesaiDistribute() async {
     final apiurl =
-        "http://116.68.252.201:1945/UpdateStatus_Perjalanan/${widget.pengantaran.Id}";
+        "http://116.68.252.201:1945/UpdatePosisiKendaraan/${widget.pengantaran.Order_Id}";
     try {
       if (cekFoto == true) {
         final response = await http
@@ -267,11 +201,6 @@ class _pengirimanScreenState extends State<pengirimanScreen> {
   @override
   void initState() {
     super.initState();
-<<<<<<< HEAD
-=======
-    initializeService();
-    FlutterBackgroundService().invoke("setAsForeground");
->>>>>>> 665e937233060700139b8b61cbb2788e0a1ae29f
     print("pengantaran is check: ${widget.pengantaran.is_check}");
     print(
         "pengantaran is status_perjalanan: ${widget.pengantaran.status_perjalanan}");
@@ -361,7 +290,6 @@ class _pengirimanScreenState extends State<pengirimanScreen> {
         double latitude = double.parse(cleanedCoordinate);
         double longitude = double.parse(cleanedCoordinate2);
         _dest = Position(
-<<<<<<< HEAD
             longitude: latitude,
             latitude: longitude,
             accuracy: 0.0,
@@ -372,19 +300,6 @@ class _pengirimanScreenState extends State<pengirimanScreen> {
             timestamp: DateTime.now(),
             altitudeAccuracy: 0.0,
             headingAccuracy: 0.0);
-=======
-          longitude: longitude,
-          latitude: latitude,
-          accuracy: 0.0,
-          altitude: 0.0,
-          heading: 0.0,
-          speed: 0.0,
-          speedAccuracy: 0.0,
-          timestamp: DateTime.now(),
-          altitudeAccuracy: 0.0,
-          headingAccuracy: 0.0,
-        );
->>>>>>> 665e937233060700139b8b61cbb2788e0a1ae29f
         markers.add(
           Marker(
             markerId: MarkerId("Pemberhentian ${i + 1}"),
