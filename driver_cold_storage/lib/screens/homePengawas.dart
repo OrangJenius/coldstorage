@@ -196,6 +196,7 @@ class _homePengawasState extends State<HomePengawas> {
             }
           });
         });
+        print('hahhaha');
         print(groupDistribute);
       } else {
         print('API call failed with status code: ${response.statusCode}');
@@ -212,348 +213,377 @@ class _homePengawasState extends State<HomePengawas> {
     return Scaffold(
       body: SafeArea(
           child: Stack(children: [
-        SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                        left: 16.0,
-                        top: 16,
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      left: 16.0,
+                      top: 16,
+                    ),
+                    child: Text(
+                      "Home",
+                      style: TextStyle(
+                          color: Color(0xFF6AD6F9),
+                          fontSize: 36,
+                          fontWeight: FontWeight.w700,
+                          fontFamily: "Sora"),
+                    ),
+                  ),
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 16, right: 20),
+                      child: Transform.scale(
+                        scale: 1.2,
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => HistoryPengawas(
+                                  userID: widget.userID,
+                                ),
+                              ),
+                            );
+                          },
+                          child: CircleAvatar(
+                            child: Icon(
+                              Icons.alarm,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
                       ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8, right: 20),
                       child: Text(
-                        "Home",
+                        "History",
                         style: TextStyle(
                             color: Color(0xFF6AD6F9),
-                            fontSize: 36,
+                            fontSize: 15,
                             fontWeight: FontWeight.w700,
                             fontFamily: "Sora"),
                       ),
                     ),
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 16, right: 20),
-                        child: Transform.scale(
-                          scale: 1.2,
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => HistoryPengawas(
-                                    userID: widget.userID,
-                                  ),
-                                ),
-                              );
-                            },
-                            child: CircleAvatar(
-                              child: Icon(
-                                Icons.alarm,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 8, right: 20),
-                        child: Text(
-                          "History",
-                          style: TextStyle(
-                              color: Color(0xFF6AD6F9),
-                              fontSize: 15,
-                              fontWeight: FontWeight.w700,
-                              fontFamily: "Sora"),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 16, right: 16),
-                        child: Transform.scale(
-                          scale: 1.2,
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => profilePengawasScreen(
-                                    id: widget.userID,
-                                  ),
-                                ),
-                              );
-                            },
-                            child: CircleAvatar(
-                              child: Icon(Icons.image),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 8, right: 16),
-                        child: Text(
-                          "Profile",
-                          style: TextStyle(
-                              color: Color(0xFF6AD6F9),
-                              fontSize: 15,
-                              fontWeight: FontWeight.w700,
-                              fontFamily: "Sora"),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0, bottom: 16),
-                child: Divider(
-                  height: 1,
-                  color: Colors.grey,
+                  ],
                 ),
-              ),
-              ExpansionPanelList.radio(
-                initialOpenPanelValue: 2,
-                children: (selectedIndex == 0 ? _data : _data2)
-                    .map<ExpansionPanelRadio>((Item item) {
-                  return ExpansionPanelRadio(
-                      value: item.id,
-                      headerBuilder: (BuildContext context, bool isExpanded) {
-                        return Stack(children: [
-                          Container(
-                            width: 380,
-                            height: 110,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(16),
-                              border: Border.all(width: 1, color: Colors.grey),
-                            ),
-                            child: ListTile(
-                              subtitle: Text(
-                                item.tanggal[0].toString(),
-                                style: TextStyle(fontSize: 16),
-                              ),
-                              title: Row(
-                                children: [
-                                  Text(
-                                    "ID Order: ",
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.w700,
-                                      fontFamily: "Sora",
-                                    ),
-                                  ),
-                                  Text(
-                                    item.headerValue,
-                                    style: TextStyle(
-                                      color: Color(0xFF6AD6F9),
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.w700,
-                                      fontFamily: "Sora",
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Positioned(
-                            right: 5,
-                            top: 25,
-                            child: Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                Container(
-                                  width: 60,
-                                  height: 60,
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Color(0xFF6AD6F9)),
-                                  child: Center(
-                                    child: Text(
-                                      "Distribute",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 10,
-                                          fontFamily: "Sora",
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Positioned(
-                            right: 150,
-                            top: 65,
-                            child: Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                Container(
-                                  width: 80,
-                                  height: 30,
-                                  child: item.canSubmit
-                                      ? ElevatedButton(
-                                          style: ButtonStyle(
-                                            backgroundColor:
-                                                MaterialStateProperty.all<
-                                                    Color>(Color(0xFF6AD6F9)),
-                                          ),
-                                          onPressed: () async {
-                                            await putStatus(item.headerValue);
-
-                                            Navigator.pushReplacement(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    HomePengawas(
-                                                        userID: widget.userID),
-                                              ),
-                                            );
-                                          },
-                                          child: Text('Submit'),
-                                        )
-                                      : null,
-                                ),
-                              ],
-                            ),
-                          )
-                        ]);
-                      },
-                      body: ListView.builder(
-                          itemCount: item.expandedValue.length,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            final idDistribute = item.expandedValue[index];
-
-                            final isCheck = item.isCheck[index];
-
-                            final tanggalAmbil = item.tanggalAmbil[index];
-
-                            return Padding(
-                              padding:
-                                  const EdgeInsets.only(bottom: 8, right: 54),
-                              child: Container(
-                                height: 80,
-                                decoration: BoxDecoration(
-                                  border: Border.all(width: 1),
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 8, top: 8),
-                                            child: Text(
-                                              idDistribute,
-                                              style: TextStyle(
-                                                color: Color(0xFF6AD6F9),
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.w700,
-                                                fontFamily: "Sora",
-                                              ),
-                                            ),
-                                          ),
-                                          Row(
-                                            children: [
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 8),
-                                                child: Text(
-                                                  tanggalAmbil,
-                                                  style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 15,
-                                                    fontFamily: "Sora",
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          Padding(
-                                            padding:
-                                                const EdgeInsets.only(left: 8),
-                                            child: isCheck == 'true'
-                                                ? Text(
-                                                    "checked",
-                                                    style: TextStyle(
-                                                      color: Colors.green,
-                                                      fontSize: 16,
-                                                    ),
-                                                  )
-                                                : Container(),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Padding(
-                                        padding:
-                                            const EdgeInsets.only(right: 8),
-                                        child: ElevatedButton(
-                                          style: ButtonStyle(
-                                            backgroundColor:
-                                                MaterialStateProperty.all<
-                                                    Color>(Color(0xFF6AD6F9)),
-                                          ),
-                                          onPressed: () {
-                                            setState(() {
-                                              if (selectedIndex == 0) {
-                                                Navigator.of(context).push(
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        FormInputPengawas(
-                                                      groupDistribute:
-                                                          groupDistribute,
-                                                      distributeId:
-                                                          idDistribute,
-                                                      userId: widget.userID,
-                                                      orderId: item.headerValue,
-                                                    ),
-                                                  ),
-                                                );
-                                              } else if (selectedIndex == 1) {
-                                                Navigator.of(context).push(
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        FormInputPengawasPickup(
-                                                      groupPicktup: groupPickup,
-                                                      distributeId:
-                                                          item.expandedValue,
-                                                      userId: widget.userID,
-                                                      orderId: item.headerValue,
-                                                    ),
-                                                  ),
-                                                );
-                                              }
-                                            });
-                                          },
-                                          child: Text('Edit'),
-                                        ))
-                                  ],
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 16, right: 16),
+                      child: Transform.scale(
+                        scale: 1.2,
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => profilePengawasScreen(
+                                  id: widget.userID,
                                 ),
                               ),
                             );
-                          }));
-                }).toList(),
+                          },
+                          child: CircleAvatar(
+                            child: Icon(Icons.image),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8, right: 16),
+                      child: Text(
+                        "Profile",
+                        style: TextStyle(
+                            color: Color(0xFF6AD6F9),
+                            fontSize: 15,
+                            fontWeight: FontWeight.w700,
+                            fontFamily: "Sora"),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0, bottom: 16),
+              child: Divider(
+                height: 1,
+                color: Colors.grey,
               ),
-            ],
-          ),
+            ),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ExpansionPanelList.radio(
+                      initialOpenPanelValue: 2,
+                      children: (selectedIndex == 0 ? _data : _data2)
+                          .map<ExpansionPanelRadio>((Item item) {
+                        return ExpansionPanelRadio(
+                            value: item.id,
+                            headerBuilder:
+                                (BuildContext context, bool isExpanded) {
+                              return Stack(children: [
+                                Container(
+                                  width: 380,
+                                  height: 110,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(16),
+                                    border: Border.all(
+                                        width: 1, color: Colors.grey),
+                                  ),
+                                  child: ListTile(
+                                    subtitle: Text(
+                                      item.tanggal[0].toString(),
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                    title: Row(
+                                      children: [
+                                        Text(
+                                          "ID Order: ",
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 22,
+                                            fontWeight: FontWeight.w700,
+                                            fontFamily: "Sora",
+                                          ),
+                                        ),
+                                        Text(
+                                          item.headerValue,
+                                          style: TextStyle(
+                                            color: Color(0xFF6AD6F9),
+                                            fontSize: 22,
+                                            fontWeight: FontWeight.w700,
+                                            fontFamily: "Sora",
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Positioned(
+                                  right: 5,
+                                  top: 25,
+                                  child: Stack(
+                                    alignment: Alignment.center,
+                                    children: [
+                                      Container(
+                                        width: 60,
+                                        height: 60,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Color(0xFF6AD6F9)),
+                                        child: Center(
+                                          child: Text(
+                                            "Distribute",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 10,
+                                                fontFamily: "Sora",
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Positioned(
+                                  right: 150,
+                                  top: 65,
+                                  child: Stack(
+                                    alignment: Alignment.center,
+                                    children: [
+                                      Container(
+                                        width: 80,
+                                        height: 30,
+                                        child: item.canSubmit
+                                            ? ElevatedButton(
+                                                style: ButtonStyle(
+                                                  backgroundColor:
+                                                      MaterialStateProperty.all<
+                                                              Color>(
+                                                          Color(0xFF6AD6F9)),
+                                                ),
+                                                onPressed: () async {
+                                                  await putStatus(
+                                                      item.headerValue);
+
+                                                  Navigator.pushReplacement(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          HomePengawas(
+                                                              userID: widget
+                                                                  .userID),
+                                                    ),
+                                                  );
+                                                },
+                                                child: Text('Submit'),
+                                              )
+                                            : null,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ]);
+                            },
+                            body: ListView.builder(
+                                itemCount: item.expandedValue.length,
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) {
+                                  final idDistribute =
+                                      item.expandedValue[index];
+
+                                  final isCheck = item.isCheck[index];
+
+                                  final tanggalAmbil = item.tanggalAmbil[index];
+
+                                  return Padding(
+                                    padding: const EdgeInsets.only(
+                                        bottom: 8, right: 54),
+                                    child: Container(
+                                      height: 80,
+                                      decoration: BoxDecoration(
+                                        border: Border.all(width: 1),
+                                        borderRadius: BorderRadius.circular(16),
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 8, top: 8),
+                                                  child: Text(
+                                                    idDistribute,
+                                                    style: TextStyle(
+                                                      color: Color(0xFF6AD6F9),
+                                                      fontSize: 20,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      fontFamily: "Sora",
+                                                    ),
+                                                  ),
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              left: 8),
+                                                      child: Text(
+                                                        tanggalAmbil,
+                                                        style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 15,
+                                                          fontFamily: "Sora",
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 8),
+                                                  child: isCheck == 'true'
+                                                      ? Text(
+                                                          "checked",
+                                                          style: TextStyle(
+                                                            color: Colors.green,
+                                                            fontSize: 16,
+                                                          ),
+                                                        )
+                                                      : Container(),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Padding(
+                                              padding: const EdgeInsets.only(
+                                                  right: 8),
+                                              child: ElevatedButton(
+                                                style: ButtonStyle(
+                                                  backgroundColor:
+                                                      MaterialStateProperty.all<
+                                                              Color>(
+                                                          Color(0xFF6AD6F9)),
+                                                ),
+                                                onPressed: () {
+                                                  setState(() {
+                                                    if (selectedIndex == 0) {
+                                                      Navigator.of(context)
+                                                          .push(
+                                                        MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              FormInputPengawas(
+                                                            groupDistribute:
+                                                                groupDistribute,
+                                                            distributeId:
+                                                                idDistribute,
+                                                            userId:
+                                                                widget.userID,
+                                                            orderId: item
+                                                                .headerValue,
+                                                          ),
+                                                        ),
+                                                      );
+                                                    } else if (selectedIndex ==
+                                                        1) {
+                                                      Navigator.of(context)
+                                                          .push(
+                                                        MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              FormInputPengawasPickup(
+                                                            groupPicktup:
+                                                                groupPickup,
+                                                            distributeId: item
+                                                                .expandedValue,
+                                                            userId:
+                                                                widget.userID,
+                                                            orderId: item
+                                                                .headerValue,
+                                                          ),
+                                                        ),
+                                                      );
+                                                    }
+                                                  });
+                                                },
+                                                child: Text('Edit'),
+                                              ))
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                }));
+                      }).toList(),
+                    ),
+                    SizedBox(
+                      height: 100,
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
         Column(
           children: [

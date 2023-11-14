@@ -257,6 +257,8 @@ class _pengirimanScreenState extends State<pengirimanScreen> {
       speed: 0.0,
       speedAccuracy: 0.0,
       timestamp: DateTime.now(),
+      altitudeAccuracy: 0.0,
+      headingAccuracy: 0.0,
     );
     posisiAwal =
         LatLng(double.parse(longLatAwal[0]), double.parse(longLatAwal[1]));
@@ -288,15 +290,16 @@ class _pengirimanScreenState extends State<pengirimanScreen> {
         double latitude = double.parse(cleanedCoordinate);
         double longitude = double.parse(cleanedCoordinate2);
         _dest = Position(
-          longitude: latitude,
-          latitude: longitude,
-          accuracy: 0.0,
-          altitude: 0.0,
-          heading: 0.0,
-          speed: 0.0,
-          speedAccuracy: 0.0,
-          timestamp: DateTime.now(),
-        );
+            longitude: latitude,
+            latitude: longitude,
+            accuracy: 0.0,
+            altitude: 0.0,
+            heading: 0.0,
+            speed: 0.0,
+            speedAccuracy: 0.0,
+            timestamp: DateTime.now(),
+            altitudeAccuracy: 0.0,
+            headingAccuracy: 0.0);
         markers.add(
           Marker(
             markerId: MarkerId("Pemberhentian ${i + 1}"),
