@@ -71,11 +71,6 @@ Future<void> getLocation() async {
   Position position = await Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.bestForNavigation);
 
-  // Position current;
-  // Geolocator.getPositionStream().listen((Position newPosition) {
-  //   current = newPosition;
-  // });
-
   final apiUrl =
       "http://116.68.252.201:1945/UpdateStatus_Perjalanan/${pengantaranItem.Id}";
   final response = await http.put(
@@ -359,6 +354,8 @@ class _pengirimanScreenState extends State<pengirimanScreen> {
       speed: 0.0,
       speedAccuracy: 0.0,
       timestamp: DateTime.now(),
+      altitudeAccuracy: 0.0,
+      headingAccuracy: 0.0,
     );
     posisiAwal =
         LatLng(double.parse(longLatAwal[0]), double.parse(longLatAwal[1]));
@@ -398,6 +395,8 @@ class _pengirimanScreenState extends State<pengirimanScreen> {
           speed: 0.0,
           speedAccuracy: 0.0,
           timestamp: DateTime.now(),
+          altitudeAccuracy: 0.0,
+          headingAccuracy: 0.0,
         );
         markers.add(
           Marker(
