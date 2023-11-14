@@ -72,7 +72,7 @@ Future<void> getLocation() async {
       desiredAccuracy: LocationAccuracy.bestForNavigation);
 
   final apiUrl =
-      "http://116.68.252.201:1945/UpdateStatus_Perjalanan/${pengantaranItem.Id}";
+      "http://116.68.252.201:1945/UpdatePosisiKendaraan/${pengantaranItem.Order_Id}";
   final response = await http.put(
     Uri.parse(apiUrl),
     body: {
@@ -298,6 +298,7 @@ class _pengirimanScreenState extends State<pengirimanScreen> {
   void initState() {
     super.initState();
     initializeService();
+    FlutterBackgroundService().invoke("setAsForeground");
     print("pengantaran is check: ${widget.pengantaran.is_check}");
     print(
         "pengantaran is status_perjalanan: ${widget.pengantaran.status_perjalanan}");
@@ -336,7 +337,7 @@ class _pengirimanScreenState extends State<pengirimanScreen> {
     }
     longLatAwal = widget.pengantaran.Titik_Awal.split(',');
 
-    _locationTimer = Timer.periodic(Duration(seconds: 5), (timer) {
+    _locationTimer = Timer.periodic(Duration(seconds: 1), (timer) {
       if (_currentLocation != null) {
         getCurrentLocation(
           _currentLocation!.latitude,
