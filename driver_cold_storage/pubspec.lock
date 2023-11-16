@@ -253,17 +253,7 @@ packages:
       sha256: "5f0480ee8378984f718d640abbe09b4d6d024d58a72b2d8b86bdedb3cf095ff8"
       url: "https://pub.dev"
     source: hosted
-<<<<<<< HEAD
-    version: "2.2.0"
-  flutter_cache_manager:
-    dependency: transitive
-    description:
-      name: flutter_cache_manager
-      sha256: "8207f27539deb83732fdda03e259349046a39a4c767269285f449ade355d54ba"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.3.1"
-=======
+
     version: "5.0.0"
   flutter_cache_manager:
     dependency: transitive
