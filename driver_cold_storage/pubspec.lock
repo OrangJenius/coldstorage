@@ -822,6 +822,7 @@ packages:
       url: "https://pub.dev"
     source: hosted
 <<<<<<< HEAD
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 <<<<<<< HEAD
 =======
@@ -844,12 +845,17 @@ packages:
     version: "7.0.0"
   sqflite:
 >>>>>>> Stashed changes
+=======
+    version: "1.9.1"
+  sqflite:
+>>>>>>> parent of 665e937 (background process done)
     dependency: transitive
     description:
-      name: sprintf
-      sha256: "1fc9ffe69d4df602376b52949af107d8f5703b77cda567c4d7d86a0693120f23"
+      name: sqflite
+      sha256: "591f1602816e9c31377d5f008c2d9ef7b8aca8941c3f89cc5fd9d84da0c38a9a"
       url: "https://pub.dev"
     source: hosted
+<<<<<<< HEAD
     version: "7.0.0"
   sqflite:
 =======
@@ -863,6 +869,8 @@ packages:
     source: hosted
     version: "7.0.0"
 =======
+=======
+>>>>>>> parent of 665e937 (background process done)
     version: "2.3.0"
   sqflite_common:
     dependency: transitive
@@ -872,6 +880,9 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.5.0"
+<<<<<<< HEAD
+>>>>>>> parent of 665e937 (background process done)
+=======
 >>>>>>> parent of 665e937 (background process done)
   stack_trace:
     dependency: transitive
