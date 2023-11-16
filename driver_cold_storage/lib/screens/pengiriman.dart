@@ -17,9 +17,6 @@ import 'package:driver_cold_storage/models/pengantaranModel.dart';
 import 'package:http/http.dart' as http;
 import 'dart:math' as math;
 import 'package:shared_preferences/shared_preferences.dart';
-// import 'package:flutter_background_service/flutter_background_service.dart';
-// import 'package:flutter_background_service_android/flutter_background_service_android.dart';
-// import 'home.dart';
 
 @pragma('vm:entry-point')
 Future<bool> onIosBackground(ServiceInstance service) async {
