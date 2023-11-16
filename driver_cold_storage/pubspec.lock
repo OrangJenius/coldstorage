@@ -831,7 +831,10 @@ packages:
       sha256: "53e943d4206a5e30df338fd4c6e7a077e02254531b138a15aec3bd143c1a8b3c"
       url: "https://pub.dev"
     source: hosted
+<<<<<<< Updated upstream
 <<<<<<< HEAD
+=======
+>>>>>>> Stashed changes
     version: "1.10.0"
   sprintf:
 <<<<<<< Updated upstream
@@ -984,5 +987,10 @@ packages:
     source: hosted
     version: "6.3.0"
 sdks:
+<<<<<<< Updated upstream
   dart: ">=3.1.0 <4.0.0"
   flutter: ">=3.13.0"
+=======
+  dart: ">=3.1.0-185.0.dev <4.0.0"
+  flutter: ">=3.10.0"
+>>>>>>> Stashed changes
