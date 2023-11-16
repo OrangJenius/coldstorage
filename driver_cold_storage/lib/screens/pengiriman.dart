@@ -265,7 +265,6 @@ class _pengirimanScreenState extends State<pengirimanScreen> {
   void initState() {
     super.initState();
     initializeService();
-    FlutterBackgroundService().invoke("setAsForeground");
     print("pengantaran is check: ${widget.pengantaran.is_check}");
     print(
         "pengantaran is status_perjalanan: ${widget.pengantaran.status_perjalanan}");
