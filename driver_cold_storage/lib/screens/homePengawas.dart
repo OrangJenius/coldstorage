@@ -5,7 +5,7 @@ import 'package:driver_cold_storage/screens/formInputPengawas.dart';
 import 'package:driver_cold_storage/screens/formInputPengawasPickup.dart';
 import 'package:driver_cold_storage/screens/historyPengawas.dart';
 import 'package:driver_cold_storage/screens/item.dart';
-import 'package:driver_cold_storage/screens/profile.dart';
+
 import 'package:driver_cold_storage/screens/profilePengawas.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -50,6 +50,7 @@ class _homePengawasState extends State<HomePengawas> {
       List<String> isCheck = [];
       bool canSubmit = true;
       List<String> tanggalAmbil = [];
+      String status = '';
 
       for (String idDistribute in idDistributeList) {
         final items = dataByIdOrder[idDistribute];
@@ -57,6 +58,7 @@ class _homePengawasState extends State<HomePengawas> {
           tanggalMasuk.add(item.Tanggal_Masuk);
           tanggalAmbil.add(item.Tanggal_Ambil);
           isCheck.add(item.isCheck);
+          status = item.Status_Distribute;
 
           if (item.isCheck != 'true') {
             canSubmit = false;
@@ -74,7 +76,8 @@ class _homePengawasState extends State<HomePengawas> {
           tanggal: tanggalMasuk,
           isCheck: isCheck,
           canSubmit: canSubmit,
-          tanggalAmbil: tanggalAmbil);
+          tanggalAmbil: tanggalAmbil,
+          status: status);
     });
   }
 
@@ -94,6 +97,7 @@ class _homePengawasState extends State<HomePengawas> {
       List<String> isCheck = [];
       bool canSubmit = true;
       List<String> tanggalAmbil = [];
+      String status = '';
 
       for (String idDistribute in idDistributeList) {
         final items = dataByIdOrder[idDistribute];
@@ -101,7 +105,7 @@ class _homePengawasState extends State<HomePengawas> {
           tanggalMasuk.add(item.Tanggal_Masuk);
           tanggalAmbil.add(item.Tanggal_Ambil);
           isCheck.add(item.isCheck);
-
+          status = item.Status_Distribute;
           if (item.isCheck != 'true') {
             canSubmit = false;
           }
@@ -118,7 +122,8 @@ class _homePengawasState extends State<HomePengawas> {
           tanggal: tanggalMasuk,
           isCheck: isCheck,
           canSubmit: canSubmit,
-          tanggalAmbil: tanggalAmbil);
+          tanggalAmbil: tanggalAmbil,
+          status: status);
     });
   }
 
@@ -196,7 +201,6 @@ class _homePengawasState extends State<HomePengawas> {
             }
           });
         });
-        print('hahhaha');
         print(groupDistribute);
       } else {
         print('API call failed with status code: ${response.statusCode}');
@@ -210,6 +214,7 @@ class _homePengawasState extends State<HomePengawas> {
   Widget build(BuildContext context) {
     final List<Item> _data = generateItems(groupDistribute.length);
     final List<Item> _data2 = generateItems2(groupPickup.length);
+
     return Scaffold(
       body: SafeArea(
           child: Stack(children: [
@@ -355,7 +360,7 @@ class _homePengawasState extends State<HomePengawas> {
                                           "ID Order: ",
                                           style: TextStyle(
                                             color: Colors.black,
-                                            fontSize: 22,
+                                            fontSize: 21,
                                             fontWeight: FontWeight.w700,
                                             fontFamily: "Sora",
                                           ),
@@ -364,7 +369,7 @@ class _homePengawasState extends State<HomePengawas> {
                                           item.headerValue,
                                           style: TextStyle(
                                             color: Color(0xFF6AD6F9),
-                                            fontSize: 22,
+                                            fontSize: 21,
                                             fontWeight: FontWeight.w700,
                                             fontFamily: "Sora",
                                           ),
@@ -373,21 +378,21 @@ class _homePengawasState extends State<HomePengawas> {
                                     ),
                                   ),
                                 ),
-                                Positioned(
-                                  right: 5,
-                                  top: 25,
-                                  child: Stack(
-                                    alignment: Alignment.center,
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.only(top: 36, right: 8),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
                                       Container(
-                                        width: 60,
-                                        height: 60,
+                                        width: 55,
+                                        height: 55,
                                         decoration: BoxDecoration(
                                             shape: BoxShape.circle,
                                             color: Color(0xFF6AD6F9)),
                                         child: Center(
                                           child: Text(
-                                            "Distribute",
+                                            item.status.toString(),
                                             style: TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 10,
@@ -436,7 +441,7 @@ class _homePengawasState extends State<HomePengawas> {
                                       ),
                                     ],
                                   ),
-                                ),
+                                )
                               ]);
                             },
                             body: ListView.builder(

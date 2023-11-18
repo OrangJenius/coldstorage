@@ -188,7 +188,7 @@ class _homeScreenState extends State<homeScreen> {
                       Expanded(
                         child: Padding(
                           padding: EdgeInsets.only(
-                            left: 16.0,
+                            left: 8.0,
                             top: 16,
                           ),
                           child: Text(
@@ -234,7 +234,7 @@ class _homeScreenState extends State<homeScreen> {
                   ),
                   Padding(
                     padding: EdgeInsets.only(
-                      left: 24,
+                      left: 12,
                       top: 12,
                     ),
                     child: Text(
@@ -307,7 +307,7 @@ class _homeScreenState extends State<homeScreen> {
                                     });
                                   },
                                   child: Container(
-                                    margin: EdgeInsets.all(8),
+                                    margin: EdgeInsets.all(6),
                                     decoration: BoxDecoration(
                                       border: Border.all(
                                           width: 1.5, color: Color(0xFF6AD6F9)),
@@ -354,9 +354,10 @@ class _homeScreenState extends State<homeScreen> {
                     ],
                   ),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(left: 16, top: 16),
+                        padding: const EdgeInsets.only(top: 8.0, left: 8),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(12),
                           child: Stack(
@@ -365,8 +366,8 @@ class _homeScreenState extends State<homeScreen> {
                                 decoration: BoxDecoration(
                                   color: Color(0xFF6AD6F9),
                                 ),
-                                width: 175,
-                                height: 175,
+                                width: 160,
+                                height: 160,
                               ),
 
                               Positioned(
@@ -443,7 +444,7 @@ class _homeScreenState extends State<homeScreen> {
                               ),
                               Positioned(
                                 left: 4, // Posisi dari kiri
-                                top: 140, // Posisi dari atas
+                                top: 130, // Posisi dari atas
                                 child: Stack(
                                   alignment: Alignment.center,
                                   children: [
@@ -498,8 +499,8 @@ class _homeScreenState extends State<homeScreen> {
                                 ),
                               ),
                               Container(
-                                width: 175,
-                                height: 175,
+                                width: 160,
+                                height: 160,
                                 decoration: BoxDecoration(
                                   border: Border.all(
                                     color: Color(0xFF6AD6F9),
@@ -516,7 +517,7 @@ class _homeScreenState extends State<homeScreen> {
                       ),
                       Expanded(child: Container()),
                       Padding(
-                        padding: const EdgeInsets.only(right: 16, top: 16),
+                        padding: const EdgeInsets.only(top: 8, right: 8),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(12),
                           child: Stack(
@@ -525,8 +526,8 @@ class _homeScreenState extends State<homeScreen> {
                                 decoration: BoxDecoration(
                                   color: Color(0xFF6AD6F9),
                                 ),
-                                width: 175,
-                                height: 175,
+                                width: 160,
+                                height: 160,
                               ),
                               Positioned(
                                 left: 5, // Posisi dari kiri
@@ -601,7 +602,7 @@ class _homeScreenState extends State<homeScreen> {
                                 ),
                               ),
                               Positioned(
-                                left: 50, // Posisi dari kiri
+                                left: 40, // Posisi dari kiri
                                 top: 10, // Posisi dari atas
                                 child: Stack(
                                   alignment: Alignment.center,
@@ -657,8 +658,8 @@ class _homeScreenState extends State<homeScreen> {
                                 ),
                               ),
                               Container(
-                                width: 175,
-                                height: 175,
+                                width: 160,
+                                height: 160,
                                 decoration: BoxDecoration(
                                   border: Border.all(
                                     color: Color(0xFF6AD6F9),
@@ -676,8 +677,7 @@ class _homeScreenState extends State<homeScreen> {
                     ],
                   ),
                   Padding(
-                    padding:
-                        const EdgeInsets.only(top: 20, left: 16, right: 16),
+                    padding: const EdgeInsets.only(top: 20, left: 8, right: 8),
                     child: InkWell(
                       onTap: () {
                         showDialog(

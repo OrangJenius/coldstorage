@@ -13,7 +13,7 @@ class SlideActionBtn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 32),
+      padding: const EdgeInsets.only(top: 16),
       child: SlideAction(
         trackBuilder: (context, state) {
           return Container(

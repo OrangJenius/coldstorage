@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_background_service_android/flutter_background_service_android.dart';
+
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:dotted_border/dotted_border.dart';
@@ -68,7 +69,7 @@ Future<void> getLocation() async {
       desiredAccuracy: LocationAccuracy.bestForNavigation);
 
   final apiUrl =
-      "http://116.68.252.201:1945/UpdateStatus_Perjalanan/${pengantaranItem.Id}";
+      "http://116.68.252.201:1945/UpdatePosisiKendaraan/${pengantaranItem.Order_Id}";
   final response = await http.put(
     Uri.parse(apiUrl),
     body: {
@@ -156,7 +157,7 @@ class _pengirimanScreenState extends State<pengirimanScreen> {
 
   Future selesaiDistribute() async {
     final apiurl =
-        "http://116.68.252.201:1945/UpdatePosisiKendaraan/${widget.pengantaran.Order_Id}";
+        "http://116.68.252.201:1945/UpdateStatus_Perjalanan/${widget.pengantaran.Id}";
     try {
       if (cekFoto == true) {
         final response = await http
@@ -261,10 +262,40 @@ class _pengirimanScreenState extends State<pengirimanScreen> {
     return distance;
   }
 
+  Future<void> initializeService() async {
+    final service = FlutterBackgroundService();
+
+    await service.configure(
+      androidConfiguration: AndroidConfiguration(
+        // this will be executed when app is in foreground or background in separated isolate
+        onStart: onStart,
+        autoStartOnBoot: true,
+        // auto start service
+        autoStart: true,
+        isForegroundMode: true,
+
+        foregroundServiceNotificationId: 888,
+      ),
+      iosConfiguration: IosConfiguration(
+        // auto start service
+        autoStart: true,
+
+        // this will be executed when app is in foreground in separated isolate
+        onForeground: onStart,
+
+        // you have to enable background fetch capability on xcode project
+        onBackground: onIosBackground,
+      ),
+    );
+
+    service.startService();
+  }
+
   @override
   void initState() {
     super.initState();
     initializeService();
+    FlutterBackgroundService().invoke("setAsForeground");
     print("pengantaran is check: ${widget.pengantaran.is_check}");
     print(
         "pengantaran is status_perjalanan: ${widget.pengantaran.status_perjalanan}");
@@ -303,7 +334,7 @@ class _pengirimanScreenState extends State<pengirimanScreen> {
     }
     longLatAwal = widget.pengantaran.Titik_Awal.split(',');
 
-    _locationTimer = Timer.periodic(Duration(seconds: 5), (timer) {
+    _locationTimer = Timer.periodic(Duration(seconds: 1), (timer) {
       if (_currentLocation != null) {
         getCurrentLocation(
           _currentLocation!.latitude,
@@ -354,16 +385,17 @@ class _pengirimanScreenState extends State<pengirimanScreen> {
         double latitude = double.parse(cleanedCoordinate);
         double longitude = double.parse(cleanedCoordinate2);
         _dest = Position(
-            longitude: latitude,
-            latitude: longitude,
-            accuracy: 0.0,
-            altitude: 0.0,
-            heading: 0.0,
-            speed: 0.0,
-            speedAccuracy: 0.0,
-            timestamp: DateTime.now(),
-            altitudeAccuracy: 0.0,
-            headingAccuracy: 0.0);
+          longitude: longitude,
+          latitude: latitude,
+          accuracy: 0.0,
+          altitude: 0.0,
+          heading: 0.0,
+          speed: 0.0,
+          speedAccuracy: 0.0,
+          timestamp: DateTime.now(),
+          altitudeAccuracy: 0.0,
+          headingAccuracy: 0.0,
+        );
         markers.add(
           Marker(
             markerId: MarkerId("Pemberhentian ${i + 1}"),
@@ -853,16 +885,25 @@ class _pengirimanScreenState extends State<pengirimanScreen> {
                               ),
                               onPressed: () {
                                 initializeSharedPreferences();
+                                print("pengiriman selesai");
                                 double distance = calculateDistance(
                                     _currentLocation!.latitude,
-                                    _currentLocation!.latitude,
+                                    _currentLocation!.longitude,
                                     _dest.latitude,
                                     _dest.longitude);
+                                print("curr 1 ${_currentLocation!.latitude}");
+                                print("curr 2 ${_currentLocation!.longitude}");
+                                print("curr 3 ${_dest.latitude}");
+                                print("curr 4 ${_dest.longitude}");
+                                print("distance ${distance}");
                                 final double desiredRange = 100;
                                 if (distance <= desiredRange) {
                                   prefs.remove('isOnTheWay');
                                   prefs.remove('pengantaran_model');
                                   selesaiDistribute();
+                                  _locationTimer!.cancel();
+                                  FlutterBackgroundService()
+                                      .invoke("stopService");
                                 }
                               },
                               child: Text(

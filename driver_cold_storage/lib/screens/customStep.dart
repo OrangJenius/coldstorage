@@ -133,7 +133,7 @@ class _CustomStepState extends State<CustomStep> {
       List<HistoryModel> historyList = itemsForDate;
       List<HistoryModel2> historyList2 = [];
       print("Data panjang ${itemsForDate.length}");
-      for (var history in itemsForDate!) {
+      for (var history in itemsForDate) {
         print("Data history ${history}");
         // Find the corresponding data from historyModel2
         final historyModel2ItemsForDate = widget.historyModel2

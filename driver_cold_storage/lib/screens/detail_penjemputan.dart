@@ -729,7 +729,7 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                 ),
               ),
               Container(
-                padding: EdgeInsets.only(left: 16, right: 16, bottom: 16),
+                padding: EdgeInsets.only(left: 16, right: 16),
                 child: SlideActionBtn(
                   pengantaran: items,
                 ),

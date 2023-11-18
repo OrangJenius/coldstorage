@@ -1,13 +1,10 @@
-import 'dart:io';
-
 import 'package:camera/camera.dart';
 import 'package:driver_cold_storage/screens/cameraPage2.dart';
-import 'package:driver_cold_storage/screens/camerapage.dart';
-import 'package:driver_cold_storage/screens/homePengawas.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:driver_cold_storage/models/pengawasModel.dart';
-import 'package:image_picker/image_picker.dart';
+
 import 'package:http/http.dart' as http;
 
 class DetailHistoryPickupPengawas extends StatefulWidget {
