@@ -56,11 +56,30 @@ class _DetailHistoryState extends State<DetailHistory> {
   Widget build(BuildContext context) {
     displayItems.clear();
     List<List<String>> indexLokasi = [];
+    List<String> berat = [];
+    List<String> qty = [];
+    List<String> nama_items = [];
+    int jumlahTotal = 0;
     for (int i = 0; i < widget.historyModel.length; i++) {
       List<String> temp = (widget.historyModel[i].destination.contains(';')
           ? widget.historyModel[i].destination.split(';')
           : [widget.historyModel[i].destination]);
       indexLokasi.add(temp);
+      berat = (widget.historyModel[i].berat.contains(',')
+          ? widget.historyModel[i].berat.split(',')
+          : [widget.historyModel[i].berat]);
+      qty = (widget.historyModel[i].jumlah.contains(',')
+          ? widget.historyModel[i].jumlah.split(',')
+          : [widget.historyModel[i].jumlah]);
+      nama_items = (widget.historyModel2[i].namaItem.contains(',')
+          ? widget.historyModel2[i].namaItem.split(',')
+          : [widget.historyModel2[i].namaItem]);
+    }
+    for (int i = 0; i < qty.length; i++) {
+      int temp = int.parse(qty[i]);
+      print("temp jumlah ${temp}");
+      jumlahTotal = jumlahTotal + temp;
+      print("jumlah total ${jumlahTotal}");
     }
     List<List<String>> locations = [];
     for (int i = 0; i < indexLokasi.length; i++) {
@@ -197,7 +216,7 @@ class _DetailHistoryState extends State<DetailHistory> {
                   Padding(
                     padding: EdgeInsets.only(right: 16),
                     child: Text(
-                      widget.historyModel2[i].serviceType,
+                      widget.historyModel[i].status,
                       style: TextStyle(
                         fontFamily: 'Sora',
                         fontSize: 18,
@@ -297,8 +316,7 @@ class _DetailHistoryState extends State<DetailHistory> {
                                         ),
                                         Expanded(child: Row()),
                                         Text(
-                                          widget.historyModel2[i].jumlah
-                                              .toString(),
+                                          jumlahTotal.toString(),
                                           style: TextStyle(
                                             fontFamily: 'Sora',
                                             fontSize: 14,
@@ -325,20 +343,25 @@ class _DetailHistoryState extends State<DetailHistory> {
                                           ),
                                         ),
                                         Expanded(child: Row()),
-                                        Text(
-                                          "${widget.historyModel2[i].berat.toString()} Kg",
-                                          style: TextStyle(
-                                            fontFamily: 'Sora',
-                                            fontSize: 14,
-                                            fontStyle: FontStyle.normal,
-                                            fontWeight: FontWeight.w400,
-                                            color: Colors.black,
-                                          ),
+                                        Column(
+                                          children: [
+                                            for (int j = 0; j < qty.length; j++)
+                                              Text(
+                                                "${berat[j].toString()} Kg",
+                                                style: TextStyle(
+                                                  fontFamily: 'Sora',
+                                                  fontSize: 14,
+                                                  fontStyle: FontStyle.normal,
+                                                  fontWeight: FontWeight.w400,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                          ],
                                         ),
                                       ],
                                     ),
                                     SizedBox(
-                                      height: 32,
+                                      height: 16,
                                     ),
                                     Text(
                                       widget.historyModel[0].status,
@@ -352,28 +375,37 @@ class _DetailHistoryState extends State<DetailHistory> {
                                     ),
                                     Row(
                                       children: [
-                                        Text(
-                                          widget.historyModel2[i].namaItem,
-                                          style: TextStyle(
-                                            fontFamily: 'Sora',
-                                            fontSize: 14,
-                                            fontStyle: FontStyle.normal,
-                                            fontWeight: FontWeight.w400,
-                                            color: Colors.black,
-                                          ),
+                                        Column(
+                                          children: [
+                                            for (int j = 0; j < qty.length; j++)
+                                              Text(
+                                                nama_items[j],
+                                                style: TextStyle(
+                                                  fontFamily: 'Sora',
+                                                  fontSize: 14,
+                                                  fontStyle: FontStyle.normal,
+                                                  fontWeight: FontWeight.w400,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                          ],
                                         ),
                                         Expanded(child: SizedBox()),
-                                        Text(
-                                          widget.historyModel2[i].jumlah
-                                              .toString(),
-                                          style: TextStyle(
-                                            fontFamily: 'Sora',
-                                            fontSize: 14,
-                                            fontStyle: FontStyle.normal,
-                                            fontWeight: FontWeight.w400,
-                                            color: Colors.black,
-                                          ),
-                                        )
+                                        Column(
+                                          children: [
+                                            for (int j = 0; j < qty.length; j++)
+                                              Text(
+                                                qty[j].toString(),
+                                                style: TextStyle(
+                                                  fontFamily: 'Sora',
+                                                  fontSize: 14,
+                                                  fontStyle: FontStyle.normal,
+                                                  fontWeight: FontWeight.w400,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                          ],
+                                        ),
                                       ],
                                     ),
                                   ],

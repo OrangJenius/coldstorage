@@ -69,7 +69,7 @@ class HistoryModel {
       destination: json['Destination'] ?? '',
       orderId: json['Order_Id'] ?? '',
       namaItem: json['Nama_Item'] ?? '',
-      jumlah: json['Jumlah'] ?? '',
+      jumlah: json['Quantities'] ?? '',
       berat: json['Berat'] ?? '',
       tanggalMasuk: json['Tanggal_Masuk'] ?? '',
       gedung: json['gedung'] ?? '',

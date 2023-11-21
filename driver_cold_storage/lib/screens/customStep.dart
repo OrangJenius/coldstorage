@@ -52,7 +52,7 @@ class _CustomStepState extends State<CustomStep> {
       filteredHistory = filteredHistory.where((history) {
         return (widget.selectedStatus == 'Distribute' &&
                 history.status == 'Distribute') ||
-            (widget.selectedStatus == 'Pickup' && history.status == 'Pickup');
+            (widget.selectedStatus == 'Pickup' && history.status == 'Pick-Up');
       }).toList();
       print(filteredHistory);
     } else if (widget.idHistory != null) {
@@ -65,7 +65,7 @@ class _CustomStepState extends State<CustomStep> {
       print(filteredHistory.map((history) => history.Id).toList());
     }
     print('Filtered History Count: ${filteredHistory.length}');
-    print("filter history date: ${filteredHistory[0].tanggalPickup}");
+    // print("filter history date: ${filteredHistory[0].tanggalPickup}");
     // Group the filtered history by the 'tanggal' (date) field
     final groupedHistory = groupBy(filteredHistory, (HistoryModel history) {
       final tanggalPickup = (history.tanggalPickup.toString()).trim();
@@ -85,6 +85,13 @@ class _CustomStepState extends State<CustomStep> {
     for (var date in sortedDates) {
       print("Data date ${date}");
       final itemsForDate = groupedHistory[date];
+
+      itemsForDate!.sort((a, b) {
+        final aTime = DateFormat('HH:mm').parse(a.time);
+        final bTime = DateFormat('HH:mm').parse(b.time);
+        return aTime.compareTo(bTime);
+      });
+
       String orders = '';
       for (var lists in itemsForDate!) {
         if (orders.length > 0) {
@@ -99,29 +106,32 @@ class _CustomStepState extends State<CustomStep> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  Text(
-                    'ID: ',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w400,
-                      fontFamily: 'Sora',
-                      color: Colors.black,
-                      fontStyle: FontStyle.normal,
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    Text(
+                      'ID: ',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w400,
+                        fontFamily: 'Sora',
+                        color: Colors.black,
+                        fontStyle: FontStyle.normal,
+                      ),
                     ),
-                  ),
-                  Text(
-                    orders, // Display the id for the group
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontFamily: 'Sora',
-                      color: Color(0xFF6AD6F9),
-                      fontStyle: FontStyle.normal,
-                      fontWeight: FontWeight.w400,
+                    Text(
+                      orders, // Display the id for the group
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontFamily: 'Sora',
+                        color: Color(0xFF6AD6F9),
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.w400,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
               SizedBox(
                 height: 8,
