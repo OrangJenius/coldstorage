@@ -4,9 +4,8 @@ import 'package:driver_cold_storage/models/pengawasModel.dart';
 import 'package:driver_cold_storage/screens/detailHistoryDistribute.dart';
 import 'package:driver_cold_storage/screens/detailHistoryPickupPengawas.dart';
 
-import 'package:driver_cold_storage/screens/formInputPengawasPickup.dart';
 import 'package:driver_cold_storage/screens/item.dart';
-import 'package:driver_cold_storage/screens/profile.dart';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -51,6 +50,7 @@ class _HistoryPengawasState extends State<HistoryPengawas> {
       List<String> isCheck = [];
       bool canSubmit = true;
       List<String> tanggalAmbil = [];
+      String status = '';
 
       for (String idDistribute in idDistributeList) {
         final items = dataByIdOrder[idDistribute];
@@ -58,6 +58,7 @@ class _HistoryPengawasState extends State<HistoryPengawas> {
           tanggalMasuk.add(item.Tanggal_Masuk);
           tanggalAmbil.add(item.Tanggal_Ambil);
           isCheck.add(item.isCheck);
+          status = item.Status_Distribute;
 
           if (item.isCheck != 'true') {
             canSubmit = false;
@@ -75,7 +76,8 @@ class _HistoryPengawasState extends State<HistoryPengawas> {
           tanggal: tanggalMasuk,
           isCheck: isCheck,
           canSubmit: canSubmit,
-          tanggalAmbil: tanggalAmbil);
+          tanggalAmbil: tanggalAmbil,
+          status: status);
     });
   }
 
@@ -95,6 +97,7 @@ class _HistoryPengawasState extends State<HistoryPengawas> {
       List<String> isCheck = [];
       bool canSubmit = true;
       List<String> tanggalAmbil = [];
+      String status = '';
 
       for (String idDistribute in idDistributeList) {
         final items = dataByIdOrder[idDistribute];
@@ -102,7 +105,7 @@ class _HistoryPengawasState extends State<HistoryPengawas> {
           tanggalMasuk.add(item.Tanggal_Masuk);
           tanggalAmbil.add(item.Tanggal_Ambil);
           isCheck.add(item.isCheck);
-
+          status = item.Status_Distribute;
           if (item.isCheck != 'true') {
             canSubmit = false;
           }
@@ -119,7 +122,8 @@ class _HistoryPengawasState extends State<HistoryPengawas> {
           tanggal: tanggalMasuk,
           isCheck: isCheck,
           canSubmit: canSubmit,
-          tanggalAmbil: tanggalAmbil);
+          tanggalAmbil: tanggalAmbil,
+          status: status);
     });
   }
 
@@ -291,21 +295,20 @@ class _HistoryPengawasState extends State<HistoryPengawas> {
                               ),
                             ),
                           ),
-                          Positioned(
-                            right: 5,
-                            top: 25,
-                            child: Stack(
-                              alignment: Alignment.center,
+                          Padding(
+                            padding: const EdgeInsets.only(top: 36, right: 8),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 Container(
-                                  width: 60,
-                                  height: 60,
+                                  width: 55,
+                                  height: 55,
                                   decoration: BoxDecoration(
                                       shape: BoxShape.circle,
                                       color: Color(0xFF6AD6F9)),
                                   child: Center(
                                     child: Text(
-                                      "Distribute",
+                                      item.status.toString(),
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 10,

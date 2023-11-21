@@ -7,6 +7,7 @@ class Item {
     required this.isCheck,
     required this.canSubmit,
     required this.tanggalAmbil,
+    required this.status,
   });
 
   int id;
@@ -16,4 +17,5 @@ class Item {
   List<String> isCheck;
   bool canSubmit;
   List<String> tanggalAmbil;
+  String status;
 }
