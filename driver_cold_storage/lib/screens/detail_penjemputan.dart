@@ -6,8 +6,12 @@ import 'package:driver_cold_storage/models/pengantaranModel.dart';
 class detail_Penjemputan extends StatefulWidget {
   final Map<String, List<PengantaranModel>> sortedGroupedData;
   final distributeId;
+  final String userID;
   const detail_Penjemputan(
-      {super.key, required this.sortedGroupedData, required this.distributeId});
+      {super.key,
+      required this.sortedGroupedData,
+      required this.distributeId,
+      required this.userID});
   @override
   _detailPenjemputanState createState() => _detailPenjemputanState();
 }
@@ -732,6 +736,7 @@ class _detailPenjemputanState extends State<detail_Penjemputan> {
                 padding: EdgeInsets.only(left: 16, right: 16),
                 child: SlideActionBtn(
                   pengantaran: items,
+                  userID: widget.userID,
                 ),
               ),
             ],

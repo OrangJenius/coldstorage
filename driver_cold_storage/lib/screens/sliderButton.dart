@@ -6,9 +6,11 @@ import 'package:driver_cold_storage/models/pengantaranModel.dart';
 
 class SlideActionBtn extends StatelessWidget {
   final List<PengantaranModel> pengantaran;
+  final String userID;
   const SlideActionBtn({
     Key? key,
     required this.pengantaran,
+    required this.userID,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -88,6 +90,7 @@ class SlideActionBtn extends StatelessWidget {
               MaterialPageRoute(
                   builder: (context) => pengirimanScreen(
                         pengantaran: pengantaran[0],
+                        userID: userID,
                       )),
             ),
           );

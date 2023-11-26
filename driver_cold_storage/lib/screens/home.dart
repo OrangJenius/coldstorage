@@ -789,7 +789,7 @@ class _homeScreenState extends State<homeScreen> {
                                                         Padding(
                                                           padding:
                                                               const EdgeInsets
-                                                                  .only(
+                                                                      .only(
                                                                   left: 8,
                                                                   top: 8,
                                                                   right: 8),
@@ -1038,6 +1038,7 @@ class _homeScreenState extends State<homeScreen> {
                                     builder: (context) => detail_Penjemputan(
                                       sortedGroupedData: sortedGroupedData,
                                       distributeId: distributeId,
+                                      userID: widget.userID,
                                     ), // Ganti dengan widget halaman DetailDistribusi yang sesuai
                                   ),
                                 );
@@ -1179,7 +1180,7 @@ class _homeScreenState extends State<homeScreen> {
                                                         Padding(
                                                           padding:
                                                               const EdgeInsets
-                                                                  .only(
+                                                                      .only(
                                                                   left: 8,
                                                                   top: 8),
                                                           child: Text(

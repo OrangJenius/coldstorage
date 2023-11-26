@@ -18,6 +18,8 @@ import 'package:http/http.dart' as http;
 import 'dart:math' as math;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'home.dart';
+
 @pragma('vm:entry-point')
 Future<bool> onIosBackground(ServiceInstance service) async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -83,7 +85,9 @@ Future<void> getLocation() async {
 
 class pengirimanScreen extends StatefulWidget {
   final PengantaranModel pengantaran;
-  const pengirimanScreen({super.key, required this.pengantaran});
+  final String userID;
+  const pengirimanScreen(
+      {super.key, required this.pengantaran, required this.userID});
   @override
   _pengirimanScreenState createState() => _pengirimanScreenState();
 }
@@ -166,13 +170,12 @@ class _pengirimanScreenState extends State<pengirimanScreen> {
           print("Berhasil");
           postToHIstory();
           _locationTimer!.cancel();
-          Navigator.pop(context);
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (context) => homeScreen(userID: widget.pengantaran.),
-          //   ),
-          // );
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => homeScreen(userID: widget.userID),
+            ),
+          );
         }
       }
     } catch (e) {
@@ -190,7 +193,9 @@ class _pengirimanScreenState extends State<pengirimanScreen> {
       if (response.statusCode == 200) {
         print("berhasil");
       }
-    } catch (e) {}
+    } catch (e) {
+      print("no history $e");
+    }
   }
 
   Future getCurrentLocation(double latitude, double longitude) async {
@@ -448,6 +453,8 @@ class _pengirimanScreenState extends State<pengirimanScreen> {
     );
   }
 
+  late StreamSubscription _getPositionSubscription;
+
   void _startLocationUpdates() async {
     bool serviceEnabled;
     LocationPermission permission;
@@ -479,11 +486,18 @@ class _pengirimanScreenState extends State<pengirimanScreen> {
           'Location permissions are permanently denied, we cannot request permissions.');
     }
 
-    Geolocator.getPositionStream().listen((Position newPosition) {
+    _getPositionSubscription =
+        Geolocator.getPositionStream().listen((Position newPosition) {
       setState(() {
         _currentLocation = newPosition;
       });
     });
+  }
+
+  @override
+  void dispose() {
+    _getPositionSubscription.cancel();
+    super.dispose();
   }
 
   @override
@@ -884,7 +898,7 @@ class _pengirimanScreenState extends State<pengirimanScreen> {
                                         Colors.white),
                               ),
                               onPressed: () {
-                                initializeSharedPreferences();
+                                // initializeSharedPreferences();
                                 print("pengiriman selesai");
                                 double distance = calculateDistance(
                                     _currentLocation!.latitude,
@@ -900,10 +914,11 @@ class _pengirimanScreenState extends State<pengirimanScreen> {
                                 if (distance <= desiredRange) {
                                   prefs.remove('isOnTheWay');
                                   prefs.remove('pengantaran_model');
-                                  selesaiDistribute();
                                   _locationTimer!.cancel();
                                   FlutterBackgroundService()
                                       .invoke("stopService");
+                                  dispose();
+                                  selesaiDistribute();
                                 }
                               },
                               child: Text(
