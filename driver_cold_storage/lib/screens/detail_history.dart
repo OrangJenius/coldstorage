@@ -1,6 +1,9 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:driver_cold_storage/models/historyModel.dart';
+import 'package:http/http.dart' as http;
 
 class DetailHistory extends StatefulWidget {
   @override
@@ -33,6 +36,41 @@ class _DetailHistoryState extends State<DetailHistory> {
       return labels[index];
     }
     return 'Item ${index + 1}';
+  }
+
+  Future<String> tampilkanFoto(String pengantaranID) async {
+    final params = {'folder': 'Distribute', 'id': pengantaranID};
+    final apiurl = Uri.http('116.68.252.201:1945', '/getPhoto', params);
+    try {
+      final response = await http.get(apiurl);
+
+      if (response.statusCode == 200) {
+        print("sukses");
+        return "http://116.68.252.201:1945/getPhoto?folder=Distribute&id=${pengantaranID}";
+      } else {
+        print("gagal");
+        return "";
+      }
+    } catch (e) {
+      print("error $e");
+      return "";
+    }
+  }
+
+  Future<Uint8List> getImageBytes(String pengantaranID) async {
+    String imgurl = await tampilkanFoto(pengantaranID);
+    print("url image: ${imgurl}");
+    http.Response response = await http.get(Uri.parse(imgurl));
+    return response.bodyBytes;
+  }
+
+  void _showSnackbar() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text("Phone Number Copied"),
+        //backgroundColor: Colors.green, // Use a success color
+      ),
+    );
   }
 
   late LatLng _destLoc;
@@ -478,21 +516,16 @@ class _DetailHistoryState extends State<DetailHistory> {
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
                   height: 100,
-                  child: ListView.builder(
-                    itemCount: image.length,
-                    scrollDirection: Axis.horizontal,
-                    itemExtent: 100,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding:
-                            const EdgeInsets.only(left: 8, top: 8, right: 8),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(8),
-                          child: Image.asset(
-                            image[index],
-                            fit: BoxFit.cover,
-                          ),
-                        ),
+                  child: FutureBuilder<Uint8List>(
+                    future: getImageBytes(widget.historyModel[i].distibuteId),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return Image.memory(snapshot.data!);
+                      }
+                      return SizedBox(
+                        width: 100,
+                        height: 100,
+                        child: Text("NO DATA"),
                       );
                     },
                   ),
